@@ -1,0 +1,5 @@
+{
+  "name": "Analyseur de Vulnérabilité Financière",
+  "description": "Un outil pédagogique pour évaluer votre santé financière et identifier les zones de risque selon le contexte canadien.",
+  "requestFramePermissions": []
+}
