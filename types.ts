@@ -1,36 +1,53 @@
+export interface RevenueData {
+  salaryNet: number;
+  otherIncome: number;
+}
 
-export type Zone = 'Green' | 'Yellow' | 'Red';
+export interface FixedExpensesData {
+  housing: number;
+  transport: number;
+  insurance: number;
+  debts: number;
+}
 
-export interface AnalysisResult {
-  overallVulnerability: string;
-  score: number;
-  zone: Zone;
-  mainRisks: string[];
-  priorityRisk: string;
-  summary: string;
-  invitation: string;
+export interface VariableExpensesData {
+  groceries: number;
+  restaurants: number;
+  leisure: number;
+  clothing: number;
+  health: number;
+  other: number;
+}
+
+export interface BudgetData {
+  revenue: RevenueData;
+  fixedExpenses: FixedExpensesData;
+  variableExpenses: VariableExpensesData;
 }
 
 export interface LeadInfo {
   firstName: string;
   lastName: string;
-  phone: string;
   email: string;
+  phone: string;
 }
 
-export interface SurveyData {
-  age: string;
-  incomeRange: string;
-  employmentStatus: string;
-  emergencyFund: string;
-  debtLevel: string;
-  housingCost: string;
-  dependents: string;
-  insuranceCoverage: string;
-  additionalContext: string;
-  // Nouveaux champs Retraite
-  retirementSavings: string;
-  retirementAgeGoal: string;
-  retirementContribution: string;
-  leadInfo?: LeadInfo;
+export type Step = 1 | 2 | 3 | 4 | 5 | 6;
+
+export interface CategoryAnalysis {
+  name: string;
+  amount: number;
+  percent: number;
+  benchmark: number;
+  status: 'ok' | 'warning' | 'danger';
+  color: string;
+}
+
+export interface BudgetAnalysis {
+  totalIncome: number;
+  totalExpenses: number;
+  surplus: number;
+  categories: CategoryAnalysis[];
+  healthScore: number;
+  insights: string[];
 }

@@ -1,114 +1,116 @@
-
 import React, { useState } from 'react';
-import { SurveyData, AnalysisResult, LeadInfo } from './types';
-import SurveyForm from './components/SurveyForm';
-import ResultView from './components/ResultView';
-import LeadCaptureModal from './components/LeadCaptureModal';
-import { analyzeFinancialVulnerability } from './services/geminiService';
+import { BudgetData, LeadInfo, BudgetAnalysis, Step } from './types';
+import StepWelcome from './components/StepWelcome';
+import StepRevenue from './components/StepRevenue';
+import StepFixedExpenses from './components/StepFixedExpenses';
+import StepVariableExpenses from './components/StepVariableExpenses';
+import StepLeadCapture from './components/StepLeadCapture';
+import StepResults from './components/StepResults';
+import { analyzeBudget } from './services/budgetService';
+
+const DEFAULT_BUDGET: BudgetData = {
+  revenue: { salaryNet: 0, otherIncome: 0 },
+  fixedExpenses: { housing: 0, transport: 0, insurance: 0, debts: 0 },
+  variableExpenses: { groceries: 0, restaurants: 0, leisure: 0, clothing: 0, health: 0, other: 0 },
+};
 
 const App: React.FC = () => {
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<AnalysisResult | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  
-  const [tempSurveyData, setTempSurveyData] = useState<SurveyData | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [step, setStep] = useState<Step>(1);
+  const [budget, setBudget] = useState<BudgetData>(DEFAULT_BUDGET);
+  const [lead, setLead] = useState<LeadInfo | null>(null);
+  const [analysis, setAnalysis] = useState<BudgetAnalysis | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSurveySubmit = (data: SurveyData) => {
-    setTempSurveyData(data);
-    setIsModalOpen(true);
-  };
+  const handleLeadSubmit = (info: LeadInfo) => {
+    setSubmitting(true);
+    setLead(info);
+    const result = analyzeBudget(budget);
+    setAnalysis(result);
 
-  const handleLeadConfirm = async (leadInfo: LeadInfo) => {
-    if (!tempSurveyData) return;
-    
-    setIsModalOpen(false);
-    setLoading(true);
-    setError(null);
-    
+    // Log lead to console (no backend configured)
+    console.log('[BudgetApp] New lead:', { ...info, budget, analysis: result });
     try {
-      const fullData: SurveyData = { ...tempSurveyData, leadInfo };
-      const analysis = await analyzeFinancialVulnerability(fullData);
-      setResult(analysis);
+      const existing = JSON.parse(localStorage.getItem('budget_leads') ?? '[]');
+      existing.push({ ...info, budget, timestamp: new Date().toISOString() });
+      localStorage.setItem('budget_leads', JSON.stringify(existing));
+    } catch (_) {}
+
+    setTimeout(() => {
+      setSubmitting(false);
+      setStep(6);
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch (err) {
-      setError("Une erreur est survenue lors de l'analyse. Veuillez réessayer.");
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+    }, 800);
   };
 
-  const resetAnalysis = () => {
-    setResult(null);
-    setError(null);
-    setTempSurveyData(null);
+  const reset = () => {
+    setStep(1);
+    setBudget(DEFAULT_BUDGET);
+    setLead(null);
+    setAnalysis(null);
   };
 
   return (
-    <div className="min-h-screen pb-20 bg-slate-950 text-slate-50">
+    <div className="min-h-screen bg-amber-50 font-sans">
       {/* Header */}
-      <header className="bg-slate-900/50 backdrop-blur-md border-b border-slate-800 py-6 px-4 mb-8 sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/40">
-              <i className="fas fa-chart-pie text-white"></i>
-            </div>
-            <h1 className="text-xl font-black tracking-tight text-white">
-              VULNERA<span className="text-blue-500">CAN</span>
-            </h1>
-          </div>
-          <div className="hidden md:flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-slate-500">
-            <span>Guide Canadien</span>
-            <span className="w-1 h-1 bg-slate-700 rounded-full"></span>
-            <span>Prévention IA</span>
-          </div>
-        </div>
-      </header>
-
-      <main className="px-4 max-w-6xl mx-auto">
-        {!result ? (
-          <div className="space-y-10">
-            <div className="max-w-3xl mx-auto text-center space-y-4">
-              <h2 className="text-4xl md:text-5xl font-black text-white leading-tight">
-                Évaluez votre solidité financière
-              </h2>
-              <p className="text-lg text-slate-400 max-w-2xl mx-auto">
-                Identifiez vos zones de vulnérabilité grâce à notre analyseur intelligent basé sur les standards économiques canadiens.
-              </p>
-            </div>
-            
-            {error && (
-              <div className="max-w-2xl mx-auto bg-rose-950/30 border border-rose-500/30 text-rose-400 p-4 rounded-xl flex items-center gap-3 animate-fadeIn">
-                <i className="fas fa-exclamation-circle text-rose-500"></i>
-                {error}
+      {step !== 1 && (
+        <header className="bg-white border-b border-amber-100 py-4 px-4 sticky top-0 z-40 shadow-sm">
+          <div className="max-w-2xl mx-auto flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center shadow">
+                <span className="text-lg">💰</span>
               </div>
-            )}
-
-            <SurveyForm onSubmit={handleSurveySubmit} isLoading={loading} />
+              <span className="font-black text-amber-900 text-lg">MonBudget</span>
+            </div>
+            <span className="text-xs text-amber-600 font-medium bg-amber-50 border border-amber-200 px-3 py-1 rounded-full">
+              🔒 Confidentiel
+            </span>
           </div>
-        ) : (
-          <ResultView result={result} onReset={resetAnalysis} />
+        </header>
+      )}
+
+      <main>
+        {step === 1 && <StepWelcome onStart={() => setStep(2)} />}
+        {step === 2 && (
+          <StepRevenue
+            data={budget.revenue}
+            onChange={(r) => setBudget({ ...budget, revenue: r })}
+            onNext={() => setStep(3)}
+            onBack={() => setStep(1)}
+          />
+        )}
+        {step === 3 && (
+          <StepFixedExpenses
+            data={budget.fixedExpenses}
+            onChange={(f) => setBudget({ ...budget, fixedExpenses: f })}
+            onNext={() => setStep(4)}
+            onBack={() => setStep(2)}
+          />
+        )}
+        {step === 4 && (
+          <StepVariableExpenses
+            data={budget.variableExpenses}
+            onChange={(v) => setBudget({ ...budget, variableExpenses: v })}
+            onNext={() => setStep(5)}
+            onBack={() => setStep(3)}
+          />
+        )}
+        {step === 5 && (
+          <StepLeadCapture
+            onSubmit={handleLeadSubmit}
+            onBack={() => setStep(4)}
+            loading={submitting}
+          />
+        )}
+        {step === 6 && analysis && lead && (
+          <StepResults analysis={analysis} lead={lead} onReset={reset} />
         )}
       </main>
 
-      {/* Modal Overlay */}
-      {isModalOpen && (
-        <LeadCaptureModal 
-          onConfirm={handleLeadConfirm} 
-          onCancel={() => setIsModalOpen(false)} 
-        />
-      )}
-
-      {/* Footer Disclaimer */}
-      <footer className="mt-20 border-t border-slate-900 pt-10 px-4">
-        <div className="max-w-3xl mx-auto text-center text-xs text-slate-500 space-y-4">
-          <p className="leading-relaxed">
-            Avertissement : Cet outil est fourni à titre informatif et pédagogique uniquement. Il ne constitue pas un conseil financier professionnel, fiscal ou juridique.
-          </p>
-          <p className="font-bold text-slate-600 uppercase tracking-widest">
-            &copy; {new Date().getFullYear()} VulneraCan • Analyste Financier Digital
-          </p>
+      {/* Footer */}
+      <footer className="mt-16 border-t border-amber-100 py-8 px-4">
+        <div className="max-w-2xl mx-auto text-center text-xs text-amber-500 space-y-2">
+          <p>Cet outil est fourni à titre informatif uniquement. Il ne constitue pas un conseil financier professionnel.</p>
+          <p className="font-semibold">© {new Date().getFullYear()} MonBudget • Outil de planification financière</p>
         </div>
       </footer>
     </div>
