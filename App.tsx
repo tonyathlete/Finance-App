@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import emailjs from '@emailjs/browser';
 import { BudgetData, LeadInfo, BudgetAnalysis, Step } from './types';
 import StepWelcome from './components/StepWelcome';
 import StepRevenue from './components/StepRevenue';
@@ -7,7 +8,11 @@ import StepVariableExpenses from './components/StepVariableExpenses';
 import StepPlacements from './components/StepPlacements';
 import StepLeadCapture from './components/StepLeadCapture';
 import StepResults from './components/StepResults';
-import { analyzeBudget } from './services/budgetService';
+import { analyzeBudget, fmt } from './services/budgetService';
+
+const EMAILJS_SERVICE_ID  = 'service_rqmclus';
+const EMAILJS_TEMPLATE_ID = 'template_k28462n';
+const EMAILJS_PUBLIC_KEY  = 'gBubsOj-Izk_yse9V';
 
 const DEFAULT_BUDGET: BudgetData = {
   revenue: { salaryNet: 0, otherIncome: 0 },
@@ -35,22 +40,44 @@ const App: React.FC = () => {
   const [analysis, setAnalysis] = useState<BudgetAnalysis | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  const handleLeadSubmit = (info: LeadInfo) => {
+  const handleLeadSubmit = async (info: LeadInfo) => {
     setSubmitting(true);
     setLead(info);
     const result = analyzeBudget(budget);
     setAnalysis(result);
-    console.log('[MonBudget] New lead:', { ...info, budget, analysis: result });
+
+    // Save to localStorage
     try {
       const existing = JSON.parse(localStorage.getItem('budget_leads') ?? '[]');
       existing.push({ ...info, budget, timestamp: new Date().toISOString() });
       localStorage.setItem('budget_leads', JSON.stringify(existing));
     } catch (_) {}
-    setTimeout(() => {
-      setSubmitting(false);
-      setStep(7);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 800);
+
+    // Send email via EmailJS
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          firstName:      info.firstName,
+          lastName:       info.lastName,
+          email:          info.email,
+          phone:          info.phone,
+          totalIncome:    fmt(result.totalIncome),
+          totalExpenses:  fmt(result.totalExpenses),
+          totalPlacements: fmt(result.totalPlacements),
+          surplus:        fmt(result.surplus),
+          healthScore:    result.healthScore,
+        },
+        EMAILJS_PUBLIC_KEY,
+      );
+    } catch (err) {
+      console.error('[MonBudget] EmailJS error:', err);
+    }
+
+    setSubmitting(false);
+    setStep(7);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const reset = () => {
