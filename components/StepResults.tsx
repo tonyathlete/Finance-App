@@ -15,7 +15,7 @@ function HealthGauge({ score }: { score: number }) {
   return (
     <div className="flex flex-col items-center gap-2">
       <div
-        className="w-24 h-24 rounded-full flex items-center justify-center text-white text-2xl font-black shadow-lg"
+        className="w-24 h-24 rounded-full flex items-center justify-center shadow-lg"
         style={{ background: `conic-gradient(${color} ${score}%, #fef3c7 0%)` }}
       >
         <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
@@ -36,13 +36,12 @@ function CategoryRow({ cat }: { cat: BudgetAnalysis['categories'][0] }) {
     <div className="py-3 border-b border-amber-50 last:border-0">
       <div className="flex justify-between items-center mb-1">
         <span className="text-sm font-semibold text-amber-900">{statusIcon} {cat.name}</span>
-        <span className={`text-sm font-bold ${statusColor}`}>{cat.percent.toFixed(0)}% <span className="text-xs text-amber-500 font-normal">/ {cat.benchmark}% recommandé</span></span>
+        <span className={`text-sm font-bold ${statusColor}`}>
+          {cat.percent.toFixed(0)}% <span className="text-xs text-amber-500 font-normal">/ {cat.benchmark}% recommandé</span>
+        </span>
       </div>
       <div className="h-2 bg-amber-100 rounded-full overflow-hidden">
-        <div
-          className="h-full rounded-full transition-all duration-700"
-          style={{ width: `${barPct}%`, backgroundColor: cat.color }}
-        />
+        <div className="h-full rounded-full transition-all duration-700" style={{ width: `${barPct}%`, backgroundColor: cat.color }} />
       </div>
       <p className="text-xs text-amber-600 mt-1">{fmt(cat.amount)} / mois</p>
     </div>
@@ -50,30 +49,33 @@ function CategoryRow({ cat }: { cat: BudgetAnalysis['categories'][0] }) {
 }
 
 export default function StepResults({ analysis, lead, onReset }: Props) {
-  const { totalIncome, totalExpenses, surplus, categories, healthScore, insights } = analysis;
+  const { totalIncome, totalExpenses, totalPlacements, surplus, categories, placementCategories, healthScore, insights } = analysis;
   const surplusPositive = surplus >= 0;
 
   return (
     <div className="animate-fadeIn max-w-2xl mx-auto px-4 py-10">
-      {/* Header */}
       <div className="text-center mb-8">
         <h2 className="text-2xl font-black text-amber-900 mb-1">Votre portrait financier</h2>
         <p className="text-amber-700 text-sm">Bonjour {lead.firstName}, voici votre analyse personnalisée.</p>
       </div>
 
       {/* Summary cards */}
-      <div className="grid grid-cols-3 gap-3 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         <div className="bg-white rounded-xl border border-amber-100 p-4 text-center shadow-sm">
           <p className="text-xs text-amber-600 font-medium mb-1">Revenus</p>
-          <p className="text-lg font-black text-amber-900">{fmt(totalIncome)}</p>
+          <p className="text-base font-black text-amber-900">{fmt(totalIncome)}</p>
         </div>
         <div className="bg-white rounded-xl border border-amber-100 p-4 text-center shadow-sm">
           <p className="text-xs text-amber-600 font-medium mb-1">Dépenses</p>
-          <p className="text-lg font-black text-amber-900">{fmt(totalExpenses)}</p>
+          <p className="text-base font-black text-amber-900">{fmt(totalExpenses)}</p>
+        </div>
+        <div className="bg-blue-50 rounded-xl border border-blue-200 p-4 text-center shadow-sm">
+          <p className="text-xs text-blue-600 font-medium mb-1">Épargne</p>
+          <p className="text-base font-black text-blue-800">{fmt(totalPlacements)}</p>
         </div>
         <div className={`rounded-xl border p-4 text-center shadow-sm ${surplusPositive ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
           <p className={`text-xs font-medium mb-1 ${surplusPositive ? 'text-green-700' : 'text-red-600'}`}>{surplusPositive ? 'Surplus' : 'Déficit'}</p>
-          <p className={`text-lg font-black ${surplusPositive ? 'text-green-800' : 'text-red-700'}`}>{fmt(Math.abs(surplus))}</p>
+          <p className={`text-base font-black ${surplusPositive ? 'text-green-800' : 'text-red-700'}`}>{fmt(Math.abs(surplus))}</p>
         </div>
       </div>
 
@@ -87,9 +89,37 @@ export default function StepResults({ analysis, lead, onReset }: Props) {
 
       {/* Category breakdown */}
       <div className="bg-white rounded-2xl border border-amber-100 shadow-sm p-6 mb-6">
-        <h3 className="font-black text-amber-900 mb-4">Analyse par catégorie</h3>
+        <h3 className="font-black text-amber-900 mb-4">Analyse par catégorie de dépenses</h3>
         {categories.map((cat, i) => <CategoryRow key={i} cat={cat} />)}
       </div>
+
+      {/* Placements section */}
+      {placementCategories.length > 0 && (
+        <div className="bg-blue-50 rounded-2xl border border-blue-200 shadow-sm p-6 mb-6">
+          <h3 className="font-black text-blue-900 mb-4">📈 Épargne & placements mensuels</h3>
+          <div className="space-y-3">
+            {placementCategories.map((p, i) => (
+              <div key={i} className="flex justify-between items-center py-2 border-b border-blue-100 last:border-0">
+                <div className="flex items-center gap-2">
+                  <span className="w-3 h-3 rounded-full" style={{ backgroundColor: p.color }} />
+                  <span className="text-sm font-semibold text-blue-900">{p.name}</span>
+                </div>
+                <span className="text-sm font-bold text-blue-800">{fmt(p.amount)} / mois</span>
+              </div>
+            ))}
+            <div className="flex justify-between items-center pt-2">
+              <span className="text-sm font-black text-blue-900">Total épargne</span>
+              <span className="text-sm font-black text-blue-800">{fmt(totalPlacements)} / mois</span>
+            </div>
+            {totalIncome > 0 && (
+              <p className="text-xs text-blue-600">
+                Taux d'épargne : {((totalPlacements / totalIncome) * 100).toFixed(0)}% de vos revenus
+                {(totalPlacements / totalIncome) >= 0.1 ? ' ✅' : ' — objectif recommandé : 10-20%'}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Insights */}
       {insights.length > 0 && (
@@ -124,10 +154,7 @@ export default function StepResults({ analysis, lead, onReset }: Props) {
         <p className="text-xs opacity-70 mt-4">Consultation de 30 minutes • 100% gratuit • Sans obligation</p>
       </div>
 
-      <button
-        onClick={onReset}
-        className="mt-8 w-full py-3 text-amber-600 text-sm font-medium hover:underline"
-      >
+      <button onClick={onReset} className="mt-8 w-full py-3 text-amber-600 text-sm font-medium hover:underline">
         ← Recommencer l'analyse
       </button>
     </div>

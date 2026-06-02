@@ -5,17 +5,34 @@ export interface RevenueData {
 
 export interface FixedExpensesData {
   housing: number;
+  housingSub: { rent: number; mortgage: number; taxes: number; condo: number };
   transport: number;
+  transportSub: { carPayment: number; carInsurance: number; gas: number; transit: number; maintenance: number };
   insurance: number;
+  insuranceSub: { life: number; disability: number; home: number };
   debts: number;
+  debtsSub: { creditCard1: number; creditCard2: number; personalLoan: number; creditLine: number };
 }
 
 export interface VariableExpensesData {
   groceries: number;
+  groceriesSub: { food: number; household: number };
   restaurants: number;
+  restaurantsSub: { restaurants: number; cafes: number; delivery: number };
   leisure: number;
+  leisureSub: { subscriptions: number; sports: number; outings: number; hobbies: number };
   clothing: number;
+  clothingSub: { clothes: number; shoes: number; accessories: number };
   health: number;
+  healthSub: { medication: number; dental: number; vision: number; personal: number };
+  other: number;
+}
+
+export interface PlaementsData {
+  reer: number;
+  celi: number;
+  celiapp: number;
+  reee: number;
   other: number;
 }
 
@@ -23,6 +40,7 @@ export interface BudgetData {
   revenue: RevenueData;
   fixedExpenses: FixedExpensesData;
   variableExpenses: VariableExpensesData;
+  placements: PlaementsData;
 }
 
 export interface LeadInfo {
@@ -32,7 +50,7 @@ export interface LeadInfo {
   phone: string;
 }
 
-export type Step = 1 | 2 | 3 | 4 | 5 | 6;
+export type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 export interface CategoryAnalysis {
   name: string;
@@ -46,8 +64,10 @@ export interface CategoryAnalysis {
 export interface BudgetAnalysis {
   totalIncome: number;
   totalExpenses: number;
+  totalPlacements: number;
   surplus: number;
   categories: CategoryAnalysis[];
+  placementCategories: { name: string; amount: number; color: string }[];
   healthScore: number;
   insights: string[];
 }

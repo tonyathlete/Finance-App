@@ -49,7 +49,7 @@ export default function StepLeadCapture({ onSubmit, onBack, loading }: Props) {
 
   return (
     <div className="animate-fadeIn max-w-xl mx-auto px-4 py-10">
-      <ProgressBar step={5} total={5} />
+      <ProgressBar step={6} total={6} />
 
       <div className="text-center mb-8">
         <span className="text-4xl">🎉</span>
