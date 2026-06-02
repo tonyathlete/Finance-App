@@ -144,7 +144,7 @@ export default function StepResults({ analysis, lead, onReset }: Props) {
           Un de nos conseillers financiers analysera votre situation en détail et vous proposera un plan d'action concret — sans frais et sans engagement.
         </p>
         <a
-          href="https://calendly.com"
+          href="https://calendly.com/tommycolombo/30min"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block bg-white text-orange-600 font-bold px-8 py-4 rounded-xl shadow-lg hover:bg-amber-50 transition hover:scale-105 active:scale-95 text-lg"
