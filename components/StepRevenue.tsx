@@ -27,8 +27,8 @@ export default function StepRevenue({ data, onChange, onNext, onBack }: Props) {
       <div className="bg-white rounded-2xl shadow-sm border border-amber-100 p-6 space-y-5">
         <CurrencyInput
           id="salaryNet"
-          label="Salaire net mensuel"
-          hint="Votre salaire après déductions et impôts"
+          label="Revenu brut mensuel"
+          hint="Votre salaire avant déductions et impôts"
           value={data.salaryNet}
           presets={[2000, 3000, 4000, 5000, 6000, 8000]}
           onChange={(v) => onChange({ ...data, salaryNet: v })}
