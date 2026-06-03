@@ -70,7 +70,7 @@ export default function LiveScore({ budget, step }: Props) {
       </div>
       <div className="hidden sm:block">
         <p className="text-xs font-black leading-none" style={{ color }}>{label}</p>
-        <p className="text-xs text-amber-500 leading-none">Score live</p>
+        <p className="text-xs text-blue-500 leading-none">Score live</p>
       </div>
     </div>
   );

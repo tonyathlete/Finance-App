@@ -19,13 +19,14 @@ export default function StepVariableExpenses({ data, onChange, onNext, onBack }:
 
       <div className="text-center mb-8">
         <span className="text-4xl">🛒</span>
-        <h2 className="text-2xl font-black text-amber-900 mt-3 mb-2">Dépenses variables mensuelles</h2>
-        <p className="text-amber-700 text-sm">Estimez vos dépenses mensuelles moyennes. Cliquez sur <strong>Voir le détail</strong> pour ventiler par sous-catégorie.</p>
+        <h2 className="text-2xl font-black text-blue-900 mt-3 mb-2">Dépenses variables mensuelles</h2>
+        <p className="text-blue-700 text-sm">Estimez vos dépenses mensuelles moyennes. Cliquez sur <strong>Voir le détail</strong> pour ventiler par sous-catégorie.</p>
       </div>
 
       <div className="space-y-3">
         <ExpandableExpense
           icon="🛒" label="Épicerie / alimentation" hint="Courses alimentaires et produits ménagers"
+          presets={[300, 400, 500, 700, 900]}
           total={data.groceries}
           onTotalChange={(v) => onChange({ ...data, groceries: v })}
           subItems={[
@@ -40,6 +41,7 @@ export default function StepVariableExpenses({ data, onChange, onNext, onBack }:
 
         <ExpandableExpense
           icon="🍽️" label="Restaurants / sorties" hint="Repas au resto, cafés, livraison"
+          presets={[100, 200, 300, 400]}
           total={data.restaurants}
           onTotalChange={(v) => onChange({ ...data, restaurants: v })}
           subItems={[
@@ -55,6 +57,7 @@ export default function StepVariableExpenses({ data, onChange, onNext, onBack }:
 
         <ExpandableExpense
           icon="🎮" label="Loisirs / abonnements" hint="Netflix, sports, sorties, hobbies"
+          presets={[100, 150, 200, 300]}
           total={data.leisure}
           onTotalChange={(v) => onChange({ ...data, leisure: v })}
           subItems={[
@@ -71,6 +74,7 @@ export default function StepVariableExpenses({ data, onChange, onNext, onBack }:
 
         <ExpandableExpense
           icon="👗" label="Vêtements / shopping" hint="Vêtements, chaussures, accessoires"
+          presets={[50, 100, 150, 200]}
           total={data.clothing}
           onTotalChange={(v) => onChange({ ...data, clothing: v })}
           subItems={[
@@ -86,6 +90,7 @@ export default function StepVariableExpenses({ data, onChange, onNext, onBack }:
 
         <ExpandableExpense
           icon="💊" label="Santé / soins personnels" hint="Médicaments, dentiste, soins"
+          presets={[50, 100, 150, 200]}
           total={data.health}
           onTotalChange={(v) => onChange({ ...data, health: v })}
           subItems={[
@@ -102,6 +107,7 @@ export default function StepVariableExpenses({ data, onChange, onNext, onBack }:
 
         <ExpandableExpense
           icon="📦" label="Autres dépenses" hint="Tout ce qui ne rentre pas ailleurs"
+          presets={[50, 100, 200, 300]}
           total={data.other}
           onTotalChange={(v) => onChange({ ...data, other: v })}
           subItems={[]}
@@ -110,10 +116,10 @@ export default function StepVariableExpenses({ data, onChange, onNext, onBack }:
       </div>
 
       <div className="flex gap-3 mt-6">
-        <button onClick={onBack} className="flex-1 py-3 rounded-xl border border-amber-300 text-amber-700 font-semibold hover:bg-amber-50 transition">
+        <button onClick={onBack} className="flex-1 py-3 rounded-xl border border-blue-300 text-blue-700 font-semibold hover:bg-blue-50 transition">
           ← Retour
         </button>
-        <button onClick={onNext} className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold hover:from-amber-600 hover:to-orange-600 transition">
+        <button onClick={onNext} className="flex-1 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold hover:from-blue-600 hover:to-blue-700 transition">
           Continuer →
         </button>
       </div>

@@ -20,11 +20,11 @@ export default function StepRevenue({ data, onChange, onNext, onBack }: Props) {
 
       <div className="text-center mb-8">
         <span className="text-4xl">💼</span>
-        <h2 className="text-2xl font-black text-amber-900 mt-3 mb-2">Vos revenus mensuels</h2>
-        <p className="text-amber-700 text-sm">Indiquez vos revenus nets (après impôts) par mois.</p>
+        <h2 className="text-2xl font-black text-blue-900 mt-3 mb-2">Vos revenus mensuels</h2>
+        <p className="text-blue-700 text-sm">Indiquez vos revenus nets (après impôts) par mois.</p>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-amber-100 p-6 space-y-5">
+      <div className="bg-white rounded-2xl shadow-sm border border-blue-100 p-6 space-y-5">
         <CurrencyInput
           id="salaryNet"
           label="Revenu brut mensuel"
@@ -43,9 +43,9 @@ export default function StepRevenue({ data, onChange, onNext, onBack }: Props) {
         />
 
         {totalIncome > 0 && (
-          <div className="bg-amber-50 rounded-xl p-4 border border-amber-200 text-center animate-fadeIn">
-            <p className="text-xs text-amber-600 font-medium uppercase tracking-wide">Revenu total mensuel</p>
-            <p className="text-2xl font-black text-amber-900">
+          <div className="bg-blue-50 rounded-xl p-4 border border-blue-200 text-center animate-fadeIn">
+            <p className="text-xs text-blue-600 font-medium uppercase tracking-wide">Revenu total mensuel</p>
+            <p className="text-2xl font-black text-blue-900">
               {new Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD', maximumFractionDigits: 0 }).format(totalIncome)}
             </p>
           </div>
@@ -55,14 +55,14 @@ export default function StepRevenue({ data, onChange, onNext, onBack }: Props) {
       <div className="flex gap-3 mt-6">
         <button
           onClick={onBack}
-          className="flex-1 py-3 rounded-xl border border-amber-300 text-amber-700 font-semibold hover:bg-amber-50 transition"
+          className="flex-1 py-3 rounded-xl border border-blue-300 text-blue-700 font-semibold hover:bg-blue-50 transition"
         >
           ← Retour
         </button>
         <button
           onClick={onNext}
           disabled={!isValid}
-          className="flex-2 flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold hover:from-amber-600 hover:to-orange-600 disabled:opacity-40 disabled:cursor-not-allowed transition"
+          className="flex-2 flex-1 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold hover:from-blue-600 hover:to-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition"
         >
           Continuer →
         </button>

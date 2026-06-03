@@ -29,13 +29,14 @@ export default function StepFixedExpenses({ data, onChange, onNext, onBack }: Pr
 
       <div className="text-center mb-8">
         <span className="text-4xl">🏠</span>
-        <h2 className="text-2xl font-black text-amber-900 mt-3 mb-2">Dépenses fixes mensuelles</h2>
-        <p className="text-amber-700 text-sm">Ces dépenses reviennent chaque mois. Entrez le total ou cliquez sur <strong>Voir le détail</strong> pour ventiler.</p>
+        <h2 className="text-2xl font-black text-blue-900 mt-3 mb-2">Dépenses fixes mensuelles</h2>
+        <p className="text-blue-700 text-sm">Ces dépenses reviennent chaque mois. Entrez le total ou cliquez sur <strong>Voir le détail</strong> pour ventiler.</p>
       </div>
 
       <div className="space-y-3">
         <ExpandableExpense
           icon="🏠" label="Logement" hint="Loyer, hypothèque, taxes, frais de condo"
+          presets={[800, 1200, 1500, 2000, 2500]}
           total={data.housing}
           onTotalChange={(v) => set('housing', v)}
           subItems={[
@@ -53,6 +54,7 @@ export default function StepFixedExpenses({ data, onChange, onNext, onBack }: Pr
 
         <ExpandableExpense
           icon="🚗" label="Transport" hint="Auto, assurance, essence, transport en commun"
+          presets={[200, 400, 600, 800, 1000]}
           total={data.transport}
           onTotalChange={(v) => set('transport', v)}
           subItems={[
@@ -70,6 +72,7 @@ export default function StepFixedExpenses({ data, onChange, onNext, onBack }: Pr
 
         <ExpandableExpense
           icon="🛡️" label="Assurances" hint="Vie, invalidité, habitation"
+          presets={[50, 100, 150, 200, 300]}
           total={data.insurance}
           onTotalChange={(v) => set('insurance', v)}
           subItems={[
@@ -85,6 +88,7 @@ export default function StepFixedExpenses({ data, onChange, onNext, onBack }: Pr
 
         <ExpandableExpense
           icon="💳" label="Dettes" hint="Cartes de crédit, prêts, marges de crédit"
+          presets={[100, 200, 300, 500, 800]}
           total={data.debts}
           onTotalChange={(v) => set('debts', v)}
           subItems={[
@@ -101,10 +105,10 @@ export default function StepFixedExpenses({ data, onChange, onNext, onBack }: Pr
       </div>
 
       <div className="flex gap-3 mt-6">
-        <button onClick={onBack} className="flex-1 py-3 rounded-xl border border-amber-300 text-amber-700 font-semibold hover:bg-amber-50 transition">
+        <button onClick={onBack} className="flex-1 py-3 rounded-xl border border-blue-300 text-blue-700 font-semibold hover:bg-blue-50 transition">
           ← Retour
         </button>
-        <button onClick={onNext} className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold hover:from-amber-600 hover:to-orange-600 transition">
+        <button onClick={onNext} className="flex-1 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold hover:from-blue-600 hover:to-blue-700 transition">
           Continuer →
         </button>
       </div>

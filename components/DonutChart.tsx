@@ -67,7 +67,7 @@ export default function DonutChart({ categories, totalIncome }: Props) {
         {allSlices.map((s, i) => (
           <div key={i} className="flex items-center gap-2">
             <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: s.color }} />
-            <span className="text-amber-800 truncate">{s.name} ({s.percent.toFixed(0)}%)</span>
+            <span className="text-blue-800 truncate">{s.name} ({s.percent.toFixed(0)}%)</span>
           </div>
         ))}
       </div>

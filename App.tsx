@@ -35,13 +35,31 @@ const DEFAULT_BUDGET: BudgetData = {
   placements: { reer: 0, celi: 0, celiapp: 0, reee: 0, other: 0 },
 };
 
-function fireConfetti() {
-  confetti({
-    particleCount: 80,
-    spread: 70,
-    origin: { y: 0.6 },
-    colors: ['#f59e0b', '#f97316', '#10b981', '#fbbf24', '#fff'],
-  });
+function fireStepConfetti(nextStep: Step) {
+  switch (nextStep) {
+    case 2: // Welcome → Revenue: gold rain
+      confetti({ particleCount: 60, angle: 90, spread: 55, origin: { y: 0.7 }, colors: ['#fbbf24', '#f59e0b', '#fde68a'] });
+      break;
+    case 3: // Revenue → Fixed: stars burst
+      confetti({ particleCount: 80, spread: 100, startVelocity: 30, shapes: ['star'], colors: ['#3b82f6', '#60a5fa', '#93c5fd', '#fff'] });
+      break;
+    case 4: // Fixed → Variable: confetti cannon left+right
+      confetti({ particleCount: 50, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#10b981', '#34d399', '#6ee7b7'] });
+      confetti({ particleCount: 50, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#10b981', '#34d399', '#6ee7b7'] });
+      break;
+    case 5: // Variable → Placements: money shower
+      confetti({ particleCount: 100, spread: 80, origin: { y: 0.3 }, colors: ['#22c55e', '#16a34a', '#86efac', '#fbbf24'] });
+      break;
+    case 6: // Placements → Lead: purple celebration
+      confetti({ particleCount: 120, spread: 120, origin: { y: 0.5 }, colors: ['#8b5cf6', '#a78bfa', '#c4b5fd', '#f0abfc'] });
+      break;
+    case 7: // Lead → Results: rainbow finale
+      confetti({ particleCount: 80, angle: 60, spread: 80, origin: { x: 0, y: 0.6 }, colors: ['#ef4444', '#f97316', '#fbbf24', '#22c55e', '#3b82f6', '#8b5cf6'] });
+      setTimeout(() => confetti({ particleCount: 80, angle: 120, spread: 80, origin: { x: 1, y: 0.6 }, colors: ['#ef4444', '#f97316', '#fbbf24', '#22c55e', '#3b82f6', '#8b5cf6'] }), 200);
+      break;
+    default:
+      confetti({ particleCount: 70, spread: 70, origin: { y: 0.6 } });
+  }
 }
 
 const App: React.FC = () => {
@@ -52,7 +70,7 @@ const App: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const goToStep = (next: Step) => {
-    if (next > step && next > 1) fireConfetti();
+    if (next > step && next > 1) fireStepConfetti(next);
     setStep(next);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -105,19 +123,19 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-amber-50 font-sans">
+    <div className="min-h-screen bg-blue-50 font-sans">
       {step !== 1 && step !== 7 && (
-        <header className="bg-white border-b border-amber-100 py-4 px-4 sticky top-0 z-40 shadow-sm">
+        <header className="bg-white border-b border-blue-100 py-4 px-4 sticky top-0 z-40 shadow-sm">
           <div className="max-w-2xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center shadow">
+              <div className="w-9 h-9 bg-gradient-to-br from-blue-400 to-blue-500 rounded-xl flex items-center justify-center shadow">
                 <span className="text-lg">💰</span>
               </div>
-              <span className="font-black text-amber-900 text-lg">MonBudget</span>
+              <span className="font-black text-blue-900 text-lg">MonBudget</span>
             </div>
             <div className="flex items-center gap-3">
               <LiveScore budget={budget} step={step} />
-              <span className="text-xs text-amber-600 font-medium bg-amber-50 border border-amber-200 px-3 py-1 rounded-full hidden sm:block">
+              <span className="text-xs text-blue-600 font-medium bg-blue-50 border border-blue-200 px-3 py-1 rounded-full hidden sm:block">
                 🔒 Confidentiel
               </span>
             </div>
@@ -171,8 +189,8 @@ const App: React.FC = () => {
         )}
       </main>
 
-      <footer className="mt-16 border-t border-amber-100 py-8 px-4">
-        <div className="max-w-2xl mx-auto text-center text-xs text-amber-500 space-y-2">
+      <footer className="mt-16 border-t border-blue-100 py-8 px-4">
+        <div className="max-w-2xl mx-auto text-center text-xs text-blue-500 space-y-2">
           <p>Cet outil est fourni à titre informatif uniquement. Il ne constitue pas un conseil financier professionnel.</p>
           <p className="font-semibold">© {new Date().getFullYear()} MonBudget • Outil de planification financière</p>
         </div>
