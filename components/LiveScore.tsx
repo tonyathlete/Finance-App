@@ -1,5 +1,6 @@
 import React from 'react';
 import { BudgetData } from '../types';
+import { calcNetFromGross } from '../services/taxCalculator';
 
 interface Props {
   budget: BudgetData;
@@ -7,7 +8,8 @@ interface Props {
 }
 
 function calcLiveScore(budget: BudgetData): number | null {
-  const income = budget.revenue.salaryNet + budget.revenue.otherIncome;
+  const salaryNet = budget.revenue.salaryNet > 0 ? calcNetFromGross(budget.revenue.salaryNet).netMonthly : 0;
+  const income = salaryNet + budget.revenue.otherIncome;
   if (income === 0) return null;
 
   const expenses =

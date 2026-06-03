@@ -1,4 +1,5 @@
 import { BudgetData, BudgetAnalysis, CategoryAnalysis, PlaementsData } from '../types';
+import { calcNetFromGross } from './taxCalculator';
 
 const BENCHMARKS: Record<string, { label: string; max: number; color: string }> = {
   housing:     { label: 'Logement',        max: 30, color: '#f59e0b' },
@@ -22,7 +23,8 @@ const PLACEMENT_META: Record<keyof PlaementsData, { label: string; color: string
 };
 
 export function analyzeBudget(data: BudgetData): BudgetAnalysis {
-  const totalIncome = data.revenue.salaryNet + data.revenue.otherIncome;
+  const salaryNet = data.revenue.salaryNet > 0 ? calcNetFromGross(data.revenue.salaryNet).netMonthly : 0;
+  const totalIncome = salaryNet + data.revenue.otherIncome;
 
   const allExpenses: Record<string, number> = {
     housing:     data.fixedExpenses.housing,
