@@ -30,6 +30,7 @@ export default function StepRevenue({ data, onChange, onNext, onBack }: Props) {
           label="Salaire net mensuel"
           hint="Votre salaire après déductions et impôts"
           value={data.salaryNet}
+          presets={[2000, 3000, 4000, 5000, 6000, 8000]}
           onChange={(v) => onChange({ ...data, salaryNet: v })}
         />
         <CurrencyInput
@@ -37,6 +38,7 @@ export default function StepRevenue({ data, onChange, onNext, onBack }: Props) {
           label="Autres revenus"
           hint="Freelance, allocations, revenus locatifs, etc."
           value={data.otherIncome}
+          presets={[500, 1000, 1500, 2000]}
           onChange={(v) => onChange({ ...data, otherIncome: v })}
         />
 

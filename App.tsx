@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import confetti from 'canvas-confetti';
 import emailjs from '@emailjs/browser';
 import { BudgetData, LeadInfo, BudgetAnalysis, Step } from './types';
 import StepWelcome from './components/StepWelcome';
@@ -8,6 +9,7 @@ import StepVariableExpenses from './components/StepVariableExpenses';
 import StepPlacements from './components/StepPlacements';
 import StepLeadCapture from './components/StepLeadCapture';
 import StepResults from './components/StepResults';
+import LiveScore from './components/LiveScore';
 import { analyzeBudget, fmt } from './services/budgetService';
 
 const EMAILJS_SERVICE_ID  = 'service_rqmclus';
@@ -33,6 +35,15 @@ const DEFAULT_BUDGET: BudgetData = {
   placements: { reer: 0, celi: 0, celiapp: 0, reee: 0, other: 0 },
 };
 
+function fireConfetti() {
+  confetti({
+    particleCount: 80,
+    spread: 70,
+    origin: { y: 0.6 },
+    colors: ['#f59e0b', '#f97316', '#10b981', '#fbbf24', '#fff'],
+  });
+}
+
 const App: React.FC = () => {
   const [step, setStep] = useState<Step>(1);
   const [budget, setBudget] = useState<BudgetData>(DEFAULT_BUDGET);
@@ -40,34 +51,38 @@ const App: React.FC = () => {
   const [analysis, setAnalysis] = useState<BudgetAnalysis | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
+  const goToStep = (next: Step) => {
+    if (next > step && next > 1) fireConfetti();
+    setStep(next);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleLeadSubmit = async (info: LeadInfo) => {
     setSubmitting(true);
     setLead(info);
     const result = analyzeBudget(budget);
     setAnalysis(result);
 
-    // Save to localStorage
     try {
       const existing = JSON.parse(localStorage.getItem('budget_leads') ?? '[]');
       existing.push({ ...info, budget, timestamp: new Date().toISOString() });
       localStorage.setItem('budget_leads', JSON.stringify(existing));
     } catch (_) {}
 
-    // Send email via EmailJS
     try {
       await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
         {
-          firstName:      info.firstName,
-          lastName:       info.lastName,
-          email:          info.email,
-          phone:          info.phone,
-          totalIncome:    fmt(result.totalIncome),
-          totalExpenses:  fmt(result.totalExpenses),
+          firstName:       info.firstName,
+          lastName:        info.lastName,
+          email:           info.email,
+          phone:           info.phone,
+          totalIncome:     fmt(result.totalIncome),
+          totalExpenses:   fmt(result.totalExpenses),
           totalPlacements: fmt(result.totalPlacements),
-          surplus:        fmt(result.surplus),
-          healthScore:    result.healthScore,
+          surplus:         fmt(result.surplus),
+          healthScore:     result.healthScore,
         },
         EMAILJS_PUBLIC_KEY,
       );
@@ -75,6 +90,8 @@ const App: React.FC = () => {
       console.error('[MonBudget] EmailJS error:', err);
     }
 
+    // Big confetti for final reveal
+    confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 }, colors: ['#f59e0b', '#f97316', '#10b981', '#6366f1', '#fff'] });
     setSubmitting(false);
     setStep(7);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -89,7 +106,7 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-amber-50 font-sans">
-      {step !== 1 && (
+      {step !== 1 && step !== 7 && (
         <header className="bg-white border-b border-amber-100 py-4 px-4 sticky top-0 z-40 shadow-sm">
           <div className="max-w-2xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -98,51 +115,54 @@ const App: React.FC = () => {
               </div>
               <span className="font-black text-amber-900 text-lg">MonBudget</span>
             </div>
-            <span className="text-xs text-amber-600 font-medium bg-amber-50 border border-amber-200 px-3 py-1 rounded-full">
-              🔒 Confidentiel
-            </span>
+            <div className="flex items-center gap-3">
+              <LiveScore budget={budget} step={step} />
+              <span className="text-xs text-amber-600 font-medium bg-amber-50 border border-amber-200 px-3 py-1 rounded-full hidden sm:block">
+                🔒 Confidentiel
+              </span>
+            </div>
           </div>
         </header>
       )}
 
       <main>
-        {step === 1 && <StepWelcome onStart={() => setStep(2)} />}
+        {step === 1 && <StepWelcome onStart={() => goToStep(2)} />}
         {step === 2 && (
           <StepRevenue
             data={budget.revenue}
             onChange={(r) => setBudget({ ...budget, revenue: r })}
-            onNext={() => setStep(3)}
-            onBack={() => setStep(1)}
+            onNext={() => goToStep(3)}
+            onBack={() => goToStep(1)}
           />
         )}
         {step === 3 && (
           <StepFixedExpenses
             data={budget.fixedExpenses}
             onChange={(f) => setBudget({ ...budget, fixedExpenses: f })}
-            onNext={() => setStep(4)}
-            onBack={() => setStep(2)}
+            onNext={() => goToStep(4)}
+            onBack={() => goToStep(2)}
           />
         )}
         {step === 4 && (
           <StepVariableExpenses
             data={budget.variableExpenses}
             onChange={(v) => setBudget({ ...budget, variableExpenses: v })}
-            onNext={() => setStep(5)}
-            onBack={() => setStep(3)}
+            onNext={() => goToStep(5)}
+            onBack={() => goToStep(3)}
           />
         )}
         {step === 5 && (
           <StepPlacements
             data={budget.placements}
             onChange={(p) => setBudget({ ...budget, placements: p })}
-            onNext={() => setStep(6)}
-            onBack={() => setStep(4)}
+            onNext={() => goToStep(6)}
+            onBack={() => goToStep(4)}
           />
         )}
         {step === 6 && (
           <StepLeadCapture
             onSubmit={handleLeadSubmit}
-            onBack={() => setStep(5)}
+            onBack={() => goToStep(5)}
             loading={submitting}
           />
         )}
