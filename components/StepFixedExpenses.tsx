@@ -35,34 +35,30 @@ export default function StepFixedExpenses({ data, onChange, onNext, onBack }: Pr
 
       <div className="space-y-3">
         <ExpandableExpense
-          icon="🏠" label="Logement" hint="Loyer, hypothèque, taxes, frais de condo"
+          icon="🏠" label="Logement" hint="Loyer, hypothèque ou frais de condo"
           presets={[800, 1200, 1500, 2000, 2500]}
           total={data.housing}
           onTotalChange={(v) => set('housing', v)}
           subItems={[
             { id: 'rent', label: 'Loyer', value: data.housingSub.rent },
             { id: 'mortgage', label: 'Hypothèque', value: data.housingSub.mortgage },
-            { id: 'taxes', label: 'Taxes municipales (mensuel)', value: data.housingSub.taxes },
             { id: 'condo', label: 'Frais de condo', value: data.housingSub.condo },
           ]}
           onSubItemChange={(id, v) => {
-            set('housingSub', { ...data.housingSub, [id]: v });
             const sub = { ...data.housingSub, [id]: v };
-            set('housing', Object.values(sub).reduce((a, b) => a + b, 0));
+            onChange({ ...data, housingSub: sub, housing: Object.values(sub).reduce((a, b) => a + b, 0) });
           }}
         />
 
         <ExpandableExpense
-          icon="🚗" label="Transport" hint="Auto, assurance, essence, transport en commun"
+          icon="🚗" label="Transport" hint="Paiement auto, assurance et essence"
           presets={[200, 400, 600, 800, 1000]}
           total={data.transport}
           onTotalChange={(v) => set('transport', v)}
           subItems={[
             { id: 'carPayment', label: 'Paiement / leasing auto', value: data.transportSub.carPayment },
-            { id: 'carInsurance', label: 'Assurance auto', value: data.transportSub.carInsurance },
+            { id: 'carInsurance', label: 'Assurance auto (par mois)', value: data.transportSub.carInsurance },
             { id: 'gas', label: 'Essence', value: data.transportSub.gas },
-            { id: 'transit', label: 'Transport en commun', value: data.transportSub.transit },
-            { id: 'maintenance', label: 'Entretien / réparations', value: data.transportSub.maintenance },
           ]}
           onSubItemChange={(id, v) => {
             const sub = { ...data.transportSub, [id]: v };
@@ -71,14 +67,14 @@ export default function StepFixedExpenses({ data, onChange, onNext, onBack }: Pr
         />
 
         <ExpandableExpense
-          icon="🛡️" label="Assurances" hint="Vie, invalidité, habitation"
+          icon="🛡️" label="Assurances" hint="Vie, invalidité, habitation — montants par mois"
           presets={[50, 100, 150, 200, 300]}
           total={data.insurance}
           onTotalChange={(v) => set('insurance', v)}
           subItems={[
-            { id: 'life', label: 'Assurance vie', value: data.insuranceSub.life },
-            { id: 'disability', label: 'Assurance invalidité', value: data.insuranceSub.disability },
-            { id: 'home', label: 'Assurance habitation', value: data.insuranceSub.home },
+            { id: 'life', label: 'Assurance vie (par mois)', value: data.insuranceSub.life },
+            { id: 'disability', label: 'Assurance invalidité (par mois)', value: data.insuranceSub.disability },
+            { id: 'home', label: 'Assurance habitation (par mois)', value: data.insuranceSub.home },
           ]}
           onSubItemChange={(id, v) => {
             const sub = { ...data.insuranceSub, [id]: v };

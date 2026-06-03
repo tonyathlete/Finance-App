@@ -5,9 +5,9 @@ export interface RevenueData {
 
 export interface FixedExpensesData {
   housing: number;
-  housingSub: { rent: number; mortgage: number; taxes: number; condo: number };
+  housingSub: { rent: number; mortgage: number; condo: number };
   transport: number;
-  transportSub: { carPayment: number; carInsurance: number; gas: number; transit: number; maintenance: number };
+  transportSub: { carPayment: number; carInsurance: number; gas: number };
   insurance: number;
   insuranceSub: { life: number; disability: number; home: number };
   debts: number;

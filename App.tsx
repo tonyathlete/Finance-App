@@ -19,8 +19,8 @@ const EMAILJS_PUBLIC_KEY  = 'gBubsOj-Izk_yse9V';
 const DEFAULT_BUDGET: BudgetData = {
   revenue: { salaryNet: 0, otherIncome: 0 },
   fixedExpenses: {
-    housing: 0, housingSub: { rent: 0, mortgage: 0, taxes: 0, condo: 0 },
-    transport: 0, transportSub: { carPayment: 0, carInsurance: 0, gas: 0, transit: 0, maintenance: 0 },
+    housing: 0, housingSub: { rent: 0, mortgage: 0, condo: 0 },
+    transport: 0, transportSub: { carPayment: 0, carInsurance: 0, gas: 0 },
     insurance: 0, insuranceSub: { life: 0, disability: 0, home: 0 },
     debts: 0, debtsSub: { creditCard1: 0, creditCard2: 0, personalLoan: 0, creditLine: 0 },
   },
