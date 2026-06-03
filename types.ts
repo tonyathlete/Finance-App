@@ -28,12 +28,20 @@ export interface VariableExpensesData {
   other: number;
 }
 
+export type PlacementFrequency = 'weekly' | 'monthly';
+
+export interface PlacementAccount {
+  contribution: number;
+  frequency: PlacementFrequency;
+  totalInvested: number;
+}
+
 export interface PlaementsData {
-  reer: number;
-  celi: number;
-  celiapp: number;
-  reee: number;
-  other: number;
+  reer: PlacementAccount;
+  celi: PlacementAccount;
+  celiapp: PlacementAccount;
+  reee: PlacementAccount;
+  other: PlacementAccount;
 }
 
 export interface BudgetData {

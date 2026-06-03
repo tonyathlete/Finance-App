@@ -32,7 +32,13 @@ const DEFAULT_BUDGET: BudgetData = {
     health: 0, healthSub: { medication: 0, dental: 0, vision: 0, personal: 0 },
     other: 0,
   },
-  placements: { reer: 0, celi: 0, celiapp: 0, reee: 0, other: 0 },
+  placements: {
+    reer:    { contribution: 0, frequency: 'monthly', totalInvested: 0 },
+    celi:    { contribution: 0, frequency: 'monthly', totalInvested: 0 },
+    celiapp: { contribution: 0, frequency: 'monthly', totalInvested: 0 },
+    reee:    { contribution: 0, frequency: 'monthly', totalInvested: 0 },
+    other:   { contribution: 0, frequency: 'monthly', totalInvested: 0 },
+  },
 };
 
 function fireStepConfetti(nextStep: Step) {

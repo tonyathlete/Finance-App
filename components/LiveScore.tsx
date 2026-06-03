@@ -19,7 +19,10 @@ function calcLiveScore(budget: BudgetData): number | null {
     budget.variableExpenses.leisure + budget.variableExpenses.clothing +
     budget.variableExpenses.health + budget.variableExpenses.other;
 
-  const placements = Object.values(budget.placements).reduce((a, b) => a + b, 0);
+  const placements = Object.values(budget.placements).reduce((s, acc) => {
+    const monthly = acc.frequency === 'weekly' ? Math.round(acc.contribution * 52 / 12) : acc.contribution;
+    return s + monthly;
+  }, 0);
 
   let score = 100;
 

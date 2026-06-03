@@ -40,7 +40,15 @@ export function analyzeBudget(data: BudgetData): BudgetAnalysis {
   };
 
   const totalExpenses = Object.values(allExpenses).reduce((s, v) => s + v, 0);
-  const totalPlacements = Object.values(data.placements).reduce((s, v) => s + v, 0);
+
+  // Monthly equivalent contribution per account
+  const monthlyContrib = (key: keyof PlaementsData) => {
+    const acc = data.placements[key];
+    return acc.frequency === 'weekly' ? Math.round(acc.contribution * 52 / 12) : acc.contribution;
+  };
+  const totalPlacements = (Object.keys(data.placements) as (keyof PlaementsData)[]).reduce(
+    (s, k) => s + monthlyContrib(k), 0,
+  );
   const surplus = totalIncome - totalExpenses - totalPlacements;
 
   const categories: CategoryAnalysis[] = Object.entries(allExpenses)
@@ -54,9 +62,9 @@ export function analyzeBudget(data: BudgetData): BudgetAnalysis {
       return { name: meta.label, amount, percent, benchmark: meta.max, status, color: meta.color };
     });
 
-  const placementCategories = (Object.entries(data.placements) as [keyof PlaementsData, number][])
-    .filter(([, v]) => v > 0)
-    .map(([key, amount]) => ({ name: PLACEMENT_META[key].label, amount, color: PLACEMENT_META[key].color }));
+  const placementCategories = (Object.keys(data.placements) as (keyof PlaementsData)[])
+    .filter((k) => monthlyContrib(k) > 0)
+    .map((k) => ({ name: PLACEMENT_META[k].label, amount: monthlyContrib(k), color: PLACEMENT_META[k].color }));
 
   // Health score
   let score = 100;
@@ -111,10 +119,10 @@ function buildInsights(
       msgs.push(`Vous épargnez ${savingsRatio.toFixed(0)}% de vos revenus. L'objectif recommandé est de 10-20%. Il y a peut-être des opportunités d'optimiser votre épargne.`);
     }
 
-    if (placements.reer === 0 && totalIncome >= 50000 / 12) {
+    if (placements.reer.contribution === 0 && totalIncome >= 50000 / 12) {
       msgs.push('Vous ne cotisez pas au REER. Selon votre tranche d\'imposition, cela pourrait représenter des économies d\'impôt significatives.');
     }
-    if (placements.celi === 0) {
+    if (placements.celi.contribution === 0) {
       msgs.push('Le CELI est un outil puissant — toute croissance à l\'intérieur est libre d\'impôt. Un conseiller peut vous aider à maximiser vos cotisations.');
     }
   }
