@@ -45,10 +45,9 @@ export default function StepFixedExpenses({ data, onChange, onNext, onBack, avat
     <div className="animate-fadeIn max-w-xl mx-auto px-4 py-10">
       <ProgressBar step={2} total={6} />
 
-      <div className="text-center mb-6">
-        <span className="text-4xl">🏠</span>
-        <h2 className="text-2xl font-black text-blue-900 mt-3 mb-2">Dépenses fixes mensuelles</h2>
-        <p className="text-blue-700 text-sm">Ces dépenses reviennent chaque mois. Entrez le total ou cliquez sur <strong>Voir le détail</strong> pour ventiler.</p>
+      <div className="mb-6">
+        <h2 className="text-2xl font-black text-blue-900 mb-1">Dépenses fixes</h2>
+        <p className="text-blue-500 text-sm">Ce qui sort chaque mois, peu importe ce qui se passe. Mets le total ou clique <strong>Voir le détail</strong>.</p>
       </div>
 
       <div className="mb-6">

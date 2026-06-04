@@ -45,10 +45,9 @@ export default function StepVariableExpenses({ data, onChange, onNext, onBack, a
     <div className="animate-fadeIn max-w-xl mx-auto px-4 py-10">
       <ProgressBar step={3} total={6} />
 
-      <div className="text-center mb-6">
-        <span className="text-4xl">🛒</span>
-        <h2 className="text-2xl font-black text-blue-900 mt-3 mb-2">Dépenses variables mensuelles</h2>
-        <p className="text-blue-700 text-sm">Estimez vos dépenses mensuelles moyennes. Cliquez sur <strong>Voir le détail</strong> pour ventiler par sous-catégorie.</p>
+      <div className="mb-6">
+        <h2 className="text-2xl font-black text-blue-900 mb-1">Dépenses variables</h2>
+        <p className="text-blue-500 text-sm">Les dépenses du quotidien — mets une moyenne mensuelle, pas besoin d'être parfait.</p>
       </div>
 
       <div className="mb-6">

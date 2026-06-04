@@ -106,32 +106,35 @@ export default function StepResults({ analysis, lead, onReset, avatar }: Props) 
 
   return (
     <div className="animate-fadeIn max-w-2xl mx-auto px-4 py-10">
-      <div className="text-center mb-6">
-        <h2 className="text-2xl font-black text-blue-900 mb-1">Votre portrait financier</h2>
-        <p className="text-blue-700 text-sm">Bonjour {lead.firstName}, voici votre analyse personnalisée.</p>
-      </div>
 
       <div className="mb-6">
+        <p className="text-blue-400 text-sm font-medium mb-1">Ton portrait financier, {lead.firstName}</p>
+        <h2 className="text-3xl font-black text-blue-900 leading-tight">
+          {healthScore >= 75 ? 'Tu gères bien ton argent.' : healthScore >= 50 ? 'Bonne base, quelques ajustements à faire.' : 'Il y a du travail — mais on a un plan.'}
+        </h2>
+      </div>
+
+      <div className="mb-8">
         <AvatarBubble avatar={avatar} messageKey={scoreKey} size="lg" />
       </div>
 
-      {/* Summary cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-        <div className="bg-white rounded-xl border border-blue-100 p-4 text-center shadow-sm">
-          <p className="text-xs text-blue-600 font-medium mb-1">Revenus</p>
-          <p className="text-base font-black text-blue-900">{fmt(totalIncome)}</p>
+      {/* Summary — horizontal strip */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+        <div className="bg-white rounded-xl border border-blue-100 p-4 shadow-sm">
+          <p className="text-xs text-blue-400 mb-1">Revenus nets</p>
+          <p className="text-lg font-black text-blue-900">{fmt(totalIncome)}</p>
         </div>
-        <div className="bg-white rounded-xl border border-blue-100 p-4 text-center shadow-sm">
-          <p className="text-xs text-blue-600 font-medium mb-1">Dépenses</p>
-          <p className="text-base font-black text-blue-900">{fmt(totalExpenses)}</p>
+        <div className="bg-white rounded-xl border border-blue-100 p-4 shadow-sm">
+          <p className="text-xs text-blue-400 mb-1">Dépenses</p>
+          <p className="text-lg font-black text-blue-900">{fmt(totalExpenses)}</p>
         </div>
-        <div className="bg-blue-50 rounded-xl border border-blue-200 p-4 text-center shadow-sm">
-          <p className="text-xs text-blue-600 font-medium mb-1">Épargne</p>
-          <p className="text-base font-black text-blue-800">{fmt(totalPlacements)}</p>
+        <div className="bg-white rounded-xl border border-blue-100 p-4 shadow-sm">
+          <p className="text-xs text-blue-400 mb-1">Épargne</p>
+          <p className="text-lg font-black text-blue-800">{fmt(totalPlacements)}</p>
         </div>
-        <div className={`rounded-xl border p-4 text-center shadow-sm ${surplusPositive ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
-          <p className={`text-xs font-medium mb-1 ${surplusPositive ? 'text-green-700' : 'text-red-600'}`}>{surplusPositive ? 'Surplus' : 'Déficit'}</p>
-          <p className={`text-base font-black ${surplusPositive ? 'text-green-800' : 'text-red-700'}`}>{fmt(Math.abs(surplus))}</p>
+        <div className={`rounded-xl border p-4 shadow-sm ${surplusPositive ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
+          <p className={`text-xs mb-1 ${surplusPositive ? 'text-green-600' : 'text-red-500'}`}>{surplusPositive ? 'Surplus' : 'Déficit'}</p>
+          <p className={`text-lg font-black ${surplusPositive ? 'text-green-800' : 'text-red-700'}`}>{fmt(Math.abs(surplus))}</p>
         </div>
       </div>
 
@@ -145,14 +148,15 @@ export default function StepResults({ analysis, lead, onReset, avatar }: Props) 
 
       {/* Category breakdown */}
       <div className="bg-white rounded-2xl border border-blue-100 shadow-sm p-6 mb-6">
-        <h3 className="font-black text-blue-900 mb-4">Analyse par catégorie de dépenses</h3>
+        <h3 className="font-black text-blue-900 mb-1">Tes dépenses en détail</h3>
+        <p className="text-xs text-blue-400 mb-4">Comparé aux moyennes québécoises recommandées</p>
         {categories.map((cat, i) => <CategoryRow key={i} cat={cat} />)}
       </div>
 
       {/* Placements section */}
       {placementCategories.length > 0 && (
-        <div className="bg-blue-50 rounded-2xl border border-blue-200 shadow-sm p-6 mb-6">
-          <h3 className="font-black text-blue-900 mb-4">📈 Épargne & placements mensuels</h3>
+        <div className="bg-white rounded-2xl border border-blue-100 shadow-sm p-6 mb-6">
+          <h3 className="font-black text-blue-900 mb-4">Épargne mensuelle</h3>
           <div className="space-y-3">
             {placementCategories.map((p, i) => (
               <div key={i} className="flex justify-between items-center py-2 border-b border-blue-100 last:border-0">
@@ -179,12 +183,12 @@ export default function StepResults({ analysis, lead, onReset, avatar }: Props) 
 
       {/* Insights */}
       {insights.length > 0 && (
-        <div className="bg-blue-50 rounded-2xl border border-blue-200 p-6 mb-6">
-          <h3 className="font-black text-blue-900 mb-3">💡 Observations personnalisées</h3>
+        <div className="bg-white rounded-2xl border border-blue-100 shadow-sm p-6 mb-6">
+          <h3 className="font-black text-blue-900 mb-4">Ce qu'on a remarqué</h3>
           <ul className="space-y-3">
             {insights.map((msg, i) => (
-              <li key={i} className="flex gap-3 text-sm text-blue-800 leading-relaxed">
-                <span className="text-blue-500 flex-shrink-0">•</span>
+              <li key={i} className="flex gap-3 text-sm text-blue-700 leading-relaxed border-b border-blue-50 pb-3 last:border-0 last:pb-0">
+                <span className="text-blue-300 flex-shrink-0 font-black">—</span>
                 {msg}
               </li>
             ))}
@@ -195,20 +199,20 @@ export default function StepResults({ analysis, lead, onReset, avatar }: Props) 
       {/* Personalized challenges */}
       {challenges.length > 0 && (
         <div className="bg-white rounded-2xl border border-blue-100 shadow-sm p-6 mb-6">
-          <h3 className="font-black text-blue-900 mb-1">🎮 Tes défis personnalisés</h3>
-          <p className="text-xs text-blue-500 mb-4">3 actions concrètes pour améliorer ta situation</p>
-          <div className="space-y-3">
+          <h3 className="font-black text-blue-900 mb-1">3 choses à faire cette semaine</h3>
+          <p className="text-xs text-blue-400 mb-5">Des actions simples avec un impact réel sur ton budget</p>
+          <div className="space-y-4">
             {challenges.map((c, i) => (
-              <div key={i} className="bg-blue-50 border border-blue-100 rounded-xl p-4">
-                <div className="flex items-start gap-3">
-                  <span className="text-2xl">{c.emoji}</span>
-                  <div className="flex-1">
-                    <p className="font-black text-blue-900 text-sm mb-1">{c.title}</p>
-                    <p className="text-xs text-blue-700 mb-2">{c.desc}</p>
-                    <span className="inline-block bg-green-100 text-green-700 text-xs font-bold px-2.5 py-1 rounded-full border border-green-200">
-                      💰 {c.saving}
-                    </span>
-                  </div>
+              <div key={i} className="flex items-start gap-4">
+                <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 font-black text-sm flex items-center justify-center flex-shrink-0 mt-0.5">
+                  {i + 1}
+                </div>
+                <div className="flex-1">
+                  <p className="font-black text-blue-900 text-sm mb-0.5">{c.title}</p>
+                  <p className="text-xs text-blue-500 mb-2">{c.desc}</p>
+                  <span className="text-xs font-bold text-green-700 bg-green-50 border border-green-100 px-2.5 py-1 rounded-lg">
+                    {c.saving}
+                  </span>
                 </div>
               </div>
             ))}
@@ -217,21 +221,21 @@ export default function StepResults({ analysis, lead, onReset, avatar }: Props) 
       )}
 
       {/* CTA */}
-      <div className="bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl p-8 text-center text-white shadow-xl shadow-blue-200">
-        <p className="text-sm font-semibold opacity-80 mb-2">Prochaine étape</p>
-        <h3 className="text-2xl font-black mb-3">Obtenez un plan personnalisé gratuit</h3>
-        <p className="text-sm opacity-90 mb-6 max-w-sm mx-auto">
-          Un de nos conseillers financiers analysera votre situation en détail et vous proposera un plan d'action concret — sans frais et sans engagement.
+      <div className="border border-blue-200 rounded-2xl p-8 bg-white">
+        <p className="text-xs font-semibold text-blue-400 uppercase tracking-widest mb-2">Et maintenant ?</p>
+        <h3 className="text-xl font-black text-blue-900 mb-3">Un plan concret, sans jargon.</h3>
+        <p className="text-sm text-blue-600 mb-6 leading-relaxed">
+          On regarde ton portrait ensemble — 30 minutes, sans frais, sans pression. Tu repars avec des actions claires adaptées à ta situation.
         </p>
         <a
           href="https://calendly.com/tommycolombo/30min"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block bg-white text-blue-500 font-bold px-8 py-4 rounded-xl shadow-lg hover:bg-blue-50 transition hover:scale-105 active:scale-95 text-lg"
+          className="inline-block bg-blue-600 text-white font-bold px-8 py-4 rounded-xl hover:bg-blue-700 transition text-sm w-full text-center"
         >
-          📅 Parlez à un conseiller financier
+          Réserver une consultation gratuite
         </a>
-        <p className="text-xs opacity-70 mt-4">Consultation de 30 minutes • 100% gratuit • Sans obligation</p>
+        <p className="text-xs text-blue-400 mt-3 text-center">30 min · gratuit · aucun engagement</p>
       </div>
 
       <button onClick={onReset} className="mt-8 w-full py-3 text-blue-600 text-sm font-medium hover:underline">

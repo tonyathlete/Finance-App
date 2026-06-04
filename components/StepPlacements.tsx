@@ -155,10 +155,9 @@ export default function StepPlacements({ data, onChange, onNext, onBack, avatar 
     <div className="animate-fadeIn max-w-xl mx-auto px-4 py-10">
       <ProgressBar step={4} total={6} />
 
-      <div className="text-center mb-6">
-        <span className="text-4xl">📈</span>
-        <h2 className="text-2xl font-black text-blue-900 mt-3 mb-2">Épargne & placements</h2>
-        <p className="text-blue-700 text-sm">Indiquez vos cotisations régulières et le total déjà accumulé dans chaque compte.</p>
+      <div className="mb-6">
+        <h2 className="text-2xl font-black text-blue-900 mb-1">Épargne & placements</h2>
+        <p className="text-blue-500 text-sm">Ce que tu mets de côté chaque mois, et ce que tu as déjà accumulé. Laisse à 0 si ça ne s'applique pas.</p>
       </div>
 
       <div className="mb-6">
