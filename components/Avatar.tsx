@@ -1,13 +1,12 @@
 import React from 'react';
 import { AvatarId } from '../types';
 
-export const AVATARS: Record<AvatarId, { name: string; tagline: string; color: string; bg: string; seed: string; bgColor: string }> = {
-  bear:   { name: "Bruno l'Épargnant", tagline: 'Décontracté & motivant',  color: 'border-amber-300',  bg: 'bg-amber-50',  seed: 'Bruno',  bgColor: 'fde68a' },
-  owl:    { name: 'Olivia la Sage',    tagline: 'Experte & bienveillante', color: 'border-purple-300', bg: 'bg-purple-50', seed: 'Olivia', bgColor: 'ddd6fe' },
-  beaver: { name: 'Castor Bâtisseur', tagline: 'Protecteur & solide',     color: 'border-green-300',  bg: 'bg-green-50',  seed: 'Castor', bgColor: 'bbf7d0' },
+export const AVATARS: Record<AvatarId, { name: string; tagline: string; color: string; bg: string; gradient: string }> = {
+  bear:   { name: "Bruno l'Épargnant", tagline: 'Décontracté & motivant',  color: 'border-amber-300',  bg: 'bg-amber-50',  gradient: 'from-amber-200 to-amber-300'  },
+  owl:    { name: 'Olivia la Sage',    tagline: 'Experte & bienveillante', color: 'border-purple-300', bg: 'bg-purple-50', gradient: 'from-purple-200 to-purple-300' },
+  beaver: { name: 'Castor Bâtisseur', tagline: 'Protecteur & solide',     color: 'border-green-300',  bg: 'bg-green-50',  gradient: 'from-green-200 to-green-300'  },
 };
 
-// ─── Expression types ─────────────────────────────────────────────────────────
 type Mood = 'happy' | 'excited' | 'thinking' | 'proud' | 'neutral';
 
 const KEY_TO_MOOD: Record<string, Mood> = {
@@ -22,54 +21,92 @@ const KEY_TO_MOOD: Record<string, Mood> = {
   improve:   'neutral',
 };
 
-// Different seeds per mood give naturally different expressions
-const MOOD_SEED_SUFFIX: Record<Mood, string> = {
-  excited: '-excited',
-  happy:   '',
-  proud:   '-proud',
-  thinking:'-thinking',
-  neutral: '-calm',
+// Each mood = different emoji expression per character
+const MOOD_EMOJI: Record<AvatarId, Record<Mood, string>> = {
+  bear: {
+    excited: '🐻',
+    happy:   '🐻',
+    proud:   '🐻',
+    thinking:'🐻',
+    neutral: '🐻',
+  },
+  owl: {
+    excited: '🦉',
+    happy:   '🦉',
+    proud:   '🦉',
+    thinking:'🦉',
+    neutral: '🦉',
+  },
+  beaver: {
+    excited: '🦫',
+    happy:   '🦫',
+    proud:   '🦫',
+    thinking:'🦫',
+    neutral: '🦫',
+  },
 };
 
-function dicebearUrl(seed: string, bgColor: string, mood: Mood, size: number) {
-  const moodSeed = seed + MOOD_SEED_SUFFIX[mood];
-  return `https://api.dicebear.com/9.x/adventurer/svg?seed=${encodeURIComponent(moodSeed)}&backgroundColor=${bgColor}&backgroundType=solid&radius=50&size=${size}`;
-}
+// Mood overlay accessories shown as extra emoji
+const MOOD_ACCESSORY: Record<Mood, string> = {
+  excited: '🎉',
+  happy:   '😊',
+  proud:   '🏆',
+  thinking:'💭',
+  neutral: '',
+};
 
-// ─── Tiny face for header ─────────────────────────────────────────────────────
-export function AvatarFace({ avatar }: { avatar: AvatarId }) {
-  const { seed, bgColor, color, bg } = AVATARS[avatar];
+// ─── Avatar display with mood ring ───────────────────────────────────────────
+function AvatarEmoji({ avatar, mood, size }: { avatar: AvatarId; mood: Mood; size: 'sm' | 'md' | 'lg' | 'xl' }) {
+  const { gradient, color } = AVATARS[avatar];
+  const emoji = MOOD_EMOJI[avatar][mood];
+  const accessory = MOOD_ACCESSORY[mood];
+
+  const dims: Record<string, { outer: string; fontSize: string; acc: string }> = {
+    sm: { outer: 'w-10 h-10', fontSize: 'text-2xl',  acc: 'text-xs -top-1 -right-1' },
+    md: { outer: 'w-14 h-14', fontSize: 'text-3xl',  acc: 'text-sm -top-1 -right-1' },
+    lg: { outer: 'w-20 h-20', fontSize: 'text-5xl',  acc: 'text-base -top-1 -right-2' },
+    xl: { outer: 'w-24 h-24', fontSize: 'text-6xl',  acc: 'text-lg -top-2 -right-2' },
+  };
+  const d = dims[size];
+
   return (
-    <img
-      src={dicebearUrl(seed, bgColor, 'happy', 80)}
-      alt={AVATARS[avatar].name}
-      className={`w-full h-full rounded-full object-cover border-2 ${color}`}
-    />
+    <div className={`relative flex-shrink-0 ${d.outer}`}>
+      <div className={`w-full h-full rounded-full bg-gradient-to-br ${gradient} border-2 ${color} flex items-center justify-center shadow-md`}>
+        <span className={d.fontSize} style={{ lineHeight: 1 }}>{emoji}</span>
+      </div>
+      {accessory && (
+        <span className={`absolute ${d.acc} ${d.acc.includes('text-xs') ? 'w-5 h-5' : 'w-6 h-6'} bg-white rounded-full flex items-center justify-center shadow-sm border border-gray-100`}
+              style={{ fontSize: size === 'sm' ? 10 : size === 'md' ? 12 : 14 }}>
+          {accessory}
+        </span>
+      )}
+    </div>
   );
 }
 
-// ─── Picker card ──────────────────────────────────────────────────────────────
+// ─── Header face ─────────────────────────────────────────────────────────────
+export function AvatarFace({ avatar }: { avatar: AvatarId }) {
+  return <AvatarEmoji avatar={avatar} mood="happy" size="sm" />;
+}
+
+// ─── Picker card ─────────────────────────────────────────────────────────────
 export function AvatarCard({ id, selected, onClick }: { id: AvatarId; selected: boolean; onClick: () => void }) {
   const av = AVATARS[id];
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all duration-200 cursor-pointer ${
+      className={`flex flex-col items-center gap-3 p-5 rounded-2xl border-2 transition-all duration-200 cursor-pointer ${
         selected
-          ? `${av.color} ${av.bg} shadow-lg scale-105`
-          : 'border-blue-100 bg-white hover:border-blue-300 hover:scale-105'
+          ? `${av.color} ${av.bg} shadow-xl scale-105`
+          : 'border-blue-100 bg-white hover:border-blue-300 hover:scale-105 hover:shadow-md'
       }`}
     >
-      <img
-        src={dicebearUrl(av.seed, av.bgColor, selected ? 'excited' : 'happy', 180)}
-        alt={av.name}
-        className={`w-24 h-24 rounded-full shadow-md transition-transform duration-300 ${selected ? 'scale-110' : ''}`}
-      />
-      <p className="text-xs font-black text-blue-900 leading-tight text-center">{av.name}</p>
+      <AvatarEmoji avatar={id} mood={selected ? 'excited' : 'happy'} size="xl" />
+      <p className="text-sm font-black text-blue-900 leading-tight text-center">{av.name}</p>
       <p className="text-xs text-blue-500 leading-tight text-center">{av.tagline}</p>
       {selected && (
-        <span className="text-xs bg-blue-500 text-white px-2 py-0.5 rounded-full font-bold animate-scaleUp">
+        <span className="text-xs bg-blue-500 text-white px-3 py-1 rounded-full font-bold animate-scaleUp shadow-sm">
           ✓ Choisi!
         </span>
       )}
@@ -121,19 +158,14 @@ interface BubbleProps {
 }
 
 export function AvatarBubble({ avatar, messageKey, size = 'md' }: BubbleProps) {
-  const { name, seed, bgColor, color } = AVATARS[avatar];
+  const { name } = AVATARS[avatar];
   const mood = KEY_TO_MOOD[messageKey] ?? 'happy';
   const msg = MESSAGES[avatar][messageKey] ?? MESSAGES[avatar]['welcome'];
-  const imgPx = size === 'sm' ? 40 : size === 'lg' ? 72 : 56;
+  const bubbleSize = size === 'lg' ? 'lg' : size === 'sm' ? 'sm' : 'md';
 
   return (
     <div className="flex items-end gap-3 animate-fadeIn">
-      <img
-        src={dicebearUrl(seed, bgColor, mood, imgPx * 2)}
-        alt={name}
-        className={`rounded-full border-2 flex-shrink-0 shadow-sm ${color}`}
-        style={{ width: imgPx, height: imgPx }}
-      />
+      <AvatarEmoji avatar={avatar} mood={mood} size={bubbleSize} />
       <div className="relative bg-white border border-blue-100 rounded-2xl rounded-bl-none px-4 py-3 shadow-sm max-w-xs">
         <p className="text-xs font-bold text-blue-400 mb-0.5">{name}</p>
         <p className="text-sm text-blue-800 leading-snug">{msg}</p>
