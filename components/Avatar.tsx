@@ -22,17 +22,18 @@ const KEY_TO_MOOD: Record<string, Mood> = {
   improve:   'neutral',
 };
 
-// DiceBear adventurer: vary mouth & eyes per mood
-const MOOD_PARAMS: Record<Mood, string> = {
-  excited: 'mouth=laughing&eyes=variant26&eyebrows=variant10',
-  happy:   'mouth=smile&eyes=variant04&eyebrows=variant03',
-  proud:   'mouth=smile&eyes=variant24&eyebrows=variant12',
-  thinking:'mouth=variant04&eyes=variant21&eyebrows=variant07',
-  neutral: 'mouth=variant02&eyes=variant01&eyebrows=variant01',
+// Different seeds per mood give naturally different expressions
+const MOOD_SEED_SUFFIX: Record<Mood, string> = {
+  excited: '-excited',
+  happy:   '',
+  proud:   '-proud',
+  thinking:'-thinking',
+  neutral: '-calm',
 };
 
 function dicebearUrl(seed: string, bgColor: string, mood: Mood, size: number) {
-  return `https://api.dicebear.com/9.x/adventurer/svg?seed=${seed}&${MOOD_PARAMS[mood]}&backgroundColor=${bgColor}&backgroundType=solid&radius=50&size=${size}`;
+  const moodSeed = seed + MOOD_SEED_SUFFIX[mood];
+  return `https://api.dicebear.com/9.x/adventurer/svg?seed=${encodeURIComponent(moodSeed)}&backgroundColor=${bgColor}&backgroundType=solid&radius=50&size=${size}`;
 }
 
 // ─── Tiny face for header ─────────────────────────────────────────────────────
