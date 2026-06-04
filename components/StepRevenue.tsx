@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { RevenueData } from '../types';
+import { RevenueData, AvatarId } from '../types';
 import CurrencyInput from './CurrencyInput';
 import ProgressBar from './ProgressBar';
+import { AvatarBubble } from './Avatar';
 import { calcNetFromGross } from '../services/taxCalculator';
 
 interface Props {
@@ -9,12 +10,13 @@ interface Props {
   onChange: (data: RevenueData) => void;
   onNext: () => void;
   onBack: () => void;
+  avatar: AvatarId;
 }
 
 const fmt = (v: number) =>
   new Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD', maximumFractionDigits: 0 }).format(v);
 
-export default function StepRevenue({ data, onChange, onNext, onBack }: Props) {
+export default function StepRevenue({ data, onChange, onNext, onBack, avatar }: Props) {
   const [showBreakdown, setShowBreakdown] = useState(false);
 
   const tax = data.salaryNet > 0 ? calcNetFromGross(data.salaryNet) : null;
@@ -25,10 +27,14 @@ export default function StepRevenue({ data, onChange, onNext, onBack }: Props) {
     <div className="animate-fadeIn max-w-xl mx-auto px-4 py-10">
       <ProgressBar step={2} total={6} />
 
-      <div className="text-center mb-8">
+      <div className="text-center mb-6">
         <span className="text-4xl">💼</span>
         <h2 className="text-2xl font-black text-blue-900 mt-3 mb-2">Vos revenus mensuels</h2>
         <p className="text-blue-700 text-sm">Entrez votre revenu brut — on calcule automatiquement votre net.</p>
+      </div>
+
+      <div className="mb-6">
+        <AvatarBubble avatar={avatar} messageKey="revenue" />
       </div>
 
       <div className="bg-white rounded-2xl shadow-sm border border-blue-100 p-6 space-y-5">

@@ -1,72 +1,101 @@
 import React from 'react';
-import { FixedExpensesData } from '../types';
+import { FixedExpensesData, AvatarId } from '../types';
 import ProgressBar from './ProgressBar';
 import ExpandableExpense from './ExpandableExpense';
+import { AvatarBubble } from './Avatar';
+import { calcNetFromGross } from '../services/taxCalculator';
 
 interface Props {
   data: FixedExpensesData;
   onChange: (data: FixedExpensesData) => void;
   onNext: () => void;
   onBack: () => void;
+  avatar: AvatarId;
+  totalIncome: number; // gross monthly, used for comparisons
 }
 
-export default function StepFixedExpenses({ data, onChange, onNext, onBack }: Props) {
+// Quebec household averages as % of net income
+const QC_AVG = { housing: 30, transport: 15, insurance: 6, debts: 10 };
+
+function AvgBadge({ amount, income, avgPct, label }: { amount: number; income: number; avgPct: number; label: string }) {
+  if (amount === 0 || income === 0) return null;
+  const net = calcNetFromGross(income).netMonthly;
+  if (net === 0) return null;
+  const pct = Math.round((amount / net) * 100);
+  const diff = pct - avgPct;
+  const better = diff <= 0;
+  return (
+    <div className={`mt-2 text-xs px-3 py-1.5 rounded-lg flex items-center gap-1.5 ${better ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-orange-50 text-orange-700 border border-orange-100'}`}>
+      <span>{better ? '✅' : '⚠️'}</span>
+      <span>
+        <strong>{label} : {pct}%</strong> de tes revenus —{' '}
+        {better
+          ? `${Math.abs(diff)}% sous la moyenne québécoise (${avgPct}%) 👏`
+          : `${diff}% au-dessus de la moyenne québécoise (${avgPct}%)`}
+      </span>
+    </div>
+  );
+}
+
+export default function StepFixedExpenses({ data, onChange, onNext, onBack, avatar, totalIncome }: Props) {
   const set = <K extends keyof FixedExpensesData>(key: K, value: FixedExpensesData[K]) =>
     onChange({ ...data, [key]: value });
-
-  const setSubItem = (
-    subKey: keyof FixedExpensesData,
-    id: string,
-    value: number,
-  ) => {
-    const current = data[subKey] as Record<string, number>;
-    onChange({ ...data, [subKey]: { ...current, [id]: value } });
-  };
 
   return (
     <div className="animate-fadeIn max-w-xl mx-auto px-4 py-10">
       <ProgressBar step={2} total={6} />
 
-      <div className="text-center mb-8">
+      <div className="text-center mb-6">
         <span className="text-4xl">🏠</span>
         <h2 className="text-2xl font-black text-blue-900 mt-3 mb-2">Dépenses fixes mensuelles</h2>
         <p className="text-blue-700 text-sm">Ces dépenses reviennent chaque mois. Entrez le total ou cliquez sur <strong>Voir le détail</strong> pour ventiler.</p>
       </div>
 
+      <div className="mb-6">
+        <AvatarBubble avatar={avatar} messageKey="fixed" />
+      </div>
+
       <div className="space-y-3">
-        <ExpandableExpense
-          icon="🏠" label="Logement" hint="Loyer, hypothèque ou frais de condo"
-          presets={[800, 1200, 1500, 2000, 2500]}
-          total={data.housing}
-          onTotalChange={(v) => set('housing', v)}
-          subItems={[
-            { id: 'rent', label: 'Loyer', value: data.housingSub.rent },
-            { id: 'mortgage', label: 'Hypothèque', value: data.housingSub.mortgage },
-            { id: 'condo', label: 'Frais de condo', value: data.housingSub.condo },
-          ]}
-          onSubItemChange={(id, v) => {
-            const sub = { ...data.housingSub, [id]: v };
-            onChange({ ...data, housingSub: sub, housing: Object.values(sub).reduce((a, b) => a + b, 0) });
-          }}
-        />
+        <div>
+          <ExpandableExpense
+            icon="🏠" label="Logement" hint="Loyer, hypothèque ou frais de condo"
+            presets={[800, 1200, 1500, 2000, 2500]}
+            total={data.housing}
+            onTotalChange={(v) => set('housing', v)}
+            subItems={[
+              { id: 'rent', label: 'Loyer', value: data.housingSub.rent },
+              { id: 'mortgage', label: 'Hypothèque', value: data.housingSub.mortgage },
+              { id: 'condo', label: 'Frais de condo', value: data.housingSub.condo },
+            ]}
+            onSubItemChange={(id, v) => {
+              const sub = { ...data.housingSub, [id]: v };
+              onChange({ ...data, housingSub: sub, housing: Object.values(sub).reduce((a, b) => a + b, 0) });
+            }}
+          />
+          <AvgBadge amount={data.housing} income={totalIncome} avgPct={QC_AVG.housing} label="Logement" />
+        </div>
 
-        <ExpandableExpense
-          icon="🚗" label="Transport" hint="Paiement auto, assurance et essence"
-          presets={[200, 400, 600, 800, 1000]}
-          total={data.transport}
-          onTotalChange={(v) => set('transport', v)}
-          subItems={[
-            { id: 'carPayment', label: 'Paiement / leasing auto', value: data.transportSub.carPayment },
-            { id: 'carInsurance', label: 'Assurance auto (par mois)', value: data.transportSub.carInsurance },
-            { id: 'gas', label: 'Essence', value: data.transportSub.gas },
-          ]}
-          onSubItemChange={(id, v) => {
-            const sub = { ...data.transportSub, [id]: v };
-            onChange({ ...data, transportSub: sub, transport: Object.values(sub).reduce((a, b) => a + b, 0) });
-          }}
-        />
+        <div>
+          <ExpandableExpense
+            icon="🚗" label="Transport" hint="Paiement auto, assurance et essence"
+            presets={[200, 400, 600, 800, 1000]}
+            total={data.transport}
+            onTotalChange={(v) => set('transport', v)}
+            subItems={[
+              { id: 'carPayment', label: 'Paiement / leasing auto', value: data.transportSub.carPayment },
+              { id: 'carInsurance', label: 'Assurance auto (par mois)', value: data.transportSub.carInsurance },
+              { id: 'gas', label: 'Essence', value: data.transportSub.gas },
+            ]}
+            onSubItemChange={(id, v) => {
+              const sub = { ...data.transportSub, [id]: v };
+              onChange({ ...data, transportSub: sub, transport: Object.values(sub).reduce((a, b) => a + b, 0) });
+            }}
+          />
+          <AvgBadge amount={data.transport} income={totalIncome} avgPct={QC_AVG.transport} label="Transport" />
+        </div>
 
-        <ExpandableExpense
+        <div>
+          <ExpandableExpense
           icon="🛡️" label="Assurances" hint="Vie, invalidité, habitation — montants par mois"
           presets={[50, 100, 150, 200, 300]}
           total={data.insurance}
@@ -80,24 +109,29 @@ export default function StepFixedExpenses({ data, onChange, onNext, onBack }: Pr
             const sub = { ...data.insuranceSub, [id]: v };
             onChange({ ...data, insuranceSub: sub, insurance: Object.values(sub).reduce((a, b) => a + b, 0) });
           }}
-        />
+          />
+          <AvgBadge amount={data.insurance} income={totalIncome} avgPct={QC_AVG.insurance} label="Assurances" />
+        </div>
 
-        <ExpandableExpense
-          icon="💳" label="Dettes" hint="Cartes de crédit, prêts, marges de crédit"
-          presets={[100, 200, 300, 500, 800]}
-          total={data.debts}
-          onTotalChange={(v) => set('debts', v)}
-          subItems={[
-            { id: 'creditCard1', label: 'Carte de crédit #1 (paiement min.)', value: data.debtsSub.creditCard1 },
-            { id: 'creditCard2', label: 'Carte de crédit #2 (paiement min.)', value: data.debtsSub.creditCard2 },
-            { id: 'personalLoan', label: 'Prêt personnel', value: data.debtsSub.personalLoan },
-            { id: 'creditLine', label: 'Marge de crédit', value: data.debtsSub.creditLine },
-          ]}
-          onSubItemChange={(id, v) => {
-            const sub = { ...data.debtsSub, [id]: v };
-            onChange({ ...data, debtsSub: sub, debts: Object.values(sub).reduce((a, b) => a + b, 0) });
-          }}
-        />
+        <div>
+          <ExpandableExpense
+            icon="💳" label="Dettes" hint="Cartes de crédit, prêts, marges de crédit"
+            presets={[100, 200, 300, 500, 800]}
+            total={data.debts}
+            onTotalChange={(v) => set('debts', v)}
+            subItems={[
+              { id: 'creditCard1', label: 'Carte de crédit #1 (paiement min.)', value: data.debtsSub.creditCard1 },
+              { id: 'creditCard2', label: 'Carte de crédit #2 (paiement min.)', value: data.debtsSub.creditCard2 },
+              { id: 'personalLoan', label: 'Prêt personnel', value: data.debtsSub.personalLoan },
+              { id: 'creditLine', label: 'Marge de crédit', value: data.debtsSub.creditLine },
+            ]}
+            onSubItemChange={(id, v) => {
+              const sub = { ...data.debtsSub, [id]: v };
+              onChange({ ...data, debtsSub: sub, debts: Object.values(sub).reduce((a, b) => a + b, 0) });
+            }}
+          />
+          <AvgBadge amount={data.debts} income={totalIncome} avgPct={QC_AVG.debts} label="Dettes" />
+        </div>
       </div>
 
       <div className="flex gap-3 mt-6">

@@ -1,12 +1,14 @@
 import React from 'react';
-import { PlaementsData, PlacementAccount, PlacementFrequency } from '../types';
+import { PlaementsData, PlacementAccount, PlacementFrequency, AvatarId } from '../types';
 import ProgressBar from './ProgressBar';
+import { AvatarBubble } from './Avatar';
 
 interface Props {
   data: PlaementsData;
   onChange: (data: PlaementsData) => void;
   onNext: () => void;
   onBack: () => void;
+  avatar: AvatarId;
 }
 
 const ACCOUNTS: {
@@ -138,7 +140,7 @@ function FreqToggle({ value, onChange }: { value: PlacementFrequency; onChange: 
   );
 }
 
-export default function StepPlacements({ data, onChange, onNext, onBack }: Props) {
+export default function StepPlacements({ data, onChange, onNext, onBack, avatar }: Props) {
   const totalMonthly = (Object.keys(data) as (keyof PlaementsData)[]).reduce(
     (s, k) => s + monthlyEquiv(data[k]), 0,
   );
@@ -153,10 +155,14 @@ export default function StepPlacements({ data, onChange, onNext, onBack }: Props
     <div className="animate-fadeIn max-w-xl mx-auto px-4 py-10">
       <ProgressBar step={4} total={6} />
 
-      <div className="text-center mb-8">
+      <div className="text-center mb-6">
         <span className="text-4xl">📈</span>
         <h2 className="text-2xl font-black text-blue-900 mt-3 mb-2">Épargne & placements</h2>
         <p className="text-blue-700 text-sm">Indiquez vos cotisations régulières et le total déjà accumulé dans chaque compte.</p>
+      </div>
+
+      <div className="mb-6">
+        <AvatarBubble avatar={avatar} messageKey="placements" />
       </div>
 
       <div className="space-y-3">

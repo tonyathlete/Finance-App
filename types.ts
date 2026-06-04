@@ -1,3 +1,5 @@
+export type AvatarId = 'bear' | 'owl' | 'beaver';
+
 export interface RevenueData {
   salaryNet: number;
   otherIncome: number;

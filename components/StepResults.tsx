@@ -1,12 +1,62 @@
 import React from 'react';
-import { BudgetAnalysis, LeadInfo } from '../types';
+import { BudgetAnalysis, LeadInfo, AvatarId } from '../types';
 import DonutChart from './DonutChart';
+import { AvatarBubble, AVATARS } from './Avatar';
 import { fmt } from '../services/budgetService';
 
 interface Props {
   analysis: BudgetAnalysis;
   lead: LeadInfo;
   onReset: () => void;
+  avatar: AvatarId;
+}
+
+function buildChallenges(analysis: BudgetAnalysis): { emoji: string; title: string; desc: string; saving: string }[] {
+  const challenges: { emoji: string; title: string; desc: string; saving: string }[] = [];
+  const { categories, totalIncome, totalPlacements, surplus } = analysis;
+
+  // Find worst over-budget category
+  const worst = [...categories].sort((a, b) => (b.percent - b.benchmark) - (a.percent - a.benchmark))[0];
+  if (worst && worst.percent > worst.benchmark) {
+    const reduction = Math.round(worst.amount * 0.1);
+    challenges.push({
+      emoji: '🎯',
+      title: `Réduire ${worst.name} de 10%`,
+      desc: `Tu es au-dessus de la moyenne québécoise. Réduire de ${fmt(reduction)}/mois, c'est réaliste!`,
+      saving: `= ${fmt(reduction * 12)}/an d'économisé`,
+    });
+  }
+
+  // Placements challenge
+  if (totalIncome > 0 && totalPlacements / totalIncome < 0.1) {
+    const target = Math.round(totalIncome * 0.1);
+    const diff = Math.max(target - totalPlacements, 50);
+    challenges.push({
+      emoji: '📈',
+      title: `Épargner ${fmt(diff)} de plus par mois`,
+      desc: `L'objectif recommandé est 10% des revenus. Même un petit effort régulier fait une grosse différence!`,
+      saving: `= ${fmt(diff * 12)}/an de plus en épargne`,
+    });
+  }
+
+  // Surplus challenge
+  if (surplus > 0) {
+    challenges.push({
+      emoji: '🚀',
+      title: `Investir ton surplus de ${fmt(surplus)}/mois`,
+      desc: `Ton budget génère un surplus — le placer dans un CELI ou REER multiplierait ta richesse!`,
+      saving: `= ${fmt(surplus * 12)}/an investi automatiquement`,
+    });
+  } else if (surplus < 0) {
+    challenges.push({
+      emoji: '🛡️',
+      title: 'Éliminer le déficit mensuel',
+      desc: `Ton budget est en déficit de ${fmt(Math.abs(surplus))}/mois. Trouver 2-3 postes à couper est prioritaire.`,
+      saving: `= retrouver ${fmt(Math.abs(surplus) * 12)}/an de marge`,
+    });
+  }
+
+  return challenges.slice(0, 3);
 }
 
 function HealthGauge({ score }: { score: number }) {
@@ -48,15 +98,21 @@ function CategoryRow({ cat }: { cat: BudgetAnalysis['categories'][0] }) {
   );
 }
 
-export default function StepResults({ analysis, lead, onReset }: Props) {
+export default function StepResults({ analysis, lead, onReset, avatar }: Props) {
   const { totalIncome, totalExpenses, totalPlacements, surplus, categories, placementCategories, healthScore, insights } = analysis;
   const surplusPositive = surplus >= 0;
+  const challenges = buildChallenges(analysis);
+  const scoreKey = healthScore >= 75 ? 'great' : healthScore >= 50 ? 'good' : 'improve';
 
   return (
     <div className="animate-fadeIn max-w-2xl mx-auto px-4 py-10">
-      <div className="text-center mb-8">
+      <div className="text-center mb-6">
         <h2 className="text-2xl font-black text-blue-900 mb-1">Votre portrait financier</h2>
         <p className="text-blue-700 text-sm">Bonjour {lead.firstName}, voici votre analyse personnalisée.</p>
+      </div>
+
+      <div className="mb-6">
+        <AvatarBubble avatar={avatar} messageKey={scoreKey} size="lg" />
       </div>
 
       {/* Summary cards */}
@@ -136,8 +192,32 @@ export default function StepResults({ analysis, lead, onReset }: Props) {
         </div>
       )}
 
+      {/* Personalized challenges */}
+      {challenges.length > 0 && (
+        <div className="bg-white rounded-2xl border border-blue-100 shadow-sm p-6 mb-6">
+          <h3 className="font-black text-blue-900 mb-1">🎮 Tes défis personnalisés</h3>
+          <p className="text-xs text-blue-500 mb-4">3 actions concrètes pour améliorer ta situation</p>
+          <div className="space-y-3">
+            {challenges.map((c, i) => (
+              <div key={i} className="bg-blue-50 border border-blue-100 rounded-xl p-4">
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">{c.emoji}</span>
+                  <div className="flex-1">
+                    <p className="font-black text-blue-900 text-sm mb-1">{c.title}</p>
+                    <p className="text-xs text-blue-700 mb-2">{c.desc}</p>
+                    <span className="inline-block bg-green-100 text-green-700 text-xs font-bold px-2.5 py-1 rounded-full border border-green-200">
+                      💰 {c.saving}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* CTA */}
-      <div className="bg-gradient-to-br from-blue-500 to-orange-600 rounded-2xl p-8 text-center text-white shadow-xl shadow-blue-200">
+      <div className="bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl p-8 text-center text-white shadow-xl shadow-blue-200">
         <p className="text-sm font-semibold opacity-80 mb-2">Prochaine étape</p>
         <h3 className="text-2xl font-black mb-3">Obtenez un plan personnalisé gratuit</h3>
         <p className="text-sm opacity-90 mb-6 max-w-sm mx-auto">

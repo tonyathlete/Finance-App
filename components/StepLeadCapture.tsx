@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { LeadInfo } from '../types';
+import { LeadInfo, AvatarId } from '../types';
 import ProgressBar from './ProgressBar';
+import { AvatarBubble } from './Avatar';
 
 interface Props {
   onSubmit: (lead: LeadInfo) => void;
   onBack: () => void;
   loading: boolean;
+  avatar: AvatarId;
 }
 
-export default function StepLeadCapture({ onSubmit, onBack, loading }: Props) {
+export default function StepLeadCapture({ onSubmit, onBack, loading, avatar }: Props) {
   const [form, setForm] = useState<LeadInfo>({ firstName: '', lastName: '', email: '', phone: '' });
   const [errors, setErrors] = useState<Partial<LeadInfo>>({});
 
@@ -51,12 +53,16 @@ export default function StepLeadCapture({ onSubmit, onBack, loading }: Props) {
     <div className="animate-fadeIn max-w-xl mx-auto px-4 py-10">
       <ProgressBar step={6} total={6} />
 
-      <div className="text-center mb-8">
+      <div className="text-center mb-6">
         <span className="text-4xl">🎉</span>
         <h2 className="text-2xl font-black text-blue-900 mt-3 mb-2">Votre analyse est prête !</h2>
         <p className="text-blue-700 text-sm max-w-sm mx-auto">
           Entrez vos coordonnées pour recevoir votre rapport personnalisé et être contacté par un spécialiste.
         </p>
+      </div>
+
+      <div className="mb-6">
+        <AvatarBubble avatar={avatar} messageKey="lead" />
       </div>
 
       <div className="bg-white rounded-2xl shadow-sm border border-blue-100 p-6">
