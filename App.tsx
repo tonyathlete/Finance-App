@@ -10,7 +10,7 @@ import StepPlacements from './components/StepPlacements';
 import StepLeadCapture from './components/StepLeadCapture';
 import StepResults from './components/StepResults';
 import LiveScore from './components/LiveScore';
-import { AVATARS } from './components/Avatar';
+import { AVATARS, AvatarFace } from './components/Avatar';
 import { analyzeBudget, fmt } from './services/budgetService';
 
 const EMAILJS_SERVICE_ID  = 'service_rqmclus';
@@ -137,12 +137,12 @@ const App: React.FC = () => {
         <header className="bg-white border-b border-blue-100 py-3 px-4 sticky top-0 z-40 shadow-sm">
           <div className="max-w-2xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className={`w-9 h-9 rounded-full border-2 flex items-center justify-center shadow-sm ${AVATARS[avatar].color}`}>
-                <span className="text-xl">{AVATARS[avatar].emoji}</span>
+              <div className={`w-10 h-10 rounded-full border-2 overflow-hidden flex-shrink-0 shadow-sm p-0.5 ${AVATARS[avatar].color} ${AVATARS[avatar].bg}`}>
+                <AvatarFace avatar={avatar} />
               </div>
               <div className="hidden sm:block">
                 <p className="text-xs font-black text-blue-900 leading-none">{AVATARS[avatar].name}</p>
-                <p className="text-xs text-blue-500 leading-none">Ton coach budget</p>
+                <p className="text-xs text-blue-400 leading-none">Ton coach budget</p>
               </div>
             </div>
             <div className="flex items-center gap-3">

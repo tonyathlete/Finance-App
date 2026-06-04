@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AvatarId } from '../types';
-import { AVATARS } from './Avatar';
+import { AVATARS, AvatarCard, AvatarBubble } from './Avatar';
 
 interface Props {
   onStart: (avatar: AvatarId) => void;
@@ -20,48 +20,19 @@ export default function StepWelcome({ onStart }: Props) {
         <p className="text-blue-600 text-sm mb-8">Il t'accompagnera tout au long de l'analyse 🏆</p>
 
         <div className="grid grid-cols-3 gap-4 max-w-lg w-full mb-8">
-          {avatarEntries.map(([id, av]) => (
-            <button
-              key={id}
-              type="button"
-              onClick={() => setSelected(id)}
-              className={`flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer ${
-                selected === id
-                  ? 'border-blue-500 bg-blue-50 shadow-lg shadow-blue-100'
-                  : 'border-blue-100 bg-white hover:border-blue-300'
-              }`}
-            >
-              <span className="text-5xl">{av.emoji}</span>
-              <p className="text-xs font-black text-blue-900 leading-tight">{av.name}</p>
-              <p className="text-xs text-blue-500 leading-tight">{av.tagline}</p>
-              {selected === id && (
-                <span className="text-xs bg-blue-500 text-white px-2 py-0.5 rounded-full font-bold animate-scaleUp">
-                  ✓ Choisi!
-                </span>
-              )}
-            </button>
+          {avatarEntries.map(([id]) => (
+            <AvatarCard key={id} id={id} selected={selected === id} onClick={() => setSelected(id)} />
           ))}
         </div>
 
         {selected && (
-          <div className="animate-scaleUp">
-            <div className={`flex items-start gap-3 mb-6 max-w-sm text-left ${AVATARS[selected].color} border rounded-2xl p-4`}>
-              <span className="text-3xl">{AVATARS[selected].emoji}</span>
-              <div>
-                <p className="text-xs font-bold text-blue-600 mb-1">{AVATARS[selected].name}</p>
-                <p className="text-sm text-blue-800">
-                  {selected === 'bear' && "Hey! Moi c'est Bruno 🐻 On va regarder ton budget ensemble, ça va bien aller!"}
-                  {selected === 'owl' && "Bonjour! Je suis Olivia 🦉 Analysons ensemble votre situation financière avec rigueur."}
-                  {selected === 'beaver' && "Salut! Moi c'est Castor 🦫 Je construis des finances solides comme des barrages!"}
-                </p>
-              </div>
-            </div>
-
+          <div className="animate-scaleUp flex flex-col items-center gap-5">
+            <AvatarBubble avatar={selected} messageKey="welcome" size="lg" />
             <button
               onClick={() => onStart(selected)}
               className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold text-lg px-10 py-4 rounded-2xl shadow-lg shadow-blue-200 transition-all duration-200 hover:scale-105 active:scale-95"
             >
-              C'est parti avec {AVATARS[selected].emoji} →
+              C'est parti avec {AVATARS[selected].name.split(' ')[0]} →
             </button>
           </div>
         )}
