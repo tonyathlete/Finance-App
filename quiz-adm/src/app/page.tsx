@@ -50,13 +50,18 @@ export default function QuizPage() {
   if (submitted) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
-        <div className="bg-white rounded-xl shadow-lg p-10 max-w-md w-full text-center">
-          <div className="text-5xl mb-4">✅</div>
-          <h1 className="text-2xl font-bold text-ia-blue mb-2">Merci!</h1>
-          <p className="text-gray-600 mb-6">Le formulaire a été soumis avec succès.</p>
-          <button className="btn-primary" onClick={() => { setData(defaultQuizData); setStep(0); setSubmitted(false) }}>
-            Nouveau client
-          </button>
+        <div className="card max-w-md w-full text-center animate-slide-up">
+          <div className="w-20 h-20 mx-auto mb-5 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center text-4xl shadow-glow">
+            ✓
+          </div>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-brand-700 to-brand-500 bg-clip-text text-transparent mb-3">Merci!</h1>
+          <p className="text-slate-600 mb-8">Le formulaire a été soumis avec succès.</p>
+          <div className="flex gap-3 justify-center">
+            <button className="btn-primary" onClick={() => { setData(defaultQuizData); setStep(0); setSubmitted(false) }}>
+              + Nouveau client
+            </button>
+            <a href="/dashboard" className="btn-secondary">Voir dashboard</a>
+          </div>
         </div>
       </div>
     )
@@ -65,40 +70,46 @@ export default function QuizPage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="bg-ia-blue text-white py-4 px-6 shadow-md">
-        <div className="max-w-2xl mx-auto flex items-center justify-between">
-          <div>
-            <h1 className="text-xl font-bold">Quiz ADM</h1>
-            <p className="text-blue-200 text-xs">Analyse de marché</p>
+      <header className="bg-gradient-hero text-white py-6 px-6 shadow-glow relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+        <div className="max-w-2xl mx-auto flex items-center justify-between relative">
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center text-xl border border-white/20">📋</div>
+            <div>
+              <h1 className="text-xl font-bold tracking-tight">Quiz ADM</h1>
+              <p className="text-blue-200 text-xs">Analyse de marché — Conseiller financier</p>
+            </div>
           </div>
-          <a href="/dashboard" className="text-blue-200 text-sm hover:text-white underline">
-            Tableau de bord →
+          <a href="/dashboard" className="text-white/90 text-sm hover:text-white font-medium bg-white/10 hover:bg-white/20 backdrop-blur-sm px-4 py-2 rounded-xl transition-all border border-white/20">
+            Dashboard →
           </a>
         </div>
       </header>
 
       {/* Progress bar */}
-      <div className="bg-white border-b border-gray-200 px-6 py-3">
+      <div className="bg-white/70 backdrop-blur-sm border-b border-white/40 px-6 py-4 shadow-sm">
         <div className="max-w-2xl mx-auto">
-          <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
-            <span>{STEPS[step].label}</span>
-            <span>{step + 1} / {STEPS.length}</span>
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-semibold text-brand-900">{STEPS[step].label}</span>
+            <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">
+              {step + 1} / {STEPS.length}
+            </span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="w-full bg-slate-200/60 rounded-full h-2.5 overflow-hidden">
             <div
-              className="bg-ia-blue h-2 rounded-full transition-all duration-300"
+              className="bg-gradient-to-r from-brand-500 to-brand-700 h-full rounded-full transition-all duration-500 shadow-sm"
               style={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
             />
           </div>
           {/* Step dots */}
-          <div className="flex justify-between mt-2">
+          <div className="flex justify-between mt-3">
             {STEPS.map((s, i) => (
               <button
                 key={i}
                 title={s.label}
                 onClick={() => setStep(i)}
-                className={`w-2 h-2 rounded-full transition-colors ${
-                  i <= step ? 'bg-ia-blue' : 'bg-gray-300'
+                className={`w-2.5 h-2.5 rounded-full transition-all ${
+                  i === step ? 'bg-accent-500 scale-125 shadow-md' : i < step ? 'bg-brand-500' : 'bg-slate-300'
                 }`}
               />
             ))}
@@ -108,14 +119,14 @@ export default function QuizPage() {
 
       {/* Content */}
       <main className="flex-1 px-4 py-8">
-        <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div className="max-w-2xl mx-auto card">
           <CurrentStep data={data} onChange={onChange} />
         </div>
       </main>
 
       {/* Navigation */}
-      <footer className="bg-white border-t border-gray-200 px-6 py-4">
-        <div className="max-w-2xl mx-auto flex justify-between items-center">
+      <footer className="bg-white/80 backdrop-blur-sm border-t border-white/40 px-6 py-4 sticky bottom-0">
+        <div className="max-w-2xl mx-auto flex justify-between items-center gap-4">
           <button
             className="btn-secondary"
             onClick={() => setStep(s => Math.max(0, s - 1))}

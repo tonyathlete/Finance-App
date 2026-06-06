@@ -27,13 +27,17 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen">
-      <header className="bg-ia-blue text-white py-4 px-6 shadow-md">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div>
-            <h1 className="text-xl font-bold">Tableau de bord</h1>
-            <p className="text-blue-200 text-xs">Quiz ADM — Tous les clients</p>
+      <header className="bg-gradient-hero text-white py-6 px-6 shadow-glow relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+        <div className="max-w-4xl mx-auto flex items-center justify-between relative">
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center text-xl border border-white/20">📊</div>
+            <div>
+              <h1 className="text-xl font-bold tracking-tight">Tableau de bord</h1>
+              <p className="text-blue-200 text-xs">Quiz ADM — Tous les clients</p>
+            </div>
           </div>
-          <Link href="/" className="btn-secondary bg-transparent text-white border-white hover:bg-blue-800">
+          <Link href="/" className="bg-accent-500 hover:bg-accent-600 text-white font-semibold px-4 py-2.5 rounded-xl shadow-lg transition-all hover:-translate-y-0.5 text-sm">
             + Nouveau client
           </Link>
         </div>
@@ -56,9 +60,9 @@ export default function DashboardPage() {
             {search ? 'Aucun résultat trouvé.' : 'Aucun client pour le moment.'}
           </div>
         ) : (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-card border border-white overflow-hidden animate-slide-up">
             <table className="w-full text-sm">
-              <thead className="bg-ia-lightblue text-ia-blue">
+              <thead className="bg-gradient-to-r from-brand-50 to-brand-100 text-brand-900">
                 <tr>
                   <th className="text-left px-4 py-3 font-semibold">Client</th>
                   <th className="text-left px-4 py-3 font-semibold hidden sm:table-cell">Type</th>
@@ -86,7 +90,7 @@ export default function DashboardPage() {
                       {new Date(s.created_at).toLocaleDateString('fr-CA')}
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <Link href={`/dashboard/${s.id}`} className="text-ia-blue hover:underline font-medium text-xs">
+                      <Link href={`/dashboard/${s.id}`} className="inline-flex items-center gap-1 bg-brand-50 text-brand-700 hover:bg-brand-100 font-semibold text-xs px-3 py-1.5 rounded-lg transition-colors">
                         Voir →
                       </Link>
                     </td>

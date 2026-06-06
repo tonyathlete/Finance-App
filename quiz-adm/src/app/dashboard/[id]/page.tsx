@@ -18,8 +18,11 @@ function Row({ label, value }: { label: string; value?: string | string[] | null
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 mb-6 overflow-hidden">
-      <div className="bg-ia-blue text-white font-semibold px-5 py-3 text-sm">{title}</div>
+    <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-card border border-white mb-5 overflow-hidden animate-slide-up">
+      <div className="bg-gradient-to-r from-brand-700 to-brand-500 text-white font-semibold px-5 py-3 text-sm flex items-center gap-2">
+        <span className="w-1.5 h-5 bg-accent-500 rounded-full" />
+        {title}
+      </div>
       <div className="px-5 py-3">{children}</div>
     </div>
   )
@@ -41,11 +44,17 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-ia-blue text-white py-4 px-6 shadow-md">
-        <div className="max-w-3xl mx-auto flex items-center gap-4">
-          <Link href="/dashboard" className="text-blue-200 hover:text-white text-sm">← Retour</Link>
+      <header className="bg-gradient-hero text-white py-6 px-6 shadow-glow relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+        <div className="max-w-3xl mx-auto flex items-center gap-4 relative">
+          <Link href="/dashboard" className="text-white/90 hover:text-white text-sm bg-white/10 hover:bg-white/20 backdrop-blur-sm px-3 py-2 rounded-xl transition-all border border-white/20">
+            ← Retour
+          </Link>
+          <div className="w-12 h-12 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center text-lg font-bold border border-white/20">
+            {(d.prenom?.[0] || '?') + (d.nom?.[0] || '')}
+          </div>
           <div>
-            <h1 className="text-xl font-bold">{d.prenom} {d.nom}</h1>
+            <h1 className="text-xl font-bold tracking-tight">{d.prenom} {d.nom}</h1>
             <p className="text-blue-200 text-xs">{new Date(submission.created_at).toLocaleDateString('fr-CA', { dateStyle: 'long' })}</p>
           </div>
         </div>

@@ -2,29 +2,78 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body {
+    @apply text-slate-800 antialiased;
+    background: linear-gradient(135deg, #eef4ff 0%, #f8fafc 50%, #fef3c7 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+}
+
 @layer components {
   .section-title {
-    @apply bg-ia-blue text-white font-bold text-lg px-4 py-2 rounded-t-md mb-4;
+    @apply bg-gradient-to-r from-brand-700 to-brand-500 text-white font-bold text-lg px-5 py-3 rounded-xl mb-5 shadow-md;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .section-title::before {
+    content: '';
+    @apply w-1.5 h-6 bg-accent-500 rounded-full;
   }
   .field-label {
-    @apply block text-sm font-medium text-gray-700 mb-1;
+    @apply block text-sm font-semibold text-slate-700 mb-1.5;
   }
   .input {
-    @apply w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ia-blue;
+    @apply w-full bg-white border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm
+           transition-all duration-200
+           focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100
+           hover:border-slate-300;
+  }
+  .input:focus {
+    box-shadow: 0 0 0 4px rgba(59, 108, 255, 0.12);
   }
   .radio-group {
-    @apply flex gap-6 mt-1;
+    @apply flex gap-3 flex-wrap mt-1;
   }
   .radio-label {
-    @apply flex items-center gap-2 text-sm cursor-pointer;
+    @apply flex items-center gap-2 text-sm cursor-pointer px-4 py-2 rounded-xl border-2 border-slate-200 bg-white
+           transition-all duration-200
+           hover:border-brand-500 hover:bg-brand-50 hover:shadow-sm;
+  }
+  .radio-label input {
+    @apply accent-brand-500;
+  }
+  .radio-label:has(input:checked) {
+    @apply border-brand-500 bg-brand-50 shadow-sm;
   }
   .insight-box {
-    @apply bg-ia-lightblue border-l-4 border-ia-blue p-4 rounded-md text-sm font-medium text-ia-blue my-4;
+    @apply bg-gradient-to-br from-amber-50 to-orange-50 border-l-4 border-accent-500
+           p-5 rounded-xl text-sm font-medium text-amber-900 my-5 shadow-sm;
+    display: flex;
+    gap: 0.75rem;
+  }
+  .insight-box::before {
+    content: '💡';
+    font-size: 1.25rem;
+    flex-shrink: 0;
   }
   .btn-primary {
-    @apply bg-ia-blue text-white px-6 py-2 rounded-md font-semibold hover:bg-blue-800 transition-colors;
+    @apply bg-gradient-to-br from-brand-600 to-brand-700 text-white px-6 py-3 rounded-xl font-semibold
+           shadow-lg shadow-brand-500/30
+           hover:shadow-xl hover:shadow-brand-500/40 hover:-translate-y-0.5
+           active:translate-y-0
+           transition-all duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0;
   }
   .btn-secondary {
-    @apply border border-ia-blue text-ia-blue px-6 py-2 rounded-md font-semibold hover:bg-ia-lightblue transition-colors;
+    @apply border-2 border-slate-300 text-slate-700 bg-white px-6 py-3 rounded-xl font-semibold
+           hover:border-brand-500 hover:text-brand-700 hover:bg-brand-50
+           transition-all duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .card {
+    @apply bg-white/80 backdrop-blur-sm rounded-2xl shadow-card border border-white p-6 md:p-8 animate-slide-up;
   }
 }
