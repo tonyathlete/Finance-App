@@ -1,0 +1,157 @@
+'use client'
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { supabase } from '@/lib/supabase'
+import { Submission } from '@/lib/types'
+
+function Row({ label, value }: { label: string; value?: string | string[] | null }) {
+  if (!value || (Array.isArray(value) && value.length === 0)) return null
+  return (
+    <div className="flex gap-3 py-2 border-b border-gray-100 last:border-0">
+      <span className="text-gray-500 text-sm w-48 shrink-0">{label}</span>
+      <span className="text-sm text-gray-900 font-medium">
+        {Array.isArray(value) ? value.join(', ') : value}
+      </span>
+    </div>
+  )
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-100 mb-6 overflow-hidden">
+      <div className="bg-ia-blue text-white font-semibold px-5 py-3 text-sm">{title}</div>
+      <div className="px-5 py-3">{children}</div>
+    </div>
+  )
+}
+
+export default function ClientDetailPage({ params }: { params: { id: string } }) {
+  const [submission, setSubmission] = useState<Submission | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    supabase.from('submissions').select('*').eq('id', params.id).single()
+      .then(({ data }) => { setSubmission(data as Submission); setLoading(false) })
+  }, [params.id])
+
+  if (loading) return <div className="text-center py-20 text-gray-400">Chargement...</div>
+  if (!submission) return <div className="text-center py-20 text-gray-400">Client introuvable.</div>
+
+  const d = submission.data
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-ia-blue text-white py-4 px-6 shadow-md">
+        <div className="max-w-3xl mx-auto flex items-center gap-4">
+          <Link href="/dashboard" className="text-blue-200 hover:text-white text-sm">← Retour</Link>
+          <div>
+            <h1 className="text-xl font-bold">{d.prenom} {d.nom}</h1>
+            <p className="text-blue-200 text-xs">{new Date(submission.created_at).toLocaleDateString('fr-CA', { dateStyle: 'long' })}</p>
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-3xl mx-auto px-4 py-8">
+        <Section title="Informations personnelles">
+          <Row label="Type de client" value={d.typeClient} />
+          <Row label="Téléphone" value={d.telephone} />
+          <Row label="Courriel" value={d.courriel} />
+          <Row label="Adresse" value={d.adresse} />
+          <Row label="Statut civil" value={d.statutCivil} />
+          <Row label="Âge" value={d.age} />
+          {d.conjointNom && <Row label="Conjoint(e)" value={`${d.conjointNom}, ${d.conjointAge} ans, ${d.conjointEmploi}`} />}
+          {d.enfants.length > 0 && (
+            <Row label="Enfants" value={d.enfants.map(e => `${e.nom} (${e.age} ans)`)} />
+          )}
+        </Section>
+
+        <Section title="Autonomie financière">
+          <Row label="Signification autonomie" value={d.significationAutonomie} />
+          <Row label="Revenu conjoint nécessaire" value={d.revenuConjointNecessaire} />
+          <Row label="Événement perturbateur" value={d.evenementPerturbateur} />
+          <Row label="Régimes" value={[...d.regimes, d.autresRegimes].filter(Boolean)} />
+        </Section>
+
+        <Section title="Invalidité">
+          <Row label="Protection invalidité" value={d.protectionInvalidite} />
+          <Row label="% salaire couvert" value={d.pourcentageSalaireConvert} />
+          <Row label="Temps pour assumer" value={d.tempsPourAssumer} />
+          <Row label="Calcul coût de vie fait" value={d.calculCoutVie} />
+          <Row label="Comment établi" value={d.commentEtabli} />
+        </Section>
+
+        <Section title="Épargne">
+          <Row label="Important d'épargner" value={d.importantEpargner} />
+          <Row label="But" value={d.butEpargne} />
+          <Row label="Planifier retraite sans aide" value={d.planifierRetraite} />
+          <Row label="Âge retraite prévu" value={d.ageRetraite} />
+          <Row label="Stratégie en place" value={d.strategieEnPlace} />
+          <Row label="Certain à 100%" value={d.certainStrategieRetraite} />
+          <Row label="Comment évalué" value={d.commentEvalue} />
+        </Section>
+
+        <Section title="Éducation">
+          <Row label="École de pensée" value={d.ecolesPensee.map(e =>
+            e === 'ecole1' ? 'Responsabilité entière de l\'enfant' :
+            e === 'ecole2' ? 'Financement partiel partagé' :
+            'Financement total par les parents'
+          )} />
+          <Row label="Stratégie éducation" value={d.strategieEducation} />
+          <Row label="Certain à 100%" value={d.certainStrategieEducation} />
+        </Section>
+
+        <Section title="Protection des biens">
+          <Row label="Assurance auto" value={d.assuranceAuto} />
+          <Row label="Assurance habitation" value={d.assuranceHabitation} />
+          <Row label="Renouvellement auto" value={d.renouvellementAuto} />
+          <Row label="Renouvellement habitation" value={d.renouvellementHabitation} />
+          <Row label="Fréquence magasinage" value={d.frequenceMagasinage} />
+          <Row label="Mode magasinage" value={d.modeMagasinage} />
+        </Section>
+
+        <Section title="Lieu d'habitation">
+          <Row label="Statut" value={d.statutHabitation} />
+          {d.statutHabitation === 'proprietaire' && <>
+            <Row label="Prêt hypothécaire" value={d.pretHypothecaire} />
+            <Row label="Institution financière" value={d.institutionFinanciere} />
+            <Row label="Protection décès/invalidité" value={d.protectionDeces} />
+            <Row label="Connaissance avantages" value={d.connaissanceAvantages} />
+          </>}
+          {d.statutHabitation === 'locataire' && <>
+            <Row label="Projet achat" value={d.projetAchat} />
+            <Row label="Quand/comment" value={d.quandCommentAchat} />
+            <Row label="Loyer couvert" value={d.loyerCouvert} />
+          </>}
+        </Section>
+
+        <Section title="Testament et mandat">
+          <Row label="Testament + mandat (Qc)" value={d.testamentMandat} />
+          <Row label="Enregistré notaire/avocat" value={d.enregistreNotaire} />
+          <Row label="Testament + procuration (hors Qc)" value={d.testamentProcuration} />
+          <Row label="Connaît conséquences sans testament" value={d.connaissanceConsequences} />
+        </Section>
+
+        {d.references.some(r => r.nom) && (
+          <Section title="Références">
+            <div className="space-y-4">
+              {d.references.filter(r => r.nom).map((r, i) => (
+                <div key={i} className="border border-gray-100 rounded-lg p-3">
+                  <p className="font-medium text-gray-900 mb-1">{r.nom}</p>
+                  <div className="grid grid-cols-2 gap-1 text-xs text-gray-500">
+                    {r.telDom && <span>Tél: {r.telDom}</span>}
+                    {r.cell && <span>Cell: {r.cell}</span>}
+                    {r.lien && <span>Lien: {r.lien}</span>}
+                    {r.emploi && <span>Emploi: {r.emploi}</span>}
+                    {r.nbreEnfants && <span>Enfants: {r.nbreEnfants}</span>}
+                    {r.statut && <span>{r.statut === 'proprietaire' ? 'Propriétaire' : 'Locataire'}</span>}
+                    {r.statutCivil && <span>{r.statutCivil}</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Section>
+        )}
+      </main>
+    </div>
+  )
+}
