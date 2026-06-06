@@ -17,6 +17,16 @@ export default function Step1InfoPersonnelles({ data, onChange }: Props) {
 
   return (
     <div className="space-y-6">
+      <div className="bg-gradient-to-br from-amber-50 to-orange-50 border-l-4 border-accent-500 p-5 rounded-xl shadow-sm flex gap-3">
+        <span className="text-2xl shrink-0">👥</span>
+        <div>
+          <p className="font-semibold text-amber-900 text-sm mb-1">Avant de commencer</p>
+          <p className="text-amber-800 text-sm">
+            Pensez à <strong>5 personnes</strong> de votre entourage (famille, amis, collègues) qui pourraient également bénéficier de cette analyse. Vous compléterez leurs informations à la dernière étape.
+          </p>
+        </div>
+      </div>
+
       <div>
         <div className="section-title">Type de client</div>
         <div className="radio-group flex-wrap">
