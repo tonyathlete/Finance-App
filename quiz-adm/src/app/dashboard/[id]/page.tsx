@@ -133,7 +133,8 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
             <Row label="Prêt hypothécaire" value={d.pretHypothecaire} />
             <Row label="Institution financière" value={d.institutionFinanciere} />
             <Row label="Protection décès/invalidité" value={d.protectionDeces} />
-            <Row label="Connaissance avantages" value={d.connaissanceAvantages} />
+            <Row label="Connaissance avantages assureur privé" value={d.connaissanceAvantages} />
+          <Row label="Connaissance diff. assurance vie vs hypothèque" value={d.connaissanceDiffAssurances} />
           </>}
           {d.statutHabitation === 'locataire' && <>
             <Row label="Projet achat" value={d.projetAchat} />

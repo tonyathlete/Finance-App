@@ -73,6 +73,47 @@ export default function Step7LieuHabitation({ data, onChange }: Props) {
                   ))}
                 </div>
               </div>
+              <div>
+                <p className="field-label">Connaissez-vous la différence entre une <strong>assurance vie</strong> et une <strong>assurance hypothèque</strong>?</p>
+                <div className="radio-group">
+                  {(['oui', 'non'] as const).map(v => (
+                    <label key={v} className="radio-label">
+                      <input type="radio" name="connaissanceDiffAssurances" value={v}
+                        checked={data.connaissanceDiffAssurances === v}
+                        onChange={() => onChange({ connaissanceDiffAssurances: v })} />
+                      {v.charAt(0).toUpperCase() + v.slice(1)}
+                    </label>
+                  ))}
+                </div>
+                {data.connaissanceDiffAssurances === 'non' && (
+                  <div className="mt-4 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-xl p-4 space-y-3 text-sm">
+                    <div className="flex gap-3">
+                      <span className="text-2xl shrink-0">🏦</span>
+                      <div>
+                        <p className="font-bold text-slate-800 mb-1">Assurance hypothèque (banque)</p>
+                        <ul className="text-slate-600 space-y-1 text-xs">
+                          <li>• Le bénéficiaire est <strong>la banque</strong>, pas votre famille</li>
+                          <li>• La couverture <strong>diminue</strong> avec le solde hypothécaire</li>
+                          <li>• La prime reste la même même si la couverture baisse</li>
+                          <li>• Non transférable si vous changez d&apos;institution</li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="flex gap-3">
+                      <span className="text-2xl shrink-0">🛡️</span>
+                      <div>
+                        <p className="font-bold text-slate-800 mb-1">Assurance vie (assureur privé)</p>
+                        <ul className="text-slate-600 space-y-1 text-xs">
+                          <li>• Le bénéficiaire est <strong>votre famille</strong></li>
+                          <li>• La couverture reste <strong>fixe</strong> peu importe le solde</li>
+                          <li>• Peut couvrir bien plus que l&apos;hypothèque</li>
+                          <li>• Transférable et indépendante de votre banque</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
               <div className="insight-box">
                 Croyez-vous que les gens qui détiennent des prêts hypothécaires devraient être informés de ces avantages afin de prendre de meilleures décisions?
               </div>

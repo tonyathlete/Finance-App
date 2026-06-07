@@ -80,6 +80,7 @@ export interface QuizData {
   institutionFinanciere: string
   protectionDeces: 'oui' | 'non' | ''
   connaissanceAvantages: 'oui' | 'non' | ''
+  connaissanceDiffAssurances: 'oui' | 'non' | ''
   projetAchat: 'oui' | 'non' | ''
   quandCommentAchat: string
   loyerCouvert: 'oui' | 'non' | ''
@@ -145,6 +146,7 @@ export const defaultQuizData: QuizData = {
   institutionFinanciere: '',
   protectionDeces: '',
   connaissanceAvantages: '',
+  connaissanceDiffAssurances: '',
   projetAchat: '',
   quandCommentAchat: '',
   loyerCouvert: '',
