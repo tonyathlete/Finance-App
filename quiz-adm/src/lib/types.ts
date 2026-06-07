@@ -15,6 +15,14 @@ export interface Reference {
 }
 
 export interface QuizData {
+  // Étape 0 — Connaissances générales
+  connaissanceBourse: 'debutant' | 'intermediaire' | 'avance' | ''
+  connaissancePlacements: 'debutant' | 'intermediaire' | 'avance' | ''
+  produitsPlacements: string[]
+  connaissanceAssurances: 'debutant' | 'intermediaire' | 'avance' | ''
+  aAssuranceMaladieGrave: 'oui' | 'non' | ''
+  aAssuranceInvalidite: 'oui' | 'non' | ''
+
   // Étape 1 — Infos personnelles
   typeClient: 'salarie' | 'autonome' | 'entrepreneur' | ''
   prenom: string
@@ -87,6 +95,12 @@ export interface QuizData {
 }
 
 export const defaultQuizData: QuizData = {
+  connaissanceBourse: '',
+  connaissancePlacements: '',
+  produitsPlacements: [],
+  connaissanceAssurances: '',
+  aAssuranceMaladieGrave: '',
+  aAssuranceInvalidite: '',
   typeClient: '',
   prenom: '',
   nom: '',

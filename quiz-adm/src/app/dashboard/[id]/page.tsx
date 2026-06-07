@@ -61,6 +61,15 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-8">
+        <Section title="Connaissances financières">
+          <Row label="Marché boursier" value={d.connaissanceBourse} />
+          <Row label="Fonds de placements" value={d.connaissancePlacements} />
+          <Row label="Produits déjà possédés" value={d.produitsPlacements} />
+          <Row label="Assurances" value={d.connaissanceAssurances} />
+          <Row label="A assurance maladie grave" value={d.aAssuranceMaladieGrave} />
+          <Row label="A assurance invalidité" value={d.aAssuranceInvalidite} />
+        </Section>
+
         <Section title="Informations personnelles">
           <Row label="Type de client" value={d.typeClient} />
           <Row label="Téléphone" value={d.telephone} />

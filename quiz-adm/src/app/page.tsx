@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { QuizData, defaultQuizData } from '@/lib/types'
 import { supabase } from '@/lib/supabase'
+import Step0Connaissances from '@/components/quiz/steps/Step0Connaissances'
 import Step1InfoPersonnelles from '@/components/quiz/steps/Step1InfoPersonnelles'
 import Step2Autonomie from '@/components/quiz/steps/Step2Autonomie'
 import Step3Invalidite from '@/components/quiz/steps/Step3Invalidite'
@@ -13,6 +14,7 @@ import Step8Testament from '@/components/quiz/steps/Step8Testament'
 import Step9References from '@/components/quiz/steps/Step9References'
 
 const STEPS = [
+  { label: 'Connaissances financières', component: Step0Connaissances },
   { label: 'Informations personnelles', component: Step1InfoPersonnelles },
   { label: 'Autonomie financière', component: Step2Autonomie },
   { label: 'Invalidité', component: Step3Invalidite },
