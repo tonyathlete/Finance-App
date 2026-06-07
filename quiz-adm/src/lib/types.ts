@@ -22,6 +22,7 @@ export interface QuizData {
   connaissanceAssurances: 'debutant' | 'intermediaire' | 'avance' | ''
   aAssuranceMaladieGrave: 'oui' | 'non' | ''
   aAssuranceInvalidite: 'oui' | 'non' | ''
+  aAssuranceVie: 'oui' | 'non' | ''
 
   // Étape 1 — Infos personnelles
   typeClient: 'salarie' | 'autonome' | 'entrepreneur' | ''
@@ -102,6 +103,7 @@ export const defaultQuizData: QuizData = {
   connaissanceAssurances: '',
   aAssuranceMaladieGrave: '',
   aAssuranceInvalidite: '',
+  aAssuranceVie: '',
   typeClient: '',
   prenom: '',
   nom: '',

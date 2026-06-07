@@ -68,6 +68,7 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
           <Row label="Assurances" value={d.connaissanceAssurances} />
           <Row label="A assurance maladie grave" value={d.aAssuranceMaladieGrave} />
           <Row label="A assurance invalidité" value={d.aAssuranceInvalidite} />
+          <Row label="A assurance vie" value={d.aAssuranceVie} />
         </Section>
 
         <Section title="Informations personnelles">
