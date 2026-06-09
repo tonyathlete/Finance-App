@@ -165,6 +165,9 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
         </Section>
 
         <Section title="Invalidité">
+          <Row label="Revenu mensuel (client)" value={d.revenuMensuel1 ? d.revenuMensuel1 + ' $' : ''} />
+          <Row label="Revenu mensuel (conjoint)" value={d.revenuMensuel2 ? d.revenuMensuel2 + ' $' : ''} />
+          <Row label="Dépenses mensuelles" value={d.depensesMensuelles ? d.depensesMensuelles + ' $' : ''} />
           <Row label="Protection invalidité" value={d.protectionInvalidite} />
           <Row label="% salaire couvert" value={d.pourcentageSalaireConvert} />
           <Row label="Temps pour assumer" value={d.tempsPourAssumer} />
@@ -203,6 +206,8 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
 
         <Section title="Lieu d'habitation">
           <Row label="Statut" value={d.statutHabitation} />
+          <Row label={d.statutHabitation === 'proprietaire' ? 'Hypothèque mensuelle' : 'Loyer mensuel'}
+            value={d.coutLogementMensuel ? d.coutLogementMensuel + ' $' : ''} />
           {d.statutHabitation === 'proprietaire' && <>
             <Row label="Prêt hypothécaire" value={d.pretHypothecaire} />
             <Row label="Institution financière" value={d.institutionFinanciere} />

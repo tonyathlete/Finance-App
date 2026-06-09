@@ -92,7 +92,7 @@ export default function Step0Connaissances({ data, onChange }: Props) {
         </div>
       </div>
 
-      {/* Assurances */}
+      {/* Assurances — niveau de connaissance seulement */}
       <div>
         <div className="section-title">Assurances</div>
         <p className="text-sm text-slate-600 mb-1">Quel est votre niveau de connaissance du fonctionnement des assurances?</p>
@@ -101,68 +101,6 @@ export default function Step0Connaissances({ data, onChange }: Props) {
           value={data.connaissanceAssurances}
           onChange={v => onChange({ connaissanceAssurances: v as QuizData['connaissanceAssurances'] })}
         />
-
-        <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className={`p-4 rounded-xl border-2 transition-all ${data.aAssuranceMaladieGrave ? 'border-brand-200 bg-brand-50' : 'border-slate-200 bg-white'}`}>
-            <p className="text-sm font-semibold text-slate-700 mb-3">🏥 Assurance maladie grave</p>
-            <p className="text-xs text-slate-500 mb-3">Possédez-vous une assurance maladie grave?</p>
-            <div className="flex gap-3">
-              {(['oui', 'non'] as const).map(v => (
-                <label key={v} className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg border-2 cursor-pointer text-sm font-medium transition-all ${
-                  data.aAssuranceMaladieGrave === v
-                    ? v === 'oui' ? 'border-green-400 bg-green-50 text-green-700' : 'border-red-300 bg-red-50 text-red-700'
-                    : 'border-slate-200 text-slate-600 hover:border-slate-300'
-                }`}>
-                  <input type="radio" name="maladieGrave" value={v}
-                    checked={data.aAssuranceMaladieGrave === v}
-                    onChange={() => onChange({ aAssuranceMaladieGrave: v })}
-                    className="sr-only" />
-                  {v === 'oui' ? '✓ Oui' : '✗ Non'}
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div className={`p-4 rounded-xl border-2 transition-all ${data.aAssuranceInvalidite ? 'border-brand-200 bg-brand-50' : 'border-slate-200 bg-white'}`}>
-            <p className="text-sm font-semibold text-slate-700 mb-3">🛡️ Assurance invalidité</p>
-            <p className="text-xs text-slate-500 mb-3">Possédez-vous une assurance invalidité?</p>
-            <div className="flex gap-3">
-              {(['oui', 'non'] as const).map(v => (
-                <label key={v} className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg border-2 cursor-pointer text-sm font-medium transition-all ${
-                  data.aAssuranceInvalidite === v
-                    ? v === 'oui' ? 'border-green-400 bg-green-50 text-green-700' : 'border-red-300 bg-red-50 text-red-700'
-                    : 'border-slate-200 text-slate-600 hover:border-slate-300'
-                }`}>
-                  <input type="radio" name="assuranceInvalidite" value={v}
-                    checked={data.aAssuranceInvalidite === v}
-                    onChange={() => onChange({ aAssuranceInvalidite: v })}
-                    className="sr-only" />
-                  {v === 'oui' ? '✓ Oui' : '✗ Non'}
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div className={`p-4 rounded-xl border-2 transition-all ${data.aAssuranceVie ? 'border-brand-200 bg-brand-50' : 'border-slate-200 bg-white'}`}>
-            <p className="text-sm font-semibold text-slate-700 mb-3">💙 Assurance vie</p>
-            <p className="text-xs text-slate-500 mb-3">Possédez-vous une assurance vie?</p>
-            <div className="flex gap-3">
-              {(['oui', 'non'] as const).map(v => (
-                <label key={v} className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg border-2 cursor-pointer text-sm font-medium transition-all ${
-                  data.aAssuranceVie === v
-                    ? v === 'oui' ? 'border-green-400 bg-green-50 text-green-700' : 'border-red-300 bg-red-50 text-red-700'
-                    : 'border-slate-200 text-slate-600 hover:border-slate-300'
-                }`}>
-                  <input type="radio" name="assuranceVie" value={v}
-                    checked={data.aAssuranceVie === v}
-                    onChange={() => onChange({ aAssuranceVie: v })}
-                    className="sr-only" />
-                  {v === 'oui' ? '✓ Oui' : '✗ Non'}
-                </label>
-              ))}
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   )

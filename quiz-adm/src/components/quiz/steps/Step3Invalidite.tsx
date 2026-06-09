@@ -1,5 +1,6 @@
 'use client'
 import { QuizData } from '@/lib/types'
+import ImpactRevenu from '@/components/quiz/ImpactRevenu'
 
 interface Props { data: QuizData; onChange: (u: Partial<QuizData>) => void }
 
@@ -29,6 +30,8 @@ export default function Step3Invalidite({ data, onChange }: Props) {
   return (
     <div className="space-y-6">
       <div className="section-title">Invalidité</div>
+
+      <ImpactRevenu data={data} onChange={onChange} />
 
       <div>
         <p className="field-label">Détenez-vous des protections en cas d&apos;invalidité?</p>

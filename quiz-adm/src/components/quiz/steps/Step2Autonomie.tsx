@@ -3,8 +3,6 @@ import { QuizData } from '@/lib/types'
 
 interface Props { data: QuizData; onChange: (u: Partial<QuizData>) => void }
 
-const REGIMES = ['CELI', 'CELIAPP', 'REER', 'REEE']
-
 const SIGNIFICATION_OPTIONS = [
   'Vivre sans dépendre d\'un salaire ou d\'une aide extérieure',
   'Avoir assez d\'épargne pour ma retraite',
@@ -22,13 +20,6 @@ const EVENEMENT_OPTIONS = [
 ]
 
 export default function Step2Autonomie({ data, onChange }: Props) {
-  const toggleRegime = (r: string) => {
-    const updated = data.regimes.includes(r)
-      ? data.regimes.filter(x => x !== r)
-      : [...data.regimes, r]
-    onChange({ regimes: updated })
-  }
-
   const toggleEvenement = (opt: string) => {
     const current = data.evenementPerturbateur
     const updated = current.includes(opt)
@@ -102,25 +93,6 @@ export default function Step2Autonomie({ data, onChange }: Props) {
         </div>
       </div>
 
-      <div>
-        <p className="text-sm text-gray-700 font-medium mb-2">
-          Est-ce que vous cotisez déjà à ces régimes? (Cochez tous ceux qui s&apos;appliquent)
-        </p>
-        <div className="flex flex-wrap gap-4">
-          {REGIMES.map(r => (
-            <label key={r} className="radio-label">
-              <input type="checkbox" checked={data.regimes.includes(r)}
-                onChange={() => toggleRegime(r)} />
-              {r}
-            </label>
-          ))}
-        </div>
-        <div className="mt-3">
-          <label className="field-label">Autres régimes</label>
-          <input className="input" value={data.autresRegimes}
-            onChange={e => onChange({ autresRegimes: e.target.value })} />
-        </div>
-      </div>
     </div>
   )
 }

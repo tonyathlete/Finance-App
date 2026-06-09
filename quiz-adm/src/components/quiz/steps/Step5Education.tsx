@@ -4,12 +4,14 @@ import { QuizData } from '@/lib/types'
 interface Props { data: QuizData; onChange: (u: Partial<QuizData>) => void }
 
 const ECOLES = [
-  { id: 'ecole1', label: 'En premier, ceux qui croient que leurs enfants (ou petits-enfants) devraient assumer l\'entière responsabilité de leurs frais d\'études' },
-  { id: 'ecole2', label: 'En deuxième, ceux qui souhaitent défrayer en partie le financement des études de leurs enfants (ou petits-enfants), pour autant qu\'ils y contribuent également' },
-  { id: 'ecole3', label: 'En troisième, ceux qui croient que le plus bel héritage qu\'ils peuvent léguer à leurs enfants (ou petits-enfants) est de financer la totalité de leurs études' },
+  { id: 'ecole1', label: 'Mes enfants devraient assumer eux-mêmes leurs frais d\'études' },
+  { id: 'ecole2', label: 'Je souhaite financer une partie, s\'ils contribuent aussi' },
+  { id: 'ecole3', label: 'Le plus bel héritage est de financer la totalité de leurs études' },
 ]
 
 export default function Step5Education({ data, onChange }: Props) {
+  const aEnfants = data.enfants.length > 0
+
   const toggleEcole = (id: string) => {
     const updated = data.ecolesPensee.includes(id)
       ? data.ecolesPensee.filter(e => e !== id)
@@ -19,24 +21,52 @@ export default function Step5Education({ data, onChange }: Props) {
 
   return (
     <div className="space-y-6">
-      <div className="section-title">Éducation</div>
+      <div className="section-title">Éducation des enfants</div>
 
-      <p className="text-sm text-gray-600">
-        Concernant les études des enfants, on trouve généralement trois écoles de pensée chez les parents (ou grands-parents) comme vous. Laquelle vous rejoint le plus dans votre façon de voir les choses pour vos enfants (ou petits-enfants)?
-      </p>
+      {/* Accroche : coût réel des études */}
+      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-xl p-5">
+        <div className="flex gap-3">
+          <span className="text-3xl shrink-0">🎓</span>
+          <div>
+            <p className="font-bold text-slate-800 text-sm mb-1">Le saviez-vous?</p>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Une formation universitaire avec résidence peut dépasser <strong>80 000 $</strong>.
+              Le REEE offre des <strong>subventions gouvernementales pouvant atteindre 30 %</strong> —
+              de l’argent gratuit qui s’ajoute à votre épargne. Plus on commence tôt, plus l’effet est puissant.
+            </p>
+          </div>
+        </div>
+      </div>
 
-      <div className="space-y-3">
-        {ECOLES.map(e => (
-          <label key={e.id} className="flex items-start gap-3 cursor-pointer p-3 rounded-md border border-gray-200 hover:border-ia-blue hover:bg-ia-lightblue transition-colors">
-            <input type="checkbox" className="mt-0.5" checked={data.ecolesPensee.includes(e.id)}
-              onChange={() => toggleEcole(e.id)} />
-            <span className="text-sm">{e.label}</span>
-          </label>
-        ))}
+      {!aEnfants && (
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-800">
+          Aucun enfant n’a été indiqué. Si vous prévoyez en avoir (ou avez des petits-enfants),
+          il existe des stratégies pour préparer leur avenir dès aujourd’hui.
+        </div>
+      )}
+
+      <div>
+        <p className="field-label">Quelle approche vous rejoint le plus pour {aEnfants ? 'vos enfants' : 'vos (futurs) enfants ou petits-enfants'}?</p>
+        <div className="space-y-2 mt-2">
+          {ECOLES.map((e, i) => (
+            <label key={e.id} className={`flex items-start gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all text-sm ${
+              data.ecolesPensee.includes(e.id)
+                ? 'border-brand-500 bg-brand-50 font-medium text-brand-700'
+                : 'border-slate-200 bg-white text-slate-700 hover:border-brand-300 hover:bg-brand-50'
+            }`}>
+              <input type="checkbox" className="sr-only" checked={data.ecolesPensee.includes(e.id)}
+                onChange={() => toggleEcole(e.id)} />
+              <span className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 ${
+                data.ecolesPensee.includes(e.id) ? 'bg-brand-500 text-white' : 'bg-slate-100 text-slate-500'
+              }`}>{String.fromCharCode(65 + i)}</span>
+              {e.label}
+            </label>
+          ))}
+        </div>
       </div>
 
       <div>
-        <p className="field-label">Avez-vous mis en place une stratégie jusqu&apos;à maintenant pour vos enfants (ou petits-enfants)?</p>
+        <p className="field-label">Avez-vous déjà une stratégie d’épargne-études en place?</p>
         <div className="radio-group">
           {(['oui', 'non'] as const).map(v => (
             <label key={v} className="radio-label">
@@ -51,7 +81,7 @@ export default function Step5Education({ data, onChange }: Props) {
 
       {data.strategieEducation === 'oui' && (
         <div>
-          <p className="field-label">Êtes-vous certain à <strong>100%</strong> que la stratégie que vous mettez en place aujourd&apos;hui vous permettra de réaliser votre objectif?</p>
+          <p className="field-label">Êtes-vous certain de <strong>maximiser les subventions</strong> disponibles?</p>
           <div className="radio-group">
             {(['oui', 'non'] as const).map(v => (
               <label key={v} className="radio-label">
@@ -66,7 +96,8 @@ export default function Step5Education({ data, onChange }: Props) {
       )}
 
       <div className="insight-box">
-        Vous savez qu&apos;il existe des programmes qui permettent non seulement d&apos;atteindre cet objectif, mais aussi de s&apos;assurer que vous profiterez au maximum des subventions gouvernementales?
+        Une stratégie REEE bien structurée permet non seulement d’atteindre l’objectif, mais aussi d’aller chercher
+        le maximum des subventions gouvernementales auxquelles vous avez droit.
       </div>
     </div>
   )

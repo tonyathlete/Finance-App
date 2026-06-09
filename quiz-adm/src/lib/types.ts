@@ -67,13 +67,20 @@ export interface QuizData {
   strategieEducation: 'oui' | 'non' | ''
   certainStrategieEducation: 'oui' | 'non' | ''
 
-  // Étape 6 — Protection des biens
+  // Étape 6 — Protection des biens + habitation (fusionnées)
   assuranceAuto: 'oui' | 'non' | ''
   assuranceHabitation: 'oui' | 'non' | ''
   renouvellementAuto: string
   renouvellementHabitation: string
   frequenceMagasinage: string
   modeMagasinage: string
+  coutLogementType: 'loyer' | 'hypotheque' | ''
+  coutLogementMensuel: string
+
+  // Impact perte de revenu (étape invalidité)
+  revenuMensuel1: string
+  revenuMensuel2: string
+  depensesMensuelles: string
 
   // Étape 7 — Lieu d'habitation
   statutHabitation: 'proprietaire' | 'locataire' | ''
@@ -166,6 +173,11 @@ export const defaultQuizData: QuizData = {
   renouvellementHabitation: '',
   frequenceMagasinage: '',
   modeMagasinage: '',
+  coutLogementType: '',
+  coutLogementMensuel: '',
+  revenuMensuel1: '',
+  revenuMensuel2: '',
+  depensesMensuelles: '',
   statutHabitation: '',
   pretHypothecaire: '',
   institutionFinanciere: '',

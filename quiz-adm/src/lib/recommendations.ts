@@ -76,7 +76,7 @@ const CHECKS: Check[] = [
     titre: 'Mettre en place une épargne systématique',
     description:
       'Épargner automatiquement une partie de vos revenus, même modeste, est la base de l’indépendance financière. On peut commencer dès maintenant.',
-    lacune: d => d.importantEpargner === 'non' || d.regimes.length === 0,
+    lacune: d => d.importantEpargner === 'non' || d.produitsPlacements.length === 0,
   },
   {
     id: 'optimisation_rendement',
@@ -85,7 +85,7 @@ const CHECKS: Check[] = [
     titre: 'Optimiser le rendement de vos placements',
     description:
       'Un écart de quelques pourcents de rendement représente des dizaines de milliers de dollars sur le long terme. Voyons ensemble le potentiel de vos placements actuels.',
-    lacune: d => d.connaissancePlacements === 'debutant' || d.regimes.length <= 1,
+    lacune: d => d.connaissancePlacements === 'debutant' || d.produitsPlacements.length <= 1,
   },
   {
     id: 'strategie_retraite',
@@ -106,7 +106,7 @@ const CHECKS: Check[] = [
     titre: 'Profiter des subventions REEE pour les études',
     description:
       'Avec des enfants, le REEE offre des subventions gouvernementales (jusqu’à 30 %). Une stratégie d’épargne-études maximise ce que vos enfants recevront.',
-    lacune: d => d.strategieEducation === 'non' || !d.regimes.includes('REEE'),
+    lacune: d => d.strategieEducation === 'non' || !d.produitsPlacements.includes('REEE'),
     applicable: d => d.enfants.length > 0,
   },
 
@@ -145,7 +145,7 @@ const CHECKS: Check[] = [
     description:
       'Si votre employeur offre un REER collectif avec contribution, ne pas y cotiser au maximum revient à laisser de l’argent sur la table.',
     lacune: d => d.reerCollectif === 'non' || d.employeurContribue === 'non',
-    applicable: d => d.typeClient === 'salarie',
+    applicable: d => d.typeClient === 'salarie' && (d.reerCollectif !== '' || d.employeurContribue !== ''),
   },
   {
     id: 'apps_economies',
@@ -157,7 +157,7 @@ const CHECKS: Check[] = [
     lacune: d =>
       d.utilisationAppEconomies === 'Non' ||
       d.utilisationAppEconomies === 'Je ne connaissais pas',
-    applicable: d => d.typeClient === 'salarie',
+    applicable: d => d.typeClient === 'salarie' && d.utilisationAppEconomies !== '',
   },
   // Travailleur autonome
   {
@@ -168,7 +168,7 @@ const CHECKS: Check[] = [
     description:
       'Un comptable spécialisé pour travailleurs autonomes génère souvent des économies d’impôt qui dépassent largement ses honoraires.',
     lacune: d => d.aComptable === 'non',
-    applicable: d => d.typeClient === 'autonome',
+    applicable: d => d.typeClient === 'autonome' && d.aComptable !== '',
   },
   {
     id: 'fonds_urgence',
@@ -178,7 +178,7 @@ const CHECKS: Check[] = [
     description:
       'Avec un revenu variable, un coussin de 3 à 6 mois de dépenses est essentiel pour traverser les périodes creuses sereinement.',
     lacune: d => d.fondsUrgence === 'Moins de 3 mois' || d.fondsUrgence === 'Non',
-    applicable: d => d.typeClient === 'autonome',
+    applicable: d => d.typeClient === 'autonome' && d.fondsUrgence !== '',
   },
   {
     id: 'invalidite_perso',
@@ -188,7 +188,7 @@ const CHECKS: Check[] = [
     description:
       'Sans employeur, aucune protection de revenu n’est automatique. Une assurance invalidité personnelle est cruciale pour un travailleur autonome.',
     lacune: d => d.assuranceInvaliditePerso === 'non',
-    applicable: d => d.typeClient === 'autonome',
+    applicable: d => d.typeClient === 'autonome' && d.assuranceInvaliditePerso !== '',
   },
   // Entrepreneur
   {
@@ -199,7 +199,7 @@ const CHECKS: Check[] = [
     description:
       'Une structure avec société de gestion (holding) peut offrir des avantages fiscaux et de protection d’actifs importants selon votre situation.',
     lacune: d => d.structureCorporative === 'non',
-    applicable: d => d.typeClient === 'entrepreneur',
+    applicable: d => d.typeClient === 'entrepreneur' && d.structureCorporative !== '',
   },
   {
     id: 'convention_actionnaires',
@@ -209,7 +209,7 @@ const CHECKS: Check[] = [
     description:
       'Avec des associés, une convention (souvent financée par assurance vie) protège l’entreprise et les familles en cas de décès ou de départ d’un actionnaire.',
     lacune: d => d.conventionActionnaires === 'non',
-    applicable: d => d.typeClient === 'entrepreneur' && d.aAssocies === 'oui',
+    applicable: d => d.typeClient === 'entrepreneur' && d.aAssocies === 'oui' && d.conventionActionnaires !== '',
   },
   {
     id: 'cle_homme',
@@ -219,7 +219,7 @@ const CHECKS: Check[] = [
     description:
       'Si la perte d’une personne clé mettrait l’entreprise en péril, une assurance clé-homme assure sa continuité financière.',
     lacune: d => d.assuranceCleHomme === 'non',
-    applicable: d => d.typeClient === 'entrepreneur',
+    applicable: d => d.typeClient === 'entrepreneur' && d.assuranceCleHomme !== '',
   },
   {
     id: 'remuneration',
@@ -229,7 +229,7 @@ const CHECKS: Check[] = [
     description:
       'Le bon équilibre entre salaire et dividendes dépend de votre situation. Une analyse peut réduire votre facture fiscale globale.',
     lacune: d => d.typeRemunerationEntrepreneur === 'Je ne sais pas ce qui est optimal',
-    applicable: d => d.typeClient === 'entrepreneur',
+    applicable: d => d.typeClient === 'entrepreneur' && d.typeRemunerationEntrepreneur !== '',
   },
 ]
 
