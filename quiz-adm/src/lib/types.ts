@@ -92,6 +92,29 @@ export interface QuizData {
   testamentProcuration: 'oui' | 'non' | ''
   connaissanceConsequences: 'oui' | 'non' | ''
 
+  // Étape type-spécifique — Salarié
+  reerCollectif: 'oui' | 'non' | ''
+  employeurContribue: 'oui' | 'non' | ''
+  assurancesCollectives: 'oui' | 'non' | ''
+  aVehicule: 'oui' | 'non' | ''
+  typeFinancementAuto: string
+  utilisationAppEconomies: string
+
+  // Étape type-spécifique — Travailleur autonome
+  aComptable: 'oui' | 'non' | ''
+  estIncorpore: 'oui' | 'non' | ''
+  fondsUrgence: string
+  defisActuels: string[]
+  assuranceInvaliditePerso: 'oui' | 'non' | ''
+
+  // Étape type-spécifique — Entrepreneur
+  chiffreAffaires: string
+  structureCorporative: 'oui' | 'non' | ''
+  aAssocies: 'oui' | 'non' | ''
+  conventionActionnaires: 'oui' | 'non' | ''
+  assuranceCleHomme: 'oui' | 'non' | ''
+  typeRemunerationEntrepreneur: string
+
   // Étape 9 — Références
   references: Reference[]
 }
@@ -156,6 +179,23 @@ export const defaultQuizData: QuizData = {
   enregistreNotaire: '',
   testamentProcuration: '',
   connaissanceConsequences: '',
+  reerCollectif: '',
+  employeurContribue: '',
+  assurancesCollectives: '',
+  aVehicule: '',
+  typeFinancementAuto: '',
+  utilisationAppEconomies: '',
+  aComptable: '',
+  estIncorpore: '',
+  fondsUrgence: '',
+  defisActuels: [],
+  assuranceInvaliditePerso: '',
+  chiffreAffaires: '',
+  structureCorporative: '',
+  aAssocies: '',
+  conventionActionnaires: '',
+  assuranceCleHomme: '',
+  typeRemunerationEntrepreneur: '',
   references: Array(5).fill(null).map(() => ({
     nom: '', telDom: '', cell: '', lien: '', emploi: '',
     nbreEnfants: '', statut: '', statutCivil: '',

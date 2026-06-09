@@ -1,85 +1,80 @@
 'use client'
-import { useState } from 'react'
-import { QuizData, defaultQuizData } from '@/lib/types'
-import { supabase } from '@/lib/supabase'
-import Step0Connaissances from '@/components/quiz/steps/Step0Connaissances'
-import Step1InfoPersonnelles from '@/components/quiz/steps/Step1InfoPersonnelles'
-import Step2Autonomie from '@/components/quiz/steps/Step2Autonomie'
-import Step3Invalidite from '@/components/quiz/steps/Step3Invalidite'
-import Step4Epargne from '@/components/quiz/steps/Step4Epargne'
-import Step5Education from '@/components/quiz/steps/Step5Education'
-import Step6ProtectionBiens from '@/components/quiz/steps/Step6ProtectionBiens'
-import Step7LieuHabitation from '@/components/quiz/steps/Step7LieuHabitation'
-import Step8Testament from '@/components/quiz/steps/Step8Testament'
-import Step9References from '@/components/quiz/steps/Step9References'
+import { useRouter } from 'next/navigation'
 
-const STEPS = [
-  { label: 'Connaissances financières', component: Step0Connaissances },
-  { label: 'Informations personnelles', component: Step1InfoPersonnelles },
-  { label: 'Autonomie financière', component: Step2Autonomie },
-  { label: 'Invalidité', component: Step3Invalidite },
-  { label: 'Épargne', component: Step4Epargne },
-  { label: 'Éducation', component: Step5Education },
-  { label: 'Protection des biens', component: Step6ProtectionBiens },
-  { label: "Lieu d'habitation", component: Step7LieuHabitation },
-  { label: 'Testament et mandat', component: Step8Testament },
-  { label: 'Références', component: Step9References },
+const CLIENT_TYPES = [
+  {
+    key: 'salarie',
+    label: 'Salarié',
+    icon: '👔',
+    subtitle: 'Employé à temps plein ou partiel',
+    gradient: 'from-blue-500 to-brand-700',
+    bgGradient: 'from-blue-50 to-indigo-100',
+    borderColor: 'border-blue-200',
+    hoverBorder: 'hover:border-blue-400',
+    badgeBg: 'bg-blue-100 text-blue-700',
+    points: [
+      'Économiser sur ses dépenses courantes (Reebee, Flipp)',
+      'Magasiner son assurance auto et habitation',
+      'Optimiser son paiement auto (financement vs location)',
+      'Maximiser ses avantages sociaux employeur (REER collectif)',
+    ],
+  },
+  {
+    key: 'autonome',
+    label: 'Travailleur autonome',
+    icon: '💼',
+    subtitle: 'Freelance, consultant, auto-entrepreneur',
+    gradient: 'from-violet-500 to-purple-700',
+    bgGradient: 'from-violet-50 to-purple-100',
+    borderColor: 'border-violet-200',
+    hoverBorder: 'hover:border-violet-400',
+    badgeBg: 'bg-violet-100 text-violet-700',
+    points: [
+      'Avoir un bon comptable (économies d\'impôt significatives)',
+      'Fonds d\'urgence (3-6 mois de revenus)',
+      'Assurance invalidité (revenu non garanti = risque élevé)',
+      'Défis : acquisition de clients, gestion financière',
+    ],
+  },
+  {
+    key: 'entrepreneur',
+    label: 'Entrepreneur',
+    icon: '🏢',
+    subtitle: 'Propriétaire d\'entreprise incorporée',
+    gradient: 'from-amber-500 to-orange-600',
+    bgGradient: 'from-amber-50 to-orange-100',
+    borderColor: 'border-amber-200',
+    hoverBorder: 'hover:border-amber-400',
+    badgeBg: 'bg-amber-100 text-amber-700',
+    points: [
+      'Connaître ses chiffres d\'affaires et marges',
+      'Structure corporative optimisée (holding, dividendes)',
+      'Assurance clé-homme (protéger l\'entreprise)',
+      'Planification successorale / rachat d\'associé',
+    ],
+  },
 ]
 
-export default function QuizPage() {
-  const [step, setStep] = useState(0)
-  const [data, setData] = useState<QuizData>(defaultQuizData)
-  const [submitting, setSubmitting] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
-  const [error, setError] = useState('')
+export default function HomePage() {
+  const router = useRouter()
 
-  const onChange = (updates: Partial<QuizData>) => setData(prev => ({ ...prev, ...updates }))
-
-  const handleSubmit = async () => {
-    setSubmitting(true)
-    setError('')
-    const { error: err } = await supabase.from('submissions').insert({ data })
-    if (err) {
-      setError('Une erreur est survenue. Veuillez réessayer.')
-      setSubmitting(false)
-    } else {
-      setSubmitted(true)
-    }
-  }
-
-  const CurrentStep = STEPS[step].component
-
-  if (submitted) {
-    return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <div className="card max-w-md w-full text-center animate-slide-up">
-          <div className="w-20 h-20 mx-auto mb-5 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center text-4xl shadow-glow">
-            ✓
-          </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-brand-700 to-brand-500 bg-clip-text text-transparent mb-3">Merci!</h1>
-          <p className="text-slate-600 mb-8">Le formulaire a été soumis avec succès.</p>
-          <div className="flex gap-3 justify-center">
-            <button className="btn-primary" onClick={() => { setData(defaultQuizData); setStep(0); setSubmitted(false) }}>
-              + Nouveau client
-            </button>
-            <a href="/dashboard" className="btn-secondary">Voir dashboard</a>
-          </div>
-        </div>
-      </div>
-    )
+  const startQuiz = (type: string) => {
+    router.push(`/quiz?type=${type}`)
   }
 
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="bg-gradient-hero text-white py-6 px-6 shadow-glow relative overflow-hidden">
+      <header className="bg-gradient-hero text-white py-8 px-6 shadow-glow relative overflow-hidden">
         <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-        <div className="max-w-2xl mx-auto flex items-center justify-between relative">
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center text-xl border border-white/20">📋</div>
+        <div className="max-w-4xl mx-auto flex items-center justify-between relative">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center text-2xl border border-white/20">
+              📋
+            </div>
             <div>
-              <h1 className="text-xl font-bold tracking-tight">Quiz ADM</h1>
-              <p className="text-blue-200 text-xs">Analyse de marché — Conseiller financier</p>
+              <h1 className="text-2xl font-bold tracking-tight">Quiz ADM</h1>
+              <p className="text-blue-200 text-sm">Analyse de marché — Conseiller financier</p>
             </div>
           </div>
           <a href="/dashboard" className="text-white/90 text-sm hover:text-white font-medium bg-white/10 hover:bg-white/20 backdrop-blur-sm px-4 py-2 rounded-xl transition-all border border-white/20">
@@ -88,68 +83,60 @@ export default function QuizPage() {
         </div>
       </header>
 
-      {/* Progress bar */}
-      <div className="bg-white/70 backdrop-blur-sm border-b border-white/40 px-6 py-4 shadow-sm">
-        <div className="max-w-2xl mx-auto">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-sm font-semibold text-brand-900">{STEPS[step].label}</span>
-            <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">
-              {step + 1} / {STEPS.length}
-            </span>
+      {/* Main */}
+      <main className="flex-1 px-4 py-12">
+        <div className="max-w-4xl mx-auto">
+          {/* Title block */}
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold text-brand-900 mb-3">
+              Quel type de client êtes-vous?
+            </h2>
+            <p className="text-slate-500 text-lg max-w-xl mx-auto">
+              Sélectionnez le profil qui correspond le mieux à votre situation. Le quiz s&apos;adaptera pour vous offrir la meilleure expérience.
+            </p>
           </div>
-          <div className="w-full bg-slate-200/60 rounded-full h-2.5 overflow-hidden">
-            <div
-              className="bg-gradient-to-r from-brand-500 to-brand-700 h-full rounded-full transition-all duration-500 shadow-sm"
-              style={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
-            />
-          </div>
-          {/* Step dots */}
-          <div className="flex justify-between mt-3">
-            {STEPS.map((s, i) => (
+
+          {/* Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {CLIENT_TYPES.map((ct) => (
               <button
-                key={i}
-                title={s.label}
-                onClick={() => setStep(i)}
-                className={`w-2.5 h-2.5 rounded-full transition-all ${
-                  i === step ? 'bg-accent-500 scale-125 shadow-md' : i < step ? 'bg-brand-500' : 'bg-slate-300'
-                }`}
-              />
+                key={ct.key}
+                onClick={() => startQuiz(ct.key)}
+                className={`group relative flex flex-col text-left rounded-2xl border-2 ${ct.borderColor} ${ct.hoverBorder} bg-gradient-to-br ${ct.bgGradient} p-6 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-brand-200/40 focus:outline-none focus:ring-4 focus:ring-brand-300`}
+              >
+                {/* Icon + gradient header */}
+                <div className={`w-full -mx-0 -mt-0 mb-5 bg-gradient-to-br ${ct.gradient} rounded-xl py-6 flex flex-col items-center text-white shadow-lg`}>
+                  <span className="text-5xl mb-2">{ct.icon}</span>
+                  <span className="font-bold text-xl tracking-tight">{ct.label}</span>
+                  <span className="text-white/75 text-xs mt-1">{ct.subtitle}</span>
+                </div>
+
+                {/* Points */}
+                <ul className="space-y-2.5 flex-1">
+                  {ct.points.map((point, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-sm text-slate-700">
+                      <span className={`mt-0.5 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${ct.badgeBg}`}>
+                        {i + 1}
+                      </span>
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+
+                {/* CTA */}
+                <div className={`mt-6 w-full text-center py-3 rounded-xl bg-gradient-to-r ${ct.gradient} text-white font-semibold text-sm shadow group-hover:shadow-lg transition-all`}>
+                  Démarrer le quiz →
+                </div>
+              </button>
             ))}
           </div>
-        </div>
-      </div>
 
-      {/* Content */}
-      <main className="flex-1 px-4 py-8">
-        <div className="max-w-2xl mx-auto card">
-          <CurrentStep data={data} onChange={onChange} />
+          {/* Footer note */}
+          <p className="text-center text-slate-400 text-sm mt-8">
+            Le conseiller remplit ce formulaire en face du client. Les réponses sont sauvegardées dans le dashboard.
+          </p>
         </div>
       </main>
-
-      {/* Navigation */}
-      <footer className="bg-white/80 backdrop-blur-sm border-t border-white/40 px-6 py-4 sticky bottom-0">
-        <div className="max-w-2xl mx-auto flex justify-between items-center gap-4">
-          <button
-            className="btn-secondary"
-            onClick={() => setStep(s => Math.max(0, s - 1))}
-            disabled={step === 0}
-          >
-            ← Précédent
-          </button>
-
-          {error && <p className="text-red-500 text-sm">{error}</p>}
-
-          {step < STEPS.length - 1 ? (
-            <button className="btn-primary" onClick={() => setStep(s => s + 1)}>
-              Suivant →
-            </button>
-          ) : (
-            <button className="btn-primary" onClick={handleSubmit} disabled={submitting}>
-              {submitting ? 'Envoi...' : 'Soumettre'}
-            </button>
-          )}
-        </div>
-      </footer>
     </div>
   )
 }
