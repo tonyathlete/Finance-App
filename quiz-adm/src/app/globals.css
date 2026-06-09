@@ -11,6 +11,24 @@
   }
 }
 
+@media print {
+  body {
+    background: white !important;
+  }
+  .print\:hidden {
+    display: none !important;
+  }
+  main {
+    padding: 0 !important;
+  }
+  .shadow-card, .shadow-glow, .shadow-lg, .shadow-md {
+    box-shadow: none !important;
+  }
+  .animate-slide-up {
+    animation: none !important;
+  }
+}
+
 @layer components {
   .section-title {
     @apply bg-gradient-to-r from-brand-700 to-brand-500 text-white font-bold text-lg px-5 py-3 rounded-xl mb-5 shadow-md;

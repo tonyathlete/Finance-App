@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { Submission } from '@/lib/types'
@@ -28,14 +29,34 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   )
 }
 
+const TYPE_LABELS: Record<string, string> = {
+  salarie: 'Salarié',
+  autonome: 'Travailleur autonome',
+  entrepreneur: 'Entrepreneur',
+}
+
 export default function ClientDetailPage({ params }: { params: { id: string } }) {
+  const router = useRouter()
   const [submission, setSubmission] = useState<Submission | null>(null)
   const [loading, setLoading] = useState(true)
+  const [deleting, setDeleting] = useState(false)
 
   useEffect(() => {
     supabase.from('submissions').select('*').eq('id', params.id).single()
       .then(({ data }) => { setSubmission(data as Submission); setLoading(false) })
   }, [params.id])
+
+  const handleDelete = async () => {
+    if (!confirm('Supprimer définitivement ce client? Cette action est irréversible.')) return
+    setDeleting(true)
+    const { error } = await supabase.from('submissions').delete().eq('id', params.id)
+    if (error) {
+      alert('Erreur lors de la suppression.')
+      setDeleting(false)
+    } else {
+      router.push('/dashboard')
+    }
+  }
 
   if (loading) return <div className="text-center py-20 text-gray-400">Chargement...</div>
   if (!submission) return <div className="text-center py-20 text-gray-400">Client introuvable.</div>
@@ -44,7 +65,7 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-gradient-hero text-white py-6 px-6 shadow-glow relative overflow-hidden">
+      <header className="bg-gradient-hero text-white py-6 px-6 shadow-glow relative overflow-hidden print:hidden">
         <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
         <div className="max-w-3xl mx-auto flex items-center gap-4 relative">
           <Link href="/dashboard" className="text-white/90 hover:text-white text-sm bg-white/10 hover:bg-white/20 backdrop-blur-sm px-3 py-2 rounded-xl transition-all border border-white/20">
@@ -53,10 +74,25 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
           <div className="w-12 h-12 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center text-lg font-bold border border-white/20">
             {(d.prenom?.[0] || '?') + (d.nom?.[0] || '')}
           </div>
-          <div>
-            <h1 className="text-xl font-bold tracking-tight">{d.prenom} {d.nom}</h1>
+          <div className="flex-1">
+            <h1 className="text-xl font-bold tracking-tight">
+              {d.prenom} {d.nom}
+              {d.typeClient && (
+                <span className="ml-2 align-middle text-xs font-semibold bg-white/20 px-2 py-0.5 rounded-full">
+                  {TYPE_LABELS[d.typeClient] || d.typeClient}
+                </span>
+              )}
+            </h1>
             <p className="text-blue-200 text-xs">{new Date(submission.created_at).toLocaleDateString('fr-CA', { dateStyle: 'long' })}</p>
           </div>
+          <button onClick={() => window.print()}
+            className="text-white/90 hover:text-white text-sm bg-white/10 hover:bg-white/20 backdrop-blur-sm px-3 py-2 rounded-xl transition-all border border-white/20">
+            🖨️ Imprimer
+          </button>
+          <button onClick={handleDelete} disabled={deleting}
+            className="text-white/90 hover:text-white text-sm bg-red-500/30 hover:bg-red-500/50 backdrop-blur-sm px-3 py-2 rounded-xl transition-all border border-red-300/30 disabled:opacity-50">
+            {deleting ? '...' : '🗑️ Supprimer'}
+          </button>
         </div>
       </header>
 
@@ -83,6 +119,38 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
             <Row label="Enfants" value={d.enfants.map(e => `${e.nom} (${e.age} ans)`)} />
           )}
         </Section>
+
+        {d.typeClient === 'salarie' && (
+          <Section title="Profil — Salarié">
+            <Row label="REER collectif (employeur)" value={d.reerCollectif} />
+            <Row label="Employeur contribue" value={d.employeurContribue} />
+            <Row label="Assurances collectives" value={d.assurancesCollectives} />
+            <Row label="A un véhicule" value={d.aVehicule} />
+            <Row label="Mode financement auto" value={d.typeFinancementAuto} />
+            <Row label="Utilise apps d'économies" value={d.utilisationAppEconomies} />
+          </Section>
+        )}
+
+        {d.typeClient === 'autonome' && (
+          <Section title="Profil — Travailleur autonome">
+            <Row label="A un comptable" value={d.aComptable} />
+            <Row label="Est incorporé" value={d.estIncorpore} />
+            <Row label="Fonds d'urgence" value={d.fondsUrgence} />
+            <Row label="Défis actuels" value={d.defisActuels} />
+            <Row label="Assurance invalidité perso" value={d.assuranceInvaliditePerso} />
+          </Section>
+        )}
+
+        {d.typeClient === 'entrepreneur' && (
+          <Section title="Profil — Entrepreneur">
+            <Row label="Chiffre d'affaires annuel" value={d.chiffreAffaires} />
+            <Row label="Structure corporative (holding)" value={d.structureCorporative} />
+            <Row label="A des associés" value={d.aAssocies} />
+            <Row label="Convention d'actionnaires" value={d.conventionActionnaires} />
+            <Row label="Assurance clé-homme" value={d.assuranceCleHomme} />
+            <Row label="Mode de rémunération" value={d.typeRemunerationEntrepreneur} />
+          </Section>
+        )}
 
         <Section title="Autonomie financière">
           <Row label="Signification autonomie" value={d.significationAutonomie} />
