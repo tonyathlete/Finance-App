@@ -3,6 +3,13 @@ import { QuizData } from '@/lib/types'
 
 interface Props { data: QuizData; onChange: (u: Partial<QuizData>) => void }
 
+const QUAND_ACHAT_OPTIONS = [
+  'Dans moins de 2 ans',
+  'Dans 2 à 5 ans',
+  'Dans plus de 5 ans',
+  'Je ne sais pas encore',
+]
+
 export default function Step7LieuHabitation({ data, onChange }: Props) {
   return (
     <div className="space-y-6">
@@ -143,9 +150,24 @@ export default function Step7LieuHabitation({ data, onChange }: Props) {
           {data.projetAchat === 'oui' && (
             <>
               <div>
-                <label className="field-label">Quand et comment prévoyez-vous réaliser ce projet?</label>
-                <textarea className="input h-20 resize-none" value={data.quandCommentAchat}
-                  onChange={e => onChange({ quandCommentAchat: e.target.value })} />
+                <label className="field-label">Quand prévoyez-vous réaliser ce projet?</label>
+                <div className="space-y-2 mt-2">
+                  {QUAND_ACHAT_OPTIONS.map((opt, i) => (
+                    <label key={opt} className={`flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all text-sm ${
+                      data.quandCommentAchat === opt
+                        ? 'border-brand-500 bg-brand-50 font-medium text-brand-700'
+                        : 'border-slate-200 bg-white text-slate-700 hover:border-brand-300 hover:bg-brand-50'
+                    }`}>
+                      <input type="radio" className="sr-only" name="quandCommentAchat" value={opt}
+                        checked={data.quandCommentAchat === opt}
+                        onChange={() => onChange({ quandCommentAchat: opt })} />
+                      <span className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 ${
+                        data.quandCommentAchat === opt ? 'bg-brand-500 text-white' : 'bg-slate-100 text-slate-500'
+                      }`}>{String.fromCharCode(65 + i)}</span>
+                      {opt}
+                    </label>
+                  ))}
+                </div>
               </div>
               <div className="insight-box">
                 C&apos;est intéressant. Saviez-vous qu&apos;il existe un moyen qui permet de capitaliser votre mise de fonds initiale afin de réaliser votre projet?

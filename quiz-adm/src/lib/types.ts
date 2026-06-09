@@ -41,7 +41,7 @@ export interface QuizData {
   // Étape 2 — Autonomie financière
   significationAutonomie: string
   revenuConjointNecessaire: 'oui' | 'non' | ''
-  evenementPerturbateur: string
+  evenementPerturbateur: string[]
   regimes: string[]
   autresRegimes: string
 
@@ -54,7 +54,7 @@ export interface QuizData {
 
   // Étape 4 — Épargne
   importantEpargner: 'oui' | 'non' | ''
-  butEpargne: string
+  butEpargne: string[]
   pourquoiPasEpargne: string
   planifierRetraite: 'oui' | 'non' | ''
   ageRetraite: string
@@ -118,7 +118,7 @@ export const defaultQuizData: QuizData = {
   enfants: [],
   significationAutonomie: '',
   revenuConjointNecessaire: '',
-  evenementPerturbateur: '',
+  evenementPerturbateur: [],
   regimes: [],
   autresRegimes: '',
   protectionInvalidite: '',
@@ -127,7 +127,7 @@ export const defaultQuizData: QuizData = {
   calculCoutVie: '',
   commentEtabli: '',
   importantEpargner: '',
-  butEpargne: '',
+  butEpargne: [],
   pourquoiPasEpargne: '',
   planifierRetraite: '',
   ageRetraite: '',
