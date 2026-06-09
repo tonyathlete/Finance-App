@@ -14,6 +14,7 @@ import Step6ProtectionBiens from '@/components/quiz/steps/Step6ProtectionBiens'
 import Step7LieuHabitation from '@/components/quiz/steps/Step7LieuHabitation'
 import Step8Testament from '@/components/quiz/steps/Step8Testament'
 import Step9References from '@/components/quiz/steps/Step9References'
+import Bilan from '@/components/quiz/Bilan'
 
 const STEPS = [
   { label: 'Connaissances financières', component: Step0Connaissances },
@@ -27,6 +28,7 @@ const STEPS = [
   { label: "Lieu d'habitation", component: Step7LieuHabitation },
   { label: 'Testament et mandat', component: Step8Testament },
   { label: 'Références', component: Step9References },
+  { label: 'Bilan & recommandations', component: Bilan },
 ]
 
 function QuizContent() {

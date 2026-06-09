@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { Submission } from '@/lib/types'
+import Bilan from '@/components/quiz/Bilan'
 
 function Row({ label, value }: { label: string; value?: string | string[] | null }) {
   if (!value || (Array.isArray(value) && value.length === 0)) return null
@@ -97,6 +98,10 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-8">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-card border border-white mb-5 p-6">
+          <Bilan data={d} />
+        </div>
+
         <Section title="Connaissances financières">
           <Row label="Marché boursier" value={d.connaissanceBourse} />
           <Row label="Fonds de placements" value={d.connaissancePlacements} />
