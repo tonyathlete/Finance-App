@@ -93,21 +93,73 @@ const TIPS: Record<string, { emoji: string; titre: string; points: string[] }[]>
 
 interface Props { data: QuizData; onChange: (u: Partial<QuizData>) => void }
 
-const NIVEAUX = [
-  { value: 'debutant', label: 'Débutant', desc: 'Je connais très peu ou pas du tout', emoji: '🌱' },
-  { value: 'intermediaire', label: 'Intermédiaire', desc: 'J\'ai quelques notions de base', emoji: '📈' },
-  { value: 'avance', label: 'Avancé', desc: 'Je m\'y connais bien', emoji: '🎯' },
+interface Niveau { value: string; label: string; emoji: string; desc: string; exemples: string[] }
+
+const NIVEAUX_BOURSE: Niveau[] = [
+  {
+    value: 'debutant', label: 'Débutant', emoji: '🌱',
+    desc: 'Peu ou pas de connaissance',
+    exemples: ['Je ne sais pas ce qu\'est une action', 'J\'entends parler de la bourse mais ça m\'est étranger'],
+  },
+  {
+    value: 'intermediaire', label: 'Intermédiaire', emoji: '📈',
+    desc: 'Quelques notions de base',
+    exemples: ['Je sais ce que sont les actions et obligations', 'J\'ai déjà vu des graphiques boursiers'],
+  },
+  {
+    value: 'avance', label: 'Avancé', emoji: '🎯',
+    desc: 'Bonne maîtrise du sujet',
+    exemples: ['Je comprends les indices (S&P 500, TSX)', 'Je suis l\'actualité financière régulièrement'],
+  },
+]
+
+const NIVEAUX_PLACEMENTS: Niveau[] = [
+  {
+    value: 'debutant', label: 'Débutant', emoji: '🌱',
+    desc: 'Peu ou pas de connaissance',
+    exemples: ['Je ne sais pas la différence entre un CELI et un REER', 'Je ne sais pas comment cotiser'],
+  },
+  {
+    value: 'intermediaire', label: 'Intermédiaire', emoji: '📈',
+    desc: 'Quelques notions de base',
+    exemples: ['Je connais les noms (CELI, REER…) sans maîtriser les règles', 'J\'ai un compte mais quelqu\'un d\'autre gère'],
+  },
+  {
+    value: 'avance', label: 'Avancé', emoji: '🎯',
+    desc: 'Bonne maîtrise du sujet',
+    exemples: ['Je comprends les plafonds, les avantages fiscaux de chaque régime', 'Je gère moi-même mes placements'],
+  },
+]
+
+const NIVEAUX_ASSURANCES: Niveau[] = [
+  {
+    value: 'debutant', label: 'Débutant', emoji: '🌱',
+    desc: 'Peu ou pas de connaissance',
+    exemples: ['Je ne connais pas la différence entre invalidité et maladie grave', 'J\'ai ce que l\'on m\'a donné sans vraiment comprendre'],
+  },
+  {
+    value: 'intermediaire', label: 'Intermédiaire', emoji: '📈',
+    desc: 'Quelques notions de base',
+    exemples: ['Je sais qu\'il existe assurance vie, invalidité, maladie grave', 'J\'ai une idée générale mais pas les détails'],
+  },
+  {
+    value: 'avance', label: 'Avancé', emoji: '🎯',
+    desc: 'Bonne maîtrise du sujet',
+    exemples: ['Je comprends les différences permanente/temporaire, collectif/privé', 'Je sais ce que je paie et ce que ça couvre exactement'],
+  },
 ]
 
 const PRODUITS = ['CELI', 'CELIAPP', 'REER', 'REEE', 'Non-enregistré']
 
-function NiveauSelector({ name, value, onChange }: { name: string; value: string; onChange: (v: string) => void }) {
+function NiveauSelector({ name, value, niveaux, onChange }: {
+  name: string; value: string; niveaux: Niveau[]; onChange: (v: string) => void
+}) {
   return (
     <div className="grid grid-cols-3 gap-3 mt-2">
-      {NIVEAUX.map(n => (
+      {niveaux.map(n => (
         <label
           key={n.value}
-          className={`flex flex-col items-center text-center p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
+          className={`flex flex-col items-start p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
             value === n.value
               ? 'border-brand-500 bg-brand-50 shadow-md'
               : 'border-slate-200 bg-white hover:border-brand-300 hover:bg-brand-50'
@@ -117,7 +169,14 @@ function NiveauSelector({ name, value, onChange }: { name: string; value: string
             onChange={() => onChange(n.value)} className="sr-only" />
           <span className="text-2xl mb-2">{n.emoji}</span>
           <span className={`text-sm font-bold mb-1 ${value === n.value ? 'text-brand-700' : 'text-slate-700'}`}>{n.label}</span>
-          <span className="text-xs text-slate-500 leading-tight">{n.desc}</span>
+          <span className="text-xs text-slate-500 leading-tight mb-2">{n.desc}</span>
+          <ul className="space-y-1">
+            {n.exemples.map((ex, i) => (
+              <li key={i} className="text-[10px] text-slate-400 leading-tight flex gap-1">
+                <span className="shrink-0">•</span>{ex}
+              </li>
+            ))}
+          </ul>
         </label>
       ))}
     </div>
@@ -175,6 +234,7 @@ export default function Step0Connaissances({ data, onChange }: Props) {
         <NiveauSelector
           name="connaissanceBourse"
           value={data.connaissanceBourse}
+          niveaux={NIVEAUX_BOURSE}
           onChange={v => onChange({ connaissanceBourse: v as QuizData['connaissanceBourse'] })}
         />
       </div>
@@ -186,6 +246,7 @@ export default function Step0Connaissances({ data, onChange }: Props) {
         <NiveauSelector
           name="connaissancePlacements"
           value={data.connaissancePlacements}
+          niveaux={NIVEAUX_PLACEMENTS}
           onChange={v => onChange({ connaissancePlacements: v as QuizData['connaissancePlacements'] })}
         />
         <div className="mt-5">
@@ -218,6 +279,7 @@ export default function Step0Connaissances({ data, onChange }: Props) {
         <NiveauSelector
           name="connaissanceAssurances"
           value={data.connaissanceAssurances}
+          niveaux={NIVEAUX_ASSURANCES}
           onChange={v => onChange({ connaissanceAssurances: v as QuizData['connaissanceAssurances'] })}
         />
       </div>
