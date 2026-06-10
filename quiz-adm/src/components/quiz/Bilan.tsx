@@ -1,7 +1,83 @@
 'use client'
-import { useMemo } from 'react'
+import { useMemo, useEffect, useRef } from 'react'
 import { QuizData } from '@/lib/types'
 import { genererBilan, Priorite } from '@/lib/recommendations'
+
+function Fireworks() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    canvas.width = canvas.offsetWidth
+    canvas.height = canvas.offsetHeight
+
+    const COLORS = ['#6366f1', '#22c55e', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6']
+    const particles: { x: number; y: number; vx: number; vy: number; alpha: number; color: string; size: number }[] = []
+
+    const burst = (x: number, y: number) => {
+      for (let i = 0; i < 40; i++) {
+        const angle = Math.random() * Math.PI * 2
+        const speed = 2 + Math.random() * 5
+        particles.push({
+          x, y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          alpha: 1,
+          color: COLORS[Math.floor(Math.random() * COLORS.length)],
+          size: 3 + Math.random() * 4,
+        })
+      }
+    }
+
+    const w = canvas.width
+    const h = canvas.height
+    const bursts = [
+      [w * 0.2, h * 0.3], [w * 0.8, h * 0.25], [w * 0.5, h * 0.15],
+      [w * 0.1, h * 0.6], [w * 0.9, h * 0.5], [w * 0.6, h * 0.4],
+    ]
+
+    let idx = 0
+    const launchInterval = setInterval(() => {
+      if (idx < bursts.length) { burst(bursts[idx][0], bursts[idx][1]); idx++ }
+      else clearInterval(launchInterval)
+    }, 200)
+
+    let rafId: number
+    const animate = () => {
+      ctx.clearRect(0, 0, w, h)
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i]
+        p.x += p.vx
+        p.y += p.vy
+        p.vy += 0.12
+        p.alpha -= 0.018
+        if (p.alpha <= 0) { particles.splice(i, 1); continue }
+        ctx.globalAlpha = p.alpha
+        ctx.fillStyle = p.color
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+        ctx.fill()
+      }
+      ctx.globalAlpha = 1
+      if (particles.length > 0 || idx < bursts.length) rafId = requestAnimationFrame(animate)
+    }
+    rafId = requestAnimationFrame(animate)
+
+    return () => { clearInterval(launchInterval); cancelAnimationFrame(rafId) }
+  }, [])
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="pointer-events-none fixed inset-0 w-full h-full z-50"
+      style={{ opacity: 1 }}
+    />
+  )
+}
 
 const PRIORITE_STYLES: Record<Priorite, { bg: string; border: string; badge: string; label: string; icon: string }> = {
   haute: {
@@ -36,6 +112,7 @@ function scoreColor(score: number) {
 export default function Bilan({ data }: { data: QuizData; onChange?: (u: Partial<QuizData>) => void }) {
   const bilan = useMemo(() => genererBilan(data), [data])
   const sc = scoreColor(bilan.score)
+  const showFireworks = bilan.score >= 75
 
   // cercle de score
   const R = 52
@@ -46,6 +123,7 @@ export default function Bilan({ data }: { data: QuizData; onChange?: (u: Partial
 
   return (
     <div className="space-y-8">
+      {showFireworks && <Fireworks />}
       <div className="text-center">
         <h2 className="text-2xl font-bold text-brand-900">Bilan & recommandations</h2>
         <p className="text-sm text-slate-500 mt-1">Synthèse personnalisée pour {prenom}</p>

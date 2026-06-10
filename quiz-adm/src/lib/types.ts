@@ -23,6 +23,13 @@ export interface QuizData {
   aAssuranceMaladieGrave: 'oui' | 'non' | ''
   aAssuranceInvalidite: 'oui' | 'non' | ''
   aAssuranceVie: 'oui' | 'non' | ''
+  // Assurances — détails
+  assuranceVieType: 'permanente' | 'temporaire' | ''
+  assuranceInvaliditeType: 'collectif' | 'privee' | ''
+  assuranceInvaliditeDuree: string
+  assuranceInvaliditeMontant: string
+  assuranceMaladieGraveType: 'temporaire' | 'remboursement' | 'les_deux' | ''
+  assuranceMaladieGraveMontant: string
 
   // Étape 1 — Infos personnelles
   typeClient: 'salarie' | 'autonome' | 'entrepreneur' | ''
@@ -81,6 +88,12 @@ export interface QuizData {
   revenuMensuel1: string
   revenuMensuel2: string
   depensesMensuelles: string
+  // Dépenses détaillées
+  depenseVoiture: string
+  depenseLoyer: string
+  depenseAssurance: string
+  depenseEpicerie: string
+  depenseAutres: string
 
   // Étape 7 — Lieu d'habitation
   statutHabitation: 'proprietaire' | 'locataire' | ''
@@ -134,6 +147,12 @@ export const defaultQuizData: QuizData = {
   aAssuranceMaladieGrave: '',
   aAssuranceInvalidite: '',
   aAssuranceVie: '',
+  assuranceVieType: '',
+  assuranceInvaliditeType: '',
+  assuranceInvaliditeDuree: '',
+  assuranceInvaliditeMontant: '',
+  assuranceMaladieGraveType: '',
+  assuranceMaladieGraveMontant: '',
   typeClient: '',
   prenom: '',
   nom: '',
@@ -178,6 +197,11 @@ export const defaultQuizData: QuizData = {
   revenuMensuel1: '',
   revenuMensuel2: '',
   depensesMensuelles: '',
+  depenseVoiture: '',
+  depenseLoyer: '',
+  depenseAssurance: '',
+  depenseEpicerie: '',
+  depenseAutres: '',
   statutHabitation: '',
   pretHypothecaire: '',
   institutionFinanciere: '',

@@ -1,6 +1,96 @@
 'use client'
 import { QuizData } from '@/lib/types'
 
+const TIPS: Record<string, { emoji: string; titre: string; points: string[] }[]> = {
+  salarie: [
+    {
+      emoji: '🏷️',
+      titre: 'Économiser au quotidien',
+      points: [
+        'Apps comme Reebee & Flipp pour comparer les circulaires épicerie',
+        'Programme de loyauté PC Optimum, AIR MILES, Scène+',
+        'Cashback via Rakuten pour vos achats en ligne',
+      ],
+    },
+    {
+      emoji: '🚗',
+      titre: 'Paiement d\'auto',
+      points: [
+        'Financer vs louer — connaissez-vous la vraie différence?',
+        'Magasiner son assurance auto chaque année peut économiser 200–500 $/an',
+        'Un bon taux de financement commence par un excellent dossier de crédit',
+      ],
+    },
+    {
+      emoji: '💼',
+      titre: 'Avantages employeur',
+      points: [
+        'REER collectif avec contribution employeur = argent gratuit',
+        'Assurances collectives — connaissez-vous l\'étendue de votre couverture?',
+        'PAE (Programme d\'aide aux employés) souvent sous-utilisé',
+      ],
+    },
+  ],
+  autonome: [
+    {
+      emoji: '📊',
+      titre: 'Optimisation fiscale',
+      points: [
+        'Un bon comptable spécialisé génère souvent plus qu\'il ne coûte',
+        'Déductions : bureau à domicile, voiture, téléphone, formation…',
+        'Incorporation : avantages fiscaux si revenus nets > 50 000 $/an',
+      ],
+    },
+    {
+      emoji: '🏦',
+      titre: 'Gestion de trésorerie',
+      points: [
+        'Fonds d\'urgence : 3 à 6 mois de dépenses recommandés',
+        'Séparer compte perso et compte d\'affaires dès le départ',
+        'Mettre de côté ~30 % pour les impôts chaque paie',
+      ],
+    },
+    {
+      emoji: '🔒',
+      titre: 'Protection du revenu',
+      points: [
+        'Pas d\'employeur = pas de protection automatique',
+        'Assurance invalidité personnelle : votre filet de sécurité',
+        'REER : déduction et report d\'impôt, essentiel sans régime collectif',
+      ],
+    },
+  ],
+  entrepreneur: [
+    {
+      emoji: '🏗️',
+      titre: 'Structure d\'entreprise',
+      points: [
+        'Société de gestion (holding) : protection d\'actifs et report fiscal',
+        'Fractionnement de revenu avec conjoint/famille selon la structure',
+        'Surplus accumulés dans la compagnie à moindre taux d\'imposition',
+      ],
+    },
+    {
+      emoji: '🤝',
+      titre: 'Protection de l\'entreprise',
+      points: [
+        'Convention entre actionnaires : incontournable avec associés',
+        'Assurance clé-homme : que se passe-t-il si vous disparaissez?',
+        'Assurance vie d\'entreprise : outil de planification successorale',
+      ],
+    },
+    {
+      emoji: '💰',
+      titre: 'Rémunération optimale',
+      points: [
+        'Salaire vs dividendes : le bon mix selon votre situation fiscale',
+        'REER : cotiser via salaire pour maximiser les déductions',
+        'CELI dans la compagnie : non disponible — planifier la sortie de fonds',
+      ],
+    },
+  ],
+}
+
 interface Props { data: QuizData; onChange: (u: Partial<QuizData>) => void }
 
 const NIVEAUX = [
@@ -42,12 +132,41 @@ export default function Step0Connaissances({ data, onChange }: Props) {
     onChange({ produitsPlacements: updated })
   }
 
+  const tips = data.typeClient ? TIPS[data.typeClient] : null
+
   return (
     <div className="space-y-8">
       <div className="text-center pb-2">
         <h2 className="text-xl font-bold text-brand-900">Vos connaissances financières</h2>
         <p className="text-sm text-slate-500 mt-1">Aucune bonne ou mauvaise réponse — soyez honnête!</p>
       </div>
+
+      {/* Trucs et conseils selon le profil */}
+      {tips && (
+        <div className="space-y-3">
+          <p className="text-xs font-semibold text-brand-700 uppercase tracking-wide">
+            💡 Opportunités pour votre profil
+          </p>
+          <div className="grid gap-3">
+            {tips.map((tip, i) => (
+              <div key={i} className="bg-gradient-to-br from-brand-50 to-indigo-50 border border-brand-100 rounded-xl p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xl">{tip.emoji}</span>
+                  <p className="text-sm font-bold text-brand-800">{tip.titre}</p>
+                </div>
+                <ul className="space-y-1">
+                  {tip.points.map((pt, j) => (
+                    <li key={j} className="text-xs text-slate-600 flex gap-2">
+                      <span className="text-brand-400 shrink-0">→</span>
+                      {pt}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Marché boursier */}
       <div>
