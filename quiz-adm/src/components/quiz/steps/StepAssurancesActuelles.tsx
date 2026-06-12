@@ -1,6 +1,7 @@
 'use client'
 import { QuizData } from '@/lib/types'
 import StatPairs from '@/components/quiz/StatPairs'
+import CapitalDeces from '@/components/quiz/CapitalDeces'
 
 interface Props { data: QuizData; onChange: (u: Partial<QuizData>) => void }
 
@@ -87,6 +88,8 @@ export default function StepAssurancesActuelles({ data, onChange }: Props) {
           </div>
         )}
       </div>
+
+      <CapitalDeces data={data} onChange={onChange} />
 
       {/* Assurance invalidité */}
       <div className={`p-4 rounded-xl border-2 transition-all ${data.aAssuranceInvalidite ? 'border-brand-200 bg-brand-50' : 'border-slate-200 bg-white'}`}>

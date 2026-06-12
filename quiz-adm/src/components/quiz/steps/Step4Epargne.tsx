@@ -2,6 +2,7 @@
 import { QuizData } from '@/lib/types'
 import InvestmentGraph from '@/components/quiz/InvestmentGraph'
 import RevealCard from '@/components/quiz/RevealCard'
+import CalculRetraite from '@/components/quiz/CalculRetraite'
 
 interface Props { data: QuizData; onChange: (u: Partial<QuizData>) => void }
 
@@ -201,6 +202,8 @@ export default function Step4Epargne({ data, onChange }: Props) {
           </div>
         </>
       )}
+
+      <CalculRetraite data={data} onChange={onChange} />
 
       <div className="insight-box">
         C&apos;est intéressant! Saviez-vous qu&apos;il y a des stratégies qui permettent aux gens d&apos;atteindre leurs objectifs d&apos;épargne tout en bénéficiant d&apos;avantages qui sont uniques aux compagnies d&apos;assurance?

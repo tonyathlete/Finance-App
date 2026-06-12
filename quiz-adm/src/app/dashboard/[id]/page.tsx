@@ -110,6 +110,9 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
           <Row label="A assurance maladie grave" value={d.aAssuranceMaladieGrave} />
           <Row label="A assurance invalidité" value={d.aAssuranceInvalidite} />
           <Row label="A assurance vie" value={d.aAssuranceVie} />
+          <Row label="Couverture vie actuelle" value={d.capitalCouvertureActuelle ? d.capitalCouvertureActuelle + ' $' : ''} />
+          <Row label="Dettes totales déclarées" value={d.capitalDettes ? d.capitalDettes + ' $' : ''} />
+          <Row label="Revenu annuel (calcul capital)" value={d.capitalRevenuAnnuel ? d.capitalRevenuAnnuel + ' $' : ''} />
         </Section>
 
         <Section title="Informations personnelles">
@@ -183,6 +186,10 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
           <Row label="Stratégie en place" value={d.strategieEnPlace} />
           <Row label="Certain à 100%" value={d.certainStrategieRetraite} />
           <Row label="Comment évalué" value={d.commentEvalue} />
+          <Row label="Retraite visée à" value={d.retraiteAgeVise ? d.retraiteAgeVise + ' ans' : ''} />
+          <Row label="Épargne accumulée" value={d.retraiteEpargneActuelle ? d.retraiteEpargneActuelle + ' $' : ''} />
+          <Row label="Épargne mensuelle" value={d.retraiteEpargneMensuelle ? d.retraiteEpargneMensuelle + ' $' : ''} />
+          <Row label="Revenu visé à la retraite" value={d.retraiteRevenuVise ? d.retraiteRevenuVise + ' $/an' : ''} />
         </Section>
 
         <Section title="Éducation">

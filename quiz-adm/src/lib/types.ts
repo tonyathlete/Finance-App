@@ -68,6 +68,17 @@ export interface QuizData {
   strategieEnPlace: 'oui' | 'non' | ''
   certainStrategieRetraite: 'oui' | 'non' | ''
   commentEvalue: string
+  // Calculateur retraite
+  retraiteAgeActuel: string
+  retraiteAgeVise: string
+  retraiteEpargneActuelle: string
+  retraiteEpargneMensuelle: string
+  retraiteRevenuVise: string
+  // Calculateur capital décès
+  capitalRevenuAnnuel: string
+  capitalAnneesCouvrir: string
+  capitalDettes: string
+  capitalCouvertureActuelle: string
 
   // Étape 5 — Éducation
   ecolesPensee: string[]
@@ -183,6 +194,15 @@ export const defaultQuizData: QuizData = {
   strategieEnPlace: '',
   certainStrategieRetraite: '',
   commentEvalue: '',
+  retraiteAgeActuel: '',
+  retraiteAgeVise: '',
+  retraiteEpargneActuelle: '',
+  retraiteEpargneMensuelle: '',
+  retraiteRevenuVise: '',
+  capitalRevenuAnnuel: '',
+  capitalAnneesCouvrir: '',
+  capitalDettes: '',
+  capitalCouvertureActuelle: '',
   ecolesPensee: [],
   strategieEducation: '',
   certainStrategieEducation: '',
