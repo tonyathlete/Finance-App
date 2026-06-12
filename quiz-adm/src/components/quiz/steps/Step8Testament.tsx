@@ -1,5 +1,6 @@
 'use client'
 import { QuizData } from '@/lib/types'
+import StatPairs from '@/components/quiz/StatPairs'
 
 interface Props { data: QuizData; onChange: (u: Partial<QuizData>) => void }
 
@@ -7,6 +8,13 @@ export default function Step8Testament({ data, onChange }: Props) {
   return (
     <div className="space-y-6">
       <div className="section-title">Testament et mandat</div>
+
+      <StatPairs
+        filled={5}
+        tone="amber"
+        label="adultes canadiens n'ont pas de testament à jour"
+        caption="Sans testament, c'est la loi — pas vous — qui décide qui hérite de quoi."
+      />
 
       <div>
         <p className="field-label">Avez-vous, vous et votre conjoint(e), rédigé un testament ainsi qu&apos;un mandat en cas d&apos;inaptitude (Québec)?</p>

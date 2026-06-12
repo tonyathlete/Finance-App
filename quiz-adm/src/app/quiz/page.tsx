@@ -14,6 +14,7 @@ import StepAssurancesActuelles from '@/components/quiz/steps/StepAssurancesActue
 import Step8Testament from '@/components/quiz/steps/Step8Testament'
 import Step9References from '@/components/quiz/steps/Step9References'
 import Bilan from '@/components/quiz/Bilan'
+import ScoreLive from '@/components/quiz/ScoreLive'
 
 const STEPS = [
   { label: 'Connaissances financières', component: Step0Connaissances },
@@ -104,11 +105,14 @@ function QuizContent() {
       {/* Progress bar */}
       <div className="bg-white/70 backdrop-blur-sm border-b border-white/40 px-6 py-4 shadow-sm">
         <div className="max-w-2xl mx-auto">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-sm font-semibold text-brand-900">{STEPS[step].label}</span>
-            <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">
-              {step + 1} / {STEPS.length}
-            </span>
+          <div className="flex items-center justify-between gap-3 mb-3">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="text-sm font-semibold text-brand-900 truncate">{STEPS[step].label}</span>
+              <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full shrink-0">
+                {step + 1} / {STEPS.length}
+              </span>
+            </div>
+            <ScoreLive data={data} />
           </div>
           <div className="w-full bg-slate-200/60 rounded-full h-2.5 overflow-hidden">
             <div

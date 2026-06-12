@@ -1,5 +1,6 @@
 'use client'
 import { QuizData } from '@/lib/types'
+import StatPairs from '@/components/quiz/StatPairs'
 
 interface Props { data: QuizData; onChange: (u: Partial<QuizData>) => void }
 
@@ -138,6 +139,13 @@ export default function StepAssurancesActuelles({ data, onChange }: Props) {
           </div>
         )}
       </div>
+
+      <StatPairs
+        filled={4}
+        tone="indigo"
+        label="Canadiens recevront un diagnostic de cancer au cours de leur vie"
+        caption="La maladie grave frappe sans prévenir — la question est : seriez-vous prêt financièrement?"
+      />
 
       {/* Assurance maladie grave */}
       <div className={`p-4 rounded-xl border-2 transition-all ${data.aAssuranceMaladieGrave ? 'border-brand-200 bg-brand-50' : 'border-slate-200 bg-white'}`}>

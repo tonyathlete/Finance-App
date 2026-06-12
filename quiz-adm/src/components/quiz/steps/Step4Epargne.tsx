@@ -1,6 +1,7 @@
 'use client'
 import { QuizData } from '@/lib/types'
 import InvestmentGraph from '@/components/quiz/InvestmentGraph'
+import RevealCard from '@/components/quiz/RevealCard'
 
 interface Props { data: QuizData; onChange: (u: Partial<QuizData>) => void }
 
@@ -45,6 +46,14 @@ export default function Step4Epargne({ data, onChange }: Props) {
   return (
     <div className="space-y-6">
       <div className="section-title">Épargne</div>
+
+      <RevealCard
+        emoji="🤯"
+        teaser="200 $ par mois investis à 7 % pendant 30 ans… ça donne combien?"
+        value={244000}
+        prefix="≈ "
+        caption="Et de ce montant, seulement 72 000 $ viennent de votre poche. Le reste? Ce sont les intérêts composés qui travaillent pour vous, jour et nuit."
+      />
 
       <div>
         <p className="field-label">Est-ce important pour vous d&apos;épargner systématiquement une partie de votre revenu annuel?</p>

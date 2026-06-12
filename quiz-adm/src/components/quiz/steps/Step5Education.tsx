@@ -1,5 +1,6 @@
 'use client'
 import { QuizData } from '@/lib/types'
+import RevealCard from '@/components/quiz/RevealCard'
 
 interface Props { data: QuizData; onChange: (u: Partial<QuizData>) => void }
 
@@ -24,19 +25,13 @@ export default function Step5Education({ data, onChange }: Props) {
       <div className="section-title">Éducation des enfants</div>
 
       {/* Accroche : coût réel des études */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-xl p-5">
-        <div className="flex gap-3">
-          <span className="text-3xl shrink-0">🎓</span>
-          <div>
-            <p className="font-bold text-slate-800 text-sm mb-1">Le saviez-vous?</p>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Une formation universitaire avec résidence peut dépasser <strong>80 000 $</strong>.
-              Le REEE offre des <strong>subventions gouvernementales pouvant atteindre 30 %</strong> —
-              de l’argent gratuit qui s’ajoute à votre épargne. Plus on commence tôt, plus l’effet est puissant.
-            </p>
-          </div>
-        </div>
-      </div>
+      <RevealCard
+        emoji="🎓"
+        teaser="Combien coûte un parcours universitaire avec résidence aujourd'hui?"
+        value={80000}
+        prefix="+ de "
+        caption="La bonne nouvelle : le REEE offre des subventions gouvernementales pouvant atteindre 30 % — de l'argent gratuit qui s'ajoute à votre épargne. Plus on commence tôt, plus l'effet est puissant."
+      />
 
       {!aEnfants && (
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-800">

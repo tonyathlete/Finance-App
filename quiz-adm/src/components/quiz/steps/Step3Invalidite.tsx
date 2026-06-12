@@ -1,6 +1,7 @@
 'use client'
 import { QuizData } from '@/lib/types'
 import ImpactRevenu from '@/components/quiz/ImpactRevenu'
+import StatPairs from '@/components/quiz/StatPairs'
 
 interface Props { data: QuizData; onChange: (u: Partial<QuizData>) => void }
 
@@ -30,6 +31,13 @@ export default function Step3Invalidite({ data, onChange }: Props) {
   return (
     <div className="space-y-6">
       <div className="section-title">Invalidité</div>
+
+      <StatPairs
+        filled={3}
+        tone="red"
+        label="travailleurs vivront une invalidité de 90 jours ou plus avant l'âge de 65 ans"
+        caption="Et la majorité n'ont aucun plan B. Voyons où vous vous situez."
+      />
 
       <ImpactRevenu data={data} onChange={onChange} />
 
