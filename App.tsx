@@ -160,43 +160,43 @@ const App: React.FC = () => {
       <main>
         {step === 1 && <StepWelcome onStart={() => goToStep(2)} />}
         {step === 2 && (
-          <StepRevenue
-            data={budget.revenue}
-            onChange={(r) => setBudget({ ...budget, revenue: r })}
+          <StepSavings
+            data={savingsQuiz}
+            onChange={setSavingsQuiz}
             onNext={() => goToStep(3)}
             onBack={() => goToStep(1)}
           />
         )}
         {step === 3 && (
-          <StepFixedExpenses
-            data={budget.fixedExpenses}
-            onChange={(f) => setBudget({ ...budget, fixedExpenses: f })}
+          <StepRevenue
+            data={budget.revenue}
+            onChange={(r) => setBudget({ ...budget, revenue: r })}
             onNext={() => goToStep(4)}
             onBack={() => goToStep(2)}
-            totalIncome={budget.revenue.salaryNet}
           />
         )}
         {step === 4 && (
-          <StepVariableExpenses
-            data={budget.variableExpenses}
-            onChange={(v) => setBudget({ ...budget, variableExpenses: v })}
+          <StepFixedExpenses
+            data={budget.fixedExpenses}
+            onChange={(f) => setBudget({ ...budget, fixedExpenses: f })}
             onNext={() => goToStep(5)}
             onBack={() => goToStep(3)}
             totalIncome={budget.revenue.salaryNet}
           />
         )}
         {step === 5 && (
-          <StepPlacements
-            data={budget.placements}
-            onChange={(p) => setBudget({ ...budget, placements: p })}
+          <StepVariableExpenses
+            data={budget.variableExpenses}
+            onChange={(v) => setBudget({ ...budget, variableExpenses: v })}
             onNext={() => goToStep(6)}
             onBack={() => goToStep(4)}
+            totalIncome={budget.revenue.salaryNet}
           />
         )}
         {step === 6 && (
-          <StepSavings
-            data={savingsQuiz}
-            onChange={setSavingsQuiz}
+          <StepPlacements
+            data={budget.placements}
+            onChange={(p) => setBudget({ ...budget, placements: p })}
             onNext={() => goToStep(7)}
             onBack={() => goToStep(5)}
           />

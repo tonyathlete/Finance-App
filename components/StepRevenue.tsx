@@ -23,7 +23,7 @@ export default function StepRevenue({ data, onChange, onNext, onBack }: Props) {
 
   return (
     <div className="animate-fadeIn max-w-xl mx-auto px-4 py-10">
-      <ProgressBar step={1} total={6} />
+      <ProgressBar step={2} total={6} />
 
       <div className="mb-6">
         <h2 className="text-2xl font-black text-blue-900 mb-1">Tes revenus</h2>
