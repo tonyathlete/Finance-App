@@ -122,7 +122,7 @@ const App: React.FC = () => {
         EMAILJS_PUBLIC_KEY,
       );
     } catch (err) {
-      console.error('[MonBudget] EmailJS error:', err);
+      console.error('[GoBudget.ca] EmailJS error:', err);
     }
 
     // Big confetti for final reveal
@@ -146,7 +146,7 @@ const App: React.FC = () => {
         <header className="bg-white border-b border-blue-100 py-3 px-4 sticky top-0 z-40 shadow-sm">
           <div className="max-w-2xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-black text-blue-900">MonBudget</span>
+              <span className="text-sm font-black text-blue-900">GoBudget.ca</span>
             </div>
             <div className="flex items-center gap-3">
               <LiveScore budget={budget} step={step} />
@@ -217,7 +217,7 @@ const App: React.FC = () => {
       <footer className="mt-16 border-t border-blue-100 py-8 px-4">
         <div className="max-w-2xl mx-auto text-center text-xs text-blue-500 space-y-2">
           <p>Cet outil est fourni à titre informatif uniquement. Il ne constitue pas un conseil financier professionnel.</p>
-          <p className="font-semibold">© {new Date().getFullYear()} MonBudget • Outil de planification financière</p>
+          <p className="font-semibold">© {new Date().getFullYear()} GoBudget.ca • Outil de planification financière</p>
         </div>
       </footer>
     </div>
