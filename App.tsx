@@ -133,6 +133,7 @@ const App: React.FC = () => {
   const reset = () => {
     setStep(1);
     setBudget(DEFAULT_BUDGET);
+    setSavingsQuiz(DEFAULT_SAVINGS);
     setLead(null);
     setAnalysis(null);
     setAvatar('bear');
