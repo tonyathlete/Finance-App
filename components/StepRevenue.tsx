@@ -95,6 +95,21 @@ export default function StepRevenue({ data, onChange, onNext, onBack }: Props) {
           onChange={(v) => onChange({ ...data, otherIncome: v })}
         />
 
+        {data.otherIncome === 0 && (
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 animate-fadeIn">
+            <p className="text-sm font-semibold text-blue-900 mb-1">Tu aimerais augmenter tes revenus?</p>
+            <p className="text-xs text-blue-500 mb-3">Freelance, revenus locatifs, dividendes... il existe des stratégies concrètes selon ta situation.</p>
+            <a
+              href="https://scheduler.zoom.us/anthony-goulet/appel-decouverte-30-minutes"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition"
+            >
+              Oui, j'aimerais ça! →
+            </a>
+          </div>
+        )}
+
         {tax && (
           <div className="bg-blue-50 rounded-xl p-4 border border-blue-200 text-center animate-fadeIn">
             <p className="text-xs text-blue-600 font-medium uppercase tracking-wide">Revenu net total mensuel</p>
