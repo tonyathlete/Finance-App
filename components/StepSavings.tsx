@@ -101,6 +101,26 @@ const QUIZ_ITEMS: QuizItem[] = [
     savingMax: 40,
     unit: 'month',
   },
+  {
+    id: 'advisorStrategy',
+    icon: '📊',
+    question: 'Savais-tu qu\'un conseiller financier peut bâtir avec toi une stratégie de placement personnalisée qui pourrait doubler ton argent en 10–15 ans?',
+    tip: 'Grâce à la croissance composée et à l\'optimisation fiscale (CELI, REER, CELIAPP), un plan structuré fait une différence énorme sur le long terme — bien au-delà d\'un simple compte épargne.',
+    stat: 'Un investisseur accompagné par un conseiller accumule en moyenne 3,9x plus de patrimoine qu\'un investisseur non accompagné sur 15 ans (étude Cirano, Québec).',
+    savingMin: 0,
+    savingMax: 0,
+    unit: 'year',
+  },
+  {
+    id: 'autoSavings',
+    icon: '🔄',
+    question: 'As-tu mis en place des virements automatiques vers ton épargne dès la réception de ta paie?',
+    tip: '"Payez-vous en premier" — virer automatiquement un montant fixe le jour de la paie avant de dépenser quoi que ce soit. Ce que tu ne vois pas, tu ne le dépenses pas.',
+    stat: 'Les personnes qui automatisent leur épargne mettent de côté en moyenne 3x plus que celles qui épargnent ce qui reste à la fin du mois.',
+    savingMin: 100,
+    savingMax: 300,
+    unit: 'month',
+  },
 ];
 
 const fmt = (v: number) =>
@@ -133,7 +153,7 @@ export default function StepSavings({ data, onChange, onNext, onBack }: Props) {
 
       <div className="mb-6">
         <p className="text-blue-400 text-sm font-medium mb-1">Avant de voir ton analyse</p>
-        <h2 className="text-2xl font-black text-blue-900 mb-1">8 questions pour trouver des économies cachées</h2>
+        <h2 className="text-2xl font-black text-blue-900 mb-1">10 questions pour trouver des économies cachées</h2>
         <p className="text-blue-500 text-sm">Réponds honnêtement — on calcule ton potentiel d'économies en temps réel.</p>
       </div>
 

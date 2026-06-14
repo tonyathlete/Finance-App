@@ -76,6 +76,7 @@ const App: React.FC = () => {
   const DEFAULT_SAVINGS: SavingsQuizData = {
     insurance: null, groceryApps: null, subscriptions: null, cellPhone: null,
     genericBrands: null, creditCard: null, ghostPayments: null, hydro: null,
+    advisorStrategy: null, autoSavings: null,
   };
 
   const [step, setStep] = useState<Step>(1);

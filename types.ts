@@ -64,6 +64,8 @@ export interface SavingsQuizData {
   creditCard: SavingsAnswer;
   ghostPayments: SavingsAnswer;
   hydro: SavingsAnswer;
+  advisorStrategy: SavingsAnswer;
+  autoSavings: SavingsAnswer;
 }
 
 export interface LeadInfo {
