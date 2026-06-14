@@ -1,8 +1,7 @@
 import React from 'react';
-import { FixedExpensesData, AvatarId } from '../types';
+import { FixedExpensesData } from '../types';
 import ProgressBar from './ProgressBar';
 import ExpandableExpense from './ExpandableExpense';
-import { AvatarBubble } from './Avatar';
 import { calcNetFromGross } from '../services/taxCalculator';
 
 interface Props {
@@ -10,7 +9,6 @@ interface Props {
   onChange: (data: FixedExpensesData) => void;
   onNext: () => void;
   onBack: () => void;
-  avatar: AvatarId;
   totalIncome: number; // gross monthly, used for comparisons
 }
 
@@ -37,7 +35,7 @@ function AvgBadge({ amount, income, avgPct, label }: { amount: number; income: n
   );
 }
 
-export default function StepFixedExpenses({ data, onChange, onNext, onBack, avatar, totalIncome }: Props) {
+export default function StepFixedExpenses({ data, onChange, onNext, onBack, totalIncome }: Props) {
   const set = <K extends keyof FixedExpensesData>(key: K, value: FixedExpensesData[K]) =>
     onChange({ ...data, [key]: value });
 
@@ -48,10 +46,6 @@ export default function StepFixedExpenses({ data, onChange, onNext, onBack, avat
       <div className="mb-6">
         <h2 className="text-2xl font-black text-blue-900 mb-1">Dépenses fixes</h2>
         <p className="text-blue-500 text-sm">Ce qui sort chaque mois, peu importe ce qui se passe. Mets le total ou clique <strong>Voir le détail</strong>.</p>
-      </div>
-
-      <div className="mb-6">
-        <AvatarBubble avatar={avatar} messageKey="fixed" />
       </div>
 
       <div className="space-y-3">

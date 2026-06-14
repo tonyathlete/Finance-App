@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { LeadInfo, AvatarId } from '../types';
+import { LeadInfo } from '../types';
 import ProgressBar from './ProgressBar';
-import { AvatarBubble } from './Avatar';
 
 interface Props {
   onSubmit: (lead: LeadInfo) => void;
   onBack: () => void;
   loading: boolean;
-  avatar: AvatarId;
 }
 
 const TEASER_ITEMS = [
@@ -17,7 +15,7 @@ const TEASER_ITEMS = [
   { icon: '🎯', label: 'Défis & économies calculés',value: 'Jusqu\'à X$/an'   },
 ];
 
-export default function StepLeadCapture({ onSubmit, onBack, loading, avatar }: Props) {
+export default function StepLeadCapture({ onSubmit, onBack, loading }: Props) {
   const [form, setForm] = useState<LeadInfo>({ firstName: '', lastName: '', email: '', phone: '' });
   const [errors, setErrors] = useState<Partial<LeadInfo>>({});
 
@@ -75,11 +73,6 @@ export default function StepLeadCapture({ onSubmit, onBack, loading, avatar }: P
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Avatar */}
-      <div className="mb-5">
-        <AvatarBubble avatar={avatar} messageKey="lead" />
       </div>
 
       {/* Form */}

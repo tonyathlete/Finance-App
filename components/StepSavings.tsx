@@ -1,14 +1,12 @@
 import React from 'react';
-import { SavingsQuizData, SavingsAnswer, AvatarId } from '../types';
+import { SavingsQuizData, SavingsAnswer } from '../types';
 import ProgressBar from './ProgressBar';
-import { AvatarBubble } from './Avatar';
 
 interface Props {
   data: SavingsQuizData;
   onChange: (data: SavingsQuizData) => void;
   onNext: () => void;
   onBack: () => void;
-  avatar: AvatarId;
 }
 
 interface QuizItem {
@@ -122,7 +120,7 @@ function calcPotential(data: SavingsQuizData): { monthly: number; yearly: number
   return { monthly, yearly };
 }
 
-export default function StepSavings({ data, onChange, onNext, onBack, avatar }: Props) {
+export default function StepSavings({ data, onChange, onNext, onBack }: Props) {
   const answered = Object.values(data).filter(v => v !== null).length;
   const { yearly } = calcPotential(data);
 
@@ -137,10 +135,6 @@ export default function StepSavings({ data, onChange, onNext, onBack, avatar }: 
         <p className="text-blue-400 text-sm font-medium mb-1">Avant de voir ton analyse</p>
         <h2 className="text-2xl font-black text-blue-900 mb-1">8 questions pour trouver des économies cachées</h2>
         <p className="text-blue-500 text-sm">Réponds honnêtement — on calcule ton potentiel d'économies en temps réel.</p>
-      </div>
-
-      <div className="mb-6">
-        <AvatarBubble avatar={avatar} messageKey="placements" />
       </div>
 
       {yearly > 0 && (

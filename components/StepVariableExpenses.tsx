@@ -1,8 +1,7 @@
 import React from 'react';
-import { VariableExpensesData, AvatarId } from '../types';
+import { VariableExpensesData } from '../types';
 import ProgressBar from './ProgressBar';
 import ExpandableExpense from './ExpandableExpense';
-import { AvatarBubble } from './Avatar';
 import { calcNetFromGross } from '../services/taxCalculator';
 
 interface Props {
@@ -10,7 +9,6 @@ interface Props {
   onChange: (data: VariableExpensesData) => void;
   onNext: () => void;
   onBack: () => void;
-  avatar: AvatarId;
   totalIncome: number;
 }
 
@@ -38,7 +36,7 @@ function AvgBadge({ amount, income, avgPct, label }: { amount: number; income: n
   );
 }
 
-export default function StepVariableExpenses({ data, onChange, onNext, onBack, avatar, totalIncome }: Props) {
+export default function StepVariableExpenses({ data, onChange, onNext, onBack, totalIncome }: Props) {
   const subSum = (obj: Record<string, number>) => Object.values(obj).reduce((a, b) => a + b, 0);
 
   return (
@@ -48,10 +46,6 @@ export default function StepVariableExpenses({ data, onChange, onNext, onBack, a
       <div className="mb-6">
         <h2 className="text-2xl font-black text-blue-900 mb-1">Dépenses variables</h2>
         <p className="text-blue-500 text-sm">Les dépenses du quotidien — mets une moyenne mensuelle, pas besoin d'être parfait.</p>
-      </div>
-
-      <div className="mb-6">
-        <AvatarBubble avatar={avatar} messageKey="variable" />
       </div>
 
       <div className="space-y-3">

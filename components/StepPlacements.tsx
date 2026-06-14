@@ -1,14 +1,12 @@
 import React from 'react';
-import { PlaementsData, PlacementAccount, PlacementFrequency, AvatarId } from '../types';
+import { PlaementsData, PlacementAccount, PlacementFrequency } from '../types';
 import ProgressBar from './ProgressBar';
-import { AvatarBubble } from './Avatar';
 
 interface Props {
   data: PlaementsData;
   onChange: (data: PlaementsData) => void;
   onNext: () => void;
   onBack: () => void;
-  avatar: AvatarId;
 }
 
 const ACCOUNTS: {
@@ -140,7 +138,7 @@ function FreqToggle({ value, onChange }: { value: PlacementFrequency; onChange: 
   );
 }
 
-export default function StepPlacements({ data, onChange, onNext, onBack, avatar }: Props) {
+export default function StepPlacements({ data, onChange, onNext, onBack }: Props) {
   const totalMonthly = (Object.keys(data) as (keyof PlaementsData)[]).reduce(
     (s, k) => s + monthlyEquiv(data[k]), 0,
   );
@@ -158,10 +156,6 @@ export default function StepPlacements({ data, onChange, onNext, onBack, avatar 
       <div className="mb-6">
         <h2 className="text-2xl font-black text-blue-900 mb-1">Épargne & placements</h2>
         <p className="text-blue-500 text-sm">Ce que tu mets de côté chaque mois, et ce que tu as déjà accumulé. Laisse à 0 si ça ne s'applique pas.</p>
-      </div>
-
-      <div className="mb-6">
-        <AvatarBubble avatar={avatar} messageKey="placements" />
       </div>
 
       <div className="space-y-3">

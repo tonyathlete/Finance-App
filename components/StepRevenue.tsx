@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { RevenueData, AvatarId } from '../types';
+import { RevenueData } from '../types';
 import CurrencyInput from './CurrencyInput';
 import ProgressBar from './ProgressBar';
-import { AvatarBubble } from './Avatar';
 import { calcNetFromGross } from '../services/taxCalculator';
 
 interface Props {
@@ -10,13 +9,12 @@ interface Props {
   onChange: (data: RevenueData) => void;
   onNext: () => void;
   onBack: () => void;
-  avatar: AvatarId;
 }
 
 const fmt = (v: number) =>
   new Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD', maximumFractionDigits: 0 }).format(v);
 
-export default function StepRevenue({ data, onChange, onNext, onBack, avatar }: Props) {
+export default function StepRevenue({ data, onChange, onNext, onBack }: Props) {
   const [showBreakdown, setShowBreakdown] = useState(false);
 
   const tax = data.salaryNet > 0 ? calcNetFromGross(data.salaryNet) : null;
@@ -30,10 +28,6 @@ export default function StepRevenue({ data, onChange, onNext, onBack, avatar }: 
       <div className="mb-6">
         <h2 className="text-2xl font-black text-blue-900 mb-1">Tes revenus</h2>
         <p className="text-blue-500 text-sm">Entre ton salaire brut — on calcule le net automatiquement.</p>
-      </div>
-
-      <div className="mb-6">
-        <AvatarBubble avatar={avatar} messageKey="revenue" />
       </div>
 
       <div className="bg-white rounded-2xl shadow-sm border border-blue-100 p-6 space-y-5">

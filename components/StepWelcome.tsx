@@ -1,48 +1,10 @@
-import React, { useState } from 'react';
-import { AvatarId } from '../types';
-import { AVATARS, AvatarCard, AvatarBubble } from './Avatar';
+import React from 'react';
 
 interface Props {
-  onStart: (avatar: AvatarId) => void;
+  onStart: () => void;
 }
 
 export default function StepWelcome({ onStart }: Props) {
-  const [selected, setSelected] = useState<AvatarId | null>(null);
-  const [phase, setPhase] = useState<'hero' | 'pick'>('hero');
-
-  const avatarEntries = Object.entries(AVATARS) as [AvatarId, typeof AVATARS[AvatarId]][];
-
-  if (phase === 'pick') {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16 text-center animate-fadeIn">
-        <h2 className="text-2xl font-black text-blue-900 mb-1">Choisis ton coach</h2>
-        <p className="text-blue-500 text-sm mb-8">Il va t'accompagner pendant toute l'analyse</p>
-
-        <div className="grid grid-cols-3 gap-4 max-w-lg w-full mb-8">
-          {avatarEntries.map(([id]) => (
-            <AvatarCard key={id} id={id} selected={selected === id} onClick={() => setSelected(id)} />
-          ))}
-        </div>
-
-        {selected && (
-          <div className="animate-scaleUp flex flex-col items-center gap-5">
-            <AvatarBubble avatar={selected} messageKey="welcome" size="lg" />
-            <button
-              onClick={() => onStart(selected)}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg px-10 py-4 rounded-2xl shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
-            >
-              Allons-y →
-            </button>
-          </div>
-        )}
-
-        <button onClick={() => setPhase('hero')} className="mt-6 text-sm text-blue-400 hover:underline">
-          ← Retour
-        </button>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen flex flex-col justify-center px-6 py-16 max-w-2xl mx-auto animate-fadeIn">
 
@@ -88,7 +50,7 @@ export default function StepWelcome({ onStart }: Props) {
       </div>
 
       <button
-        onClick={() => setPhase('pick')}
+        onClick={onStart}
         className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg px-8 py-4 rounded-2xl shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 self-start"
       >
         Commencer — c'est gratuit →

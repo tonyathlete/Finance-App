@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import confetti from 'canvas-confetti';
 import emailjs from '@emailjs/browser';
-import { BudgetData, LeadInfo, BudgetAnalysis, Step, AvatarId, SavingsQuizData } from './types';
+import { BudgetData, LeadInfo, BudgetAnalysis, Step, SavingsQuizData } from './types';
 import StepWelcome from './components/StepWelcome';
 import StepRevenue from './components/StepRevenue';
 import StepFixedExpenses from './components/StepFixedExpenses';
@@ -11,7 +11,6 @@ import StepSavings from './components/StepSavings';
 import StepLeadCapture from './components/StepLeadCapture';
 import StepResults from './components/StepResults';
 import LiveScore from './components/LiveScore';
-import { AVATARS } from './components/Avatar';
 import { analyzeBudget, fmt } from './services/budgetService';
 
 const EMAILJS_SERVICE_ID  = 'service_rqmclus';
@@ -80,7 +79,6 @@ const App: React.FC = () => {
   };
 
   const [step, setStep] = useState<Step>(1);
-  const [avatar, setAvatar] = useState<AvatarId>('bear');
   const [budget, setBudget] = useState<BudgetData>(DEFAULT_BUDGET);
   const [savingsQuiz, setSavingsQuiz] = useState<SavingsQuizData>(DEFAULT_SAVINGS);
   const [lead, setLead] = useState<LeadInfo | null>(null);
@@ -139,7 +137,6 @@ const App: React.FC = () => {
     setSavingsQuiz(DEFAULT_SAVINGS);
     setLead(null);
     setAnalysis(null);
-    setAvatar('bear');
   };
 
   return (
@@ -148,13 +145,7 @@ const App: React.FC = () => {
         <header className="bg-white border-b border-blue-100 py-3 px-4 sticky top-0 z-40 shadow-sm">
           <div className="max-w-2xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center flex-shrink-0 shadow-sm bg-gradient-to-br ${AVATARS[avatar].gradient} ${AVATARS[avatar].color}`}>
-                <span className="text-2xl leading-none">{avatar === 'bear' ? '🐻' : avatar === 'owl' ? '🦉' : '🦫'}</span>
-              </div>
-              <div className="hidden sm:block">
-                <p className="text-xs font-black text-blue-900 leading-none">{AVATARS[avatar].name}</p>
-                <p className="text-xs text-blue-400 leading-none">Ton coach budget</p>
-              </div>
+              <span className="text-sm font-black text-blue-900">MonBudget</span>
             </div>
             <div className="flex items-center gap-3">
               <LiveScore budget={budget} step={step} />
@@ -167,14 +158,13 @@ const App: React.FC = () => {
       )}
 
       <main>
-        {step === 1 && <StepWelcome onStart={(av) => { setAvatar(av); goToStep(2); }} />}
+        {step === 1 && <StepWelcome onStart={() => goToStep(2)} />}
         {step === 2 && (
           <StepRevenue
             data={budget.revenue}
             onChange={(r) => setBudget({ ...budget, revenue: r })}
             onNext={() => goToStep(3)}
             onBack={() => goToStep(1)}
-            avatar={avatar}
           />
         )}
         {step === 3 && (
@@ -183,7 +173,6 @@ const App: React.FC = () => {
             onChange={(f) => setBudget({ ...budget, fixedExpenses: f })}
             onNext={() => goToStep(4)}
             onBack={() => goToStep(2)}
-            avatar={avatar}
             totalIncome={budget.revenue.salaryNet}
           />
         )}
@@ -193,7 +182,6 @@ const App: React.FC = () => {
             onChange={(v) => setBudget({ ...budget, variableExpenses: v })}
             onNext={() => goToStep(5)}
             onBack={() => goToStep(3)}
-            avatar={avatar}
             totalIncome={budget.revenue.salaryNet}
           />
         )}
@@ -203,7 +191,6 @@ const App: React.FC = () => {
             onChange={(p) => setBudget({ ...budget, placements: p })}
             onNext={() => goToStep(6)}
             onBack={() => goToStep(4)}
-            avatar={avatar}
           />
         )}
         {step === 6 && (
@@ -212,7 +199,6 @@ const App: React.FC = () => {
             onChange={setSavingsQuiz}
             onNext={() => goToStep(7)}
             onBack={() => goToStep(5)}
-            avatar={avatar}
           />
         )}
         {step === 7 && (
@@ -220,11 +206,10 @@ const App: React.FC = () => {
             onSubmit={handleLeadSubmit}
             onBack={() => goToStep(6)}
             loading={submitting}
-            avatar={avatar}
           />
         )}
         {step === 8 && analysis && lead && (
-          <StepResults analysis={analysis} lead={lead} onReset={reset} avatar={avatar} />
+          <StepResults analysis={analysis} lead={lead} onReset={reset}  />
         )}
       </main>
 
