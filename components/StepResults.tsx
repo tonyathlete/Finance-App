@@ -1,14 +1,12 @@
 import React from 'react';
-import { BudgetAnalysis, LeadInfo, AvatarId } from '../types';
+import { BudgetAnalysis, LeadInfo } from '../types';
 import DonutChart from './DonutChart';
-import { AvatarBubble, AVATARS } from './Avatar';
 import { fmt } from '../services/budgetService';
 
 interface Props {
   analysis: BudgetAnalysis;
   lead: LeadInfo;
   onReset: () => void;
-  avatar: AvatarId;
 }
 
 function buildChallenges(analysis: BudgetAnalysis): { emoji: string; title: string; desc: string; saving: string }[] {
@@ -98,12 +96,10 @@ function CategoryRow({ cat }: { cat: BudgetAnalysis['categories'][0] }) {
   );
 }
 
-export default function StepResults({ analysis, lead, onReset, avatar }: Props) {
+export default function StepResults({ analysis, lead, onReset }: Props) {
   const { totalIncome, totalExpenses, totalPlacements, surplus, categories, placementCategories, healthScore, insights } = analysis;
   const surplusPositive = surplus >= 0;
   const challenges = buildChallenges(analysis);
-  const scoreKey = healthScore >= 75 ? 'great' : healthScore >= 50 ? 'good' : 'improve';
-
   return (
     <div className="animate-fadeIn max-w-2xl mx-auto px-4 py-10">
 
@@ -112,10 +108,6 @@ export default function StepResults({ analysis, lead, onReset, avatar }: Props) 
         <h2 className="text-3xl font-black text-blue-900 leading-tight">
           {healthScore >= 75 ? 'Tu gères bien ton argent.' : healthScore >= 50 ? 'Bonne base, quelques ajustements à faire.' : 'Il y a du travail — mais on a un plan.'}
         </h2>
-      </div>
-
-      <div className="mb-8">
-        <AvatarBubble avatar={avatar} messageKey={scoreKey} size="lg" />
       </div>
 
       {/* Summary — horizontal strip */}
