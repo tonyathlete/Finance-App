@@ -58,10 +58,13 @@ function fireStepConfetti(nextStep: Step) {
     case 5: // Variable → Placements: money shower
       confetti({ particleCount: 100, spread: 80, origin: { y: 0.3 }, colors: ['#22c55e', '#16a34a', '#86efac', '#fbbf24'] });
       break;
-    case 6: // Placements → Lead: purple celebration
+    case 6: // Placements → Savings: green celebration
+      confetti({ particleCount: 100, spread: 100, origin: { y: 0.5 }, colors: ['#22c55e', '#86efac', '#fbbf24', '#f59e0b'] });
+      break;
+    case 7: // Savings → Lead: purple celebration
       confetti({ particleCount: 120, spread: 120, origin: { y: 0.5 }, colors: ['#8b5cf6', '#a78bfa', '#c4b5fd', '#f0abfc'] });
       break;
-    case 7: // Lead → Results: rainbow finale
+    case 8: // Lead → Results: rainbow finale
       confetti({ particleCount: 80, angle: 60, spread: 80, origin: { x: 0, y: 0.6 }, colors: ['#ef4444', '#f97316', '#fbbf24', '#22c55e', '#3b82f6', '#8b5cf6'] });
       setTimeout(() => confetti({ particleCount: 80, angle: 120, spread: 80, origin: { x: 1, y: 0.6 }, colors: ['#ef4444', '#f97316', '#fbbf24', '#22c55e', '#3b82f6', '#8b5cf6'] }), 200);
       break;
