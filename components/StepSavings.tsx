@@ -131,7 +131,7 @@ export default function StepSavings({ data, onChange, onNext, onBack, avatar }: 
 
   return (
     <div className="animate-fadeIn max-w-xl mx-auto px-4 py-10">
-      <ProgressBar step={6} total={7} />
+      <ProgressBar step={5} total={6} />
 
       <div className="mb-6">
         <p className="text-blue-400 text-sm font-medium mb-1">Avant de voir ton analyse</p>
