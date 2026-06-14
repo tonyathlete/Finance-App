@@ -148,7 +148,7 @@ export default function StepSavings({ data, onChange, onNext, onBack }: Props) {
     onChange({ ...data, [id]: val });
 
   return (
-    <div className="animate-fadeIn max-w-xl mx-auto px-4 py-10">
+    <div className="animate-fadeIn max-w-xl mx-auto px-4 py-10 pb-32">
       <ProgressBar step={1} total={6} />
 
       <div className="mb-6">
@@ -156,14 +156,6 @@ export default function StepSavings({ data, onChange, onNext, onBack }: Props) {
         <h2 className="text-2xl font-black text-blue-900 mb-1">10 questions pour trouver des économies cachées</h2>
         <p className="text-blue-500 text-sm">Réponds honnêtement — on calcule ton potentiel d'économies en temps réel.</p>
       </div>
-
-      {yearly > 0 && (
-        <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6 animate-fadeIn">
-          <p className="text-xs text-green-600 font-semibold uppercase tracking-wide mb-1">Potentiel d'économies détecté</p>
-          <p className="text-2xl font-black text-green-800">{fmt(yearly)}<span className="text-sm font-semibold text-green-600">/an</span></p>
-          <p className="text-xs text-green-600 mt-1">en appliquant les recommandations ci-dessous</p>
-        </div>
-      )}
 
       <div className="space-y-4">
         {QUIZ_ITEMS.map((item) => {
@@ -211,13 +203,26 @@ export default function StepSavings({ data, onChange, onNext, onBack }: Props) {
         })}
       </div>
 
-      <div className="flex gap-3 mt-6">
-        <button onClick={onBack} className="flex-1 py-3 rounded-xl border border-blue-300 text-blue-700 font-semibold hover:bg-blue-50 transition">
-          ← Retour
-        </button>
-        <button onClick={onNext} className="flex-1 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold hover:from-blue-600 hover:to-blue-700 transition">
-          {answered === 0 ? 'Passer →' : 'Voir mon analyse →'}
-        </button>
+      {/* Sticky bottom bar — always visible */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-green-200 shadow-lg">
+        <div className="max-w-xl mx-auto px-4 py-3">
+          <div className="flex items-center justify-between mb-2">
+            <div>
+              <p className="text-xs text-green-600 font-semibold uppercase tracking-wide">Économies potentielles détectées</p>
+              <p className="text-2xl font-black text-green-800 transition-all duration-500">
+                {fmt(yearly)}<span className="text-sm font-semibold text-green-600"> /an</span>
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <button onClick={onBack} className="py-2 px-4 rounded-xl border border-blue-300 text-blue-700 font-semibold hover:bg-blue-50 transition text-sm">
+                ← Retour
+              </button>
+              <button onClick={onNext} className="py-2 px-4 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition text-sm">
+                {answered === 0 ? 'Passer →' : 'Continuer →'}
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
