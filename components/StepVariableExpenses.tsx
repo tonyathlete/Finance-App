@@ -43,7 +43,7 @@ export default function StepVariableExpenses({ data, onChange, onNext, onBack, a
 
   return (
     <div className="animate-fadeIn max-w-xl mx-auto px-4 py-10">
-      <ProgressBar step={3} total={6} />
+      <ProgressBar step={3} total={7} />
 
       <div className="mb-6">
         <h2 className="text-2xl font-black text-blue-900 mb-1">Dépenses variables</h2>

@@ -55,7 +55,7 @@ export default function StepLeadCapture({ onSubmit, onBack, loading, avatar }: P
 
   return (
     <div className="animate-fadeIn max-w-xl mx-auto px-4 py-8">
-      <ProgressBar step={6} total={6} />
+      <ProgressBar step={7} total={7} />
 
       {/* Lock banner */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-5 text-white text-center mb-5 shadow-lg">

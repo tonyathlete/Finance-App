@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import confetti from 'canvas-confetti';
 import emailjs from '@emailjs/browser';
-import { BudgetData, LeadInfo, BudgetAnalysis, Step, AvatarId } from './types';
+import { BudgetData, LeadInfo, BudgetAnalysis, Step, AvatarId, SavingsQuizData } from './types';
 import StepWelcome from './components/StepWelcome';
 import StepRevenue from './components/StepRevenue';
 import StepFixedExpenses from './components/StepFixedExpenses';
 import StepVariableExpenses from './components/StepVariableExpenses';
 import StepPlacements from './components/StepPlacements';
+import StepSavings from './components/StepSavings';
 import StepLeadCapture from './components/StepLeadCapture';
 import StepResults from './components/StepResults';
 import LiveScore from './components/LiveScore';
@@ -70,9 +71,15 @@ function fireStepConfetti(nextStep: Step) {
 }
 
 const App: React.FC = () => {
+  const DEFAULT_SAVINGS: SavingsQuizData = {
+    insurance: null, groceryApps: null, subscriptions: null, cellPhone: null,
+    genericBrands: null, creditCard: null, ghostPayments: null, hydro: null,
+  };
+
   const [step, setStep] = useState<Step>(1);
   const [avatar, setAvatar] = useState<AvatarId>('bear');
   const [budget, setBudget] = useState<BudgetData>(DEFAULT_BUDGET);
+  const [savingsQuiz, setSavingsQuiz] = useState<SavingsQuizData>(DEFAULT_SAVINGS);
   const [lead, setLead] = useState<LeadInfo | null>(null);
   const [analysis, setAnalysis] = useState<BudgetAnalysis | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -119,7 +126,7 @@ const App: React.FC = () => {
     // Big confetti for final reveal
     confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 }, colors: ['#f59e0b', '#f97316', '#10b981', '#6366f1', '#fff'] });
     setSubmitting(false);
-    setStep(7);
+    setStep(8);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -133,7 +140,7 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-blue-50 font-sans">
-      {step !== 1 && step !== 7 && (
+      {step !== 1 && step !== 8 && (
         <header className="bg-white border-b border-blue-100 py-3 px-4 sticky top-0 z-40 shadow-sm">
           <div className="max-w-2xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -196,14 +203,23 @@ const App: React.FC = () => {
           />
         )}
         {step === 6 && (
+          <StepSavings
+            data={savingsQuiz}
+            onChange={setSavingsQuiz}
+            onNext={() => goToStep(7)}
+            onBack={() => goToStep(5)}
+            avatar={avatar}
+          />
+        )}
+        {step === 7 && (
           <StepLeadCapture
             onSubmit={handleLeadSubmit}
-            onBack={() => goToStep(5)}
+            onBack={() => goToStep(6)}
             loading={submitting}
             avatar={avatar}
           />
         )}
-        {step === 7 && analysis && lead && (
+        {step === 8 && analysis && lead && (
           <StepResults analysis={analysis} lead={lead} onReset={reset} avatar={avatar} />
         )}
       </main>

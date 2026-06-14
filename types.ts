@@ -53,6 +53,19 @@ export interface BudgetData {
   placements: PlaementsData;
 }
 
+export type SavingsAnswer = 'yes' | 'no' | 'unknown' | null;
+
+export interface SavingsQuizData {
+  insurance: SavingsAnswer;
+  groceryApps: SavingsAnswer;
+  subscriptions: SavingsAnswer;
+  cellPhone: SavingsAnswer;
+  genericBrands: SavingsAnswer;
+  creditCard: SavingsAnswer;
+  ghostPayments: SavingsAnswer;
+  hydro: SavingsAnswer;
+}
+
 export interface LeadInfo {
   firstName: string;
   lastName: string;
@@ -60,7 +73,7 @@ export interface LeadInfo {
   phone: string;
 }
 
-export type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7;
+export type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 
 export interface CategoryAnalysis {
   name: string;
