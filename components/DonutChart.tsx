@@ -58,8 +58,8 @@ export default function DonutChart({ categories, totalIncome }: Props) {
           <path key={i} d={s.d} fill={s.color} className="transition-all duration-300" />
         ))}
         <circle cx={cx} cy={cy} r={r - 4} fill="white" />
-        <text x={cx} y={cy - 6} textAnchor="middle" className="text-xs" fill="#92400e" fontSize="9" fontWeight="600">Budget</text>
-        <text x={cx} y={cy + 8} textAnchor="middle" fill="#92400e" fontSize="8">{allSlices.length} postes</text>
+        <text x={cx} y={cy - 4} textAnchor="middle" fill="#1e3a5f" fontSize="8" fontWeight="600">Dépenses</text>
+        <text x={cx} y={cy + 10} textAnchor="middle" fill="#1e3a5f" fontSize="8">{allSlices.length} catégories</text>
       </svg>
 
       {/* Legend */}
