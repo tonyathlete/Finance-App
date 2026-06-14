@@ -228,7 +228,7 @@ export default function StepResults({ analysis, lead, onReset, avatar }: Props) 
           On regarde ton portrait ensemble — 30 minutes, sans frais, sans pression. Tu repars avec des actions claires adaptées à ta situation.
         </p>
         <a
-          href="https://calendly.com/tommycolombo/30min"
+          href="https://scheduler.zoom.us/anthony-goulet/appel-decouverte-30-minutes"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block bg-blue-600 text-white font-bold px-8 py-4 rounded-xl hover:bg-blue-700 transition text-sm w-full text-center"
