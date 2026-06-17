@@ -102,6 +102,15 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
           <Bilan data={d} />
         </div>
 
+        <Section title="Sentiment économique">
+          <Row label="Vis-à-vis l'économie du Canada" value={d.sentimentEconomieCanada} />
+          <Row label="Stress face à l'avenir financier" value={d.stressAvenirFinancier} />
+          <Row label="Impact de l'inflation ressenti" value={d.inflationImpact} />
+          <Row label="Confiance envers le marché boursier" value={d.confianceMarcheBoursier} />
+          <Row label="Craint une récession" value={d.craintRecession} />
+          <Row label="Principales préoccupations" value={d.principalesInquietudes} />
+        </Section>
+
         <Section title="Connaissances financières">
           <Row label="Marché boursier" value={d.connaissanceBourse} />
           <Row label="Fonds de placements" value={d.connaissancePlacements} />

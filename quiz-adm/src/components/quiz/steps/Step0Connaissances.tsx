@@ -1,6 +1,7 @@
 'use client'
 import { QuizData } from '@/lib/types'
 import DiagnosticExpress from '@/components/quiz/DiagnosticExpress'
+import SentimentEconomique from '@/components/quiz/steps/SentimentEconomique'
 
 interface Props { data: QuizData; onChange: (u: Partial<QuizData>) => void }
 
@@ -105,9 +106,14 @@ export default function Step0Connaissances({ data, onChange }: Props) {
   return (
     <div className="space-y-8">
       <div className="text-center pb-2">
-        <h2 className="text-xl font-bold text-brand-900">Vos connaissances financières</h2>
+        <h2 className="text-xl font-bold text-brand-900">Votre situation économique</h2>
         <p className="text-sm text-slate-500 mt-1">Aucune bonne ou mauvaise réponse — soyez honnête!</p>
       </div>
+
+      {/* Sentiment économique — leur avis sur la situation actuelle */}
+      <SentimentEconomique data={data} onChange={onChange} />
+
+      <div className="section-title">Vos connaissances financières</div>
 
       {/* Diagnostic express interactif selon le profil */}
       <DiagnosticExpress data={data} onChange={onChange} />

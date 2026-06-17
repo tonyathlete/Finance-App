@@ -15,6 +15,14 @@ export interface Reference {
 }
 
 export interface QuizData {
+  // Étape 0 — Sentiment économique
+  sentimentEconomieCanada: 'confiant' | 'neutre' | 'inquiet' | 'tres_inquiet' | ''
+  stressAvenirFinancier: 'oui' | 'un_peu' | 'non' | ''
+  inflationImpact: 'beaucoup' | 'un_peu' | 'pas_vraiment' | ''
+  confianceMarcheBoursier: 'tres_confiant' | 'confiant' | 'incertain' | 'mefiant' | ''
+  craintRecession: 'oui' | 'incertain' | 'non' | ''
+  principalesInquietudes: string[]
+
   // Étape 0 — Connaissances générales
   connaissanceBourse: 'debutant' | 'intermediaire' | 'avance' | ''
   connaissancePlacements: 'debutant' | 'intermediaire' | 'avance' | ''
@@ -151,6 +159,12 @@ export interface QuizData {
 }
 
 export const defaultQuizData: QuizData = {
+  sentimentEconomieCanada: '',
+  stressAvenirFinancier: '',
+  inflationImpact: '',
+  confianceMarcheBoursier: '',
+  craintRecession: '',
+  principalesInquietudes: [],
   connaissanceBourse: '',
   connaissancePlacements: '',
   produitsPlacements: [],
