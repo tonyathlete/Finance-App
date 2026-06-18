@@ -26,11 +26,11 @@ export default function StepRevenue({ data, onChange, onNext, onBack }: Props) {
       <ProgressBar step={2} total={6} />
 
       <div className="mb-6">
-        <h2 className="text-2xl font-black text-blue-900 mb-1">Tes revenus</h2>
+        <h2 className="font-display text-2xl font-bold text-blue-900 mb-1">Tes revenus</h2>
         <p className="text-blue-500 text-sm">Entre ton salaire brut — on calcule le net automatiquement.</p>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-blue-100 p-6 space-y-5">
+      <div className="bg-white rounded-2xl border border-blue-100 card-elevated p-6 space-y-5">
         <CurrencyInput
           id="salaryNet"
           label="Revenu brut mensuel"
@@ -113,7 +113,7 @@ export default function StepRevenue({ data, onChange, onNext, onBack }: Props) {
         {tax && (
           <div className="bg-blue-50 rounded-xl p-4 border border-blue-200 text-center animate-fadeIn">
             <p className="text-xs text-blue-600 font-medium uppercase tracking-wide">Revenu net total mensuel</p>
-            <p className="text-2xl font-black text-blue-900">{fmt(totalIncome)}</p>
+            <p className="font-display text-2xl font-bold text-blue-900">{fmt(totalIncome)}</p>
             <p className="text-xs text-blue-500 mt-0.5">utilisé pour l'analyse de votre budget</p>
           </div>
         )}

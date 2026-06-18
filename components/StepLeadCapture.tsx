@@ -76,7 +76,7 @@ export default function StepLeadCapture({ onSubmit, onBack, loading }: Props) {
       </div>
 
       {/* Form */}
-      <div className="bg-white rounded-2xl shadow-sm border border-blue-100 p-6 mb-4">
+      <div className="bg-white rounded-2xl border border-blue-100 card-elevated p-6 mb-4">
         <p className="text-sm font-black text-blue-900 mb-4">✍️ Tes informations</p>
         <form onSubmit={handleSubmit} noValidate className="space-y-4">
           <div className="grid grid-cols-2 gap-4">

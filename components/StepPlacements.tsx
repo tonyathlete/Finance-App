@@ -154,7 +154,7 @@ export default function StepPlacements({ data, onChange, onNext, onBack }: Props
       <ProgressBar step={5} total={6} />
 
       <div className="mb-6">
-        <h2 className="text-2xl font-black text-blue-900 mb-1">Épargne & placements</h2>
+        <h2 className="font-display text-2xl font-bold text-blue-900 mb-1">Épargne & placements</h2>
         <p className="text-blue-500 text-sm">Ce que tu mets de côté chaque mois, et ce que tu as déjà accumulé. Laisse à 0 si ça ne s'applique pas.</p>
       </div>
 
@@ -163,7 +163,7 @@ export default function StepPlacements({ data, onChange, onNext, onBack }: Props
           const acc = data[id];
           const hasActivity = acc.contribution > 0 || acc.totalInvested > 0;
           return (
-            <div key={id} className="bg-white border border-blue-100 rounded-xl p-4">
+            <div key={id} className="bg-white border border-blue-100 rounded-xl p-4 card-elevated transition-shadow">
               <div className="flex items-center justify-between mb-1">
                 <span className="text-sm font-semibold text-blue-900">{icon} {label}</span>
                 {badge && (

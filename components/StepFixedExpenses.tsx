@@ -44,7 +44,7 @@ export default function StepFixedExpenses({ data, onChange, onNext, onBack, tota
       <ProgressBar step={3} total={6} />
 
       <div className="mb-6">
-        <h2 className="text-2xl font-black text-blue-900 mb-1">Dépenses fixes</h2>
+        <h2 className="font-display text-2xl font-bold text-blue-900 mb-1">Dépenses fixes</h2>
         <p className="text-blue-500 text-sm">Ce qui sort chaque mois, peu importe ce qui se passe. Mets le total ou clique <strong>Voir le détail</strong>.</p>
       </div>
 

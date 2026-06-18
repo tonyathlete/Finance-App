@@ -153,7 +153,7 @@ export default function StepSavings({ data, onChange, onNext, onBack }: Props) {
 
       <div className="mb-6">
         <p className="text-blue-400 text-sm font-medium mb-1">Avant de voir ton analyse</p>
-        <h2 className="text-2xl font-black text-blue-900 mb-1">10 questions pour trouver des économies cachées</h2>
+        <h2 className="font-display text-2xl font-bold text-blue-900 mb-1">10 questions pour trouver des économies cachées</h2>
         <p className="text-blue-500 text-sm">Réponds honnêtement — on calcule ton potentiel d'économies en temps réel.</p>
       </div>
 
@@ -162,7 +162,7 @@ export default function StepSavings({ data, onChange, onNext, onBack }: Props) {
           const answer = data[item.id];
           const showTip = answer === 'no' || answer === 'unknown';
           return (
-            <div key={item.id} className="bg-white border border-blue-100 rounded-xl p-4">
+            <div key={item.id} className="bg-white border border-blue-100 rounded-xl p-4 card-elevated transition-shadow">
               <p className="text-sm font-semibold text-blue-900 mb-3">
                 {item.icon} {item.question}
               </p>

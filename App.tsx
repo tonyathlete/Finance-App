@@ -141,12 +141,12 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-blue-50 font-sans">
+    <div className="min-h-screen bg-blue-50 bg-mesh font-sans">
       {step !== 1 && step !== 8 && (
-        <header className="bg-white border-b border-blue-100 py-3 px-4 sticky top-0 z-40 shadow-sm">
+        <header className="bg-white/80 backdrop-blur-md border-b border-blue-100 py-3 px-4 sticky top-0 z-40 shadow-sm">
           <div className="max-w-2xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-black text-blue-900">GoBudget.ca</span>
+              <span className="font-display text-sm font-bold text-blue-900">GoBudget<span className="text-blue-500">.ca</span></span>
             </div>
             <div className="flex items-center gap-3">
               <LiveScore budget={budget} step={step} />

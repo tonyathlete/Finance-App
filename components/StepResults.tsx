@@ -105,22 +105,22 @@ export default function StepResults({ analysis, lead, onReset }: Props) {
 
       <div className="mb-6">
         <p className="text-blue-400 text-sm font-medium mb-1">Ton portrait financier, {lead.firstName}</p>
-        <h2 className="text-3xl font-black text-blue-900 leading-tight">
+        <h2 className="font-display text-3xl font-bold text-blue-900 leading-tight">
           {healthScore >= 75 ? 'Tu gères bien ton argent.' : healthScore >= 50 ? 'Bonne base, quelques ajustements à faire.' : 'Il y a du travail — mais on a un plan.'}
         </h2>
       </div>
 
       {/* Summary — horizontal strip */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-        <div className="bg-white rounded-xl border border-blue-100 p-4 shadow-sm">
+        <div className="bg-white rounded-xl border border-blue-100 p-4 card-elevated">
           <p className="text-xs text-blue-400 mb-1">Revenus nets</p>
           <p className="text-lg font-black text-blue-900">{fmt(totalIncome)}</p>
         </div>
-        <div className="bg-white rounded-xl border border-blue-100 p-4 shadow-sm">
+        <div className="bg-white rounded-xl border border-blue-100 p-4 card-elevated">
           <p className="text-xs text-blue-400 mb-1">Dépenses</p>
           <p className="text-lg font-black text-blue-900">{fmt(totalExpenses)}</p>
         </div>
-        <div className="bg-white rounded-xl border border-blue-100 p-4 shadow-sm">
+        <div className="bg-white rounded-xl border border-blue-100 p-4 card-elevated">
           <p className="text-xs text-blue-400 mb-1">Épargne</p>
           <p className="text-lg font-black text-blue-800">{fmt(totalPlacements)}</p>
         </div>
@@ -131,7 +131,7 @@ export default function StepResults({ analysis, lead, onReset }: Props) {
       </div>
 
       {/* Score + Chart */}
-      <div className="bg-white rounded-2xl border border-blue-100 shadow-sm p-6 mb-6">
+      <div className="bg-white rounded-2xl border border-blue-100 card-elevated p-6 mb-6 transition-shadow">
         <div className="flex flex-col md:flex-row items-center gap-8 justify-around">
           <HealthGauge score={healthScore} />
           <DonutChart categories={categories} totalIncome={totalIncome} />
@@ -139,7 +139,7 @@ export default function StepResults({ analysis, lead, onReset }: Props) {
       </div>
 
       {/* Category breakdown */}
-      <div className="bg-white rounded-2xl border border-blue-100 shadow-sm p-6 mb-6">
+      <div className="bg-white rounded-2xl border border-blue-100 card-elevated p-6 mb-6 transition-shadow">
         <h3 className="font-black text-blue-900 mb-1">Tes dépenses en détail</h3>
         <p className="text-xs text-blue-400 mb-4">Comparé aux moyennes québécoises recommandées</p>
         {categories.map((cat, i) => <CategoryRow key={i} cat={cat} />)}
@@ -147,7 +147,7 @@ export default function StepResults({ analysis, lead, onReset }: Props) {
 
       {/* Placements section */}
       {placementCategories.length > 0 && (
-        <div className="bg-white rounded-2xl border border-blue-100 shadow-sm p-6 mb-6">
+        <div className="bg-white rounded-2xl border border-blue-100 card-elevated p-6 mb-6 transition-shadow">
           <h3 className="font-black text-blue-900 mb-4">Épargne mensuelle</h3>
           <div className="space-y-3">
             {placementCategories.map((p, i) => (
@@ -175,7 +175,7 @@ export default function StepResults({ analysis, lead, onReset }: Props) {
 
       {/* Insights */}
       {insights.length > 0 && (
-        <div className="bg-white rounded-2xl border border-blue-100 shadow-sm p-6 mb-6">
+        <div className="bg-white rounded-2xl border border-blue-100 card-elevated p-6 mb-6 transition-shadow">
           <h3 className="font-black text-blue-900 mb-4">Ce qu'on a remarqué</h3>
           <ul className="space-y-3">
             {insights.map((msg, i) => (
@@ -190,7 +190,7 @@ export default function StepResults({ analysis, lead, onReset }: Props) {
 
       {/* Personalized challenges */}
       {challenges.length > 0 && (
-        <div className="bg-white rounded-2xl border border-blue-100 shadow-sm p-6 mb-6">
+        <div className="bg-white rounded-2xl border border-blue-100 card-elevated p-6 mb-6 transition-shadow">
           <h3 className="font-black text-blue-900 mb-1">3 choses à faire cette semaine</h3>
           <p className="text-xs text-blue-400 mb-5">Des actions simples avec un impact réel sur ton budget</p>
           <div className="space-y-4">
@@ -215,7 +215,7 @@ export default function StepResults({ analysis, lead, onReset }: Props) {
       {/* CTA */}
       <div className="border border-blue-200 rounded-2xl p-8 bg-white">
         <p className="text-xs font-semibold text-blue-400 uppercase tracking-widest mb-2">Et maintenant ?</p>
-        <h3 className="text-xl font-black text-blue-900 mb-3">Un plan concret, sans jargon.</h3>
+        <h3 className="font-display text-xl font-bold text-blue-900 mb-3">Un plan concret, sans jargon.</h3>
         <p className="text-sm text-blue-600 mb-6 leading-relaxed">
           On regarde ton portrait ensemble — 30 minutes, sans frais, sans pression. Tu repars avec des actions claires adaptées à ta situation.
         </p>

@@ -44,7 +44,7 @@ export default function StepVariableExpenses({ data, onChange, onNext, onBack, t
       <ProgressBar step={4} total={6} />
 
       <div className="mb-6">
-        <h2 className="text-2xl font-black text-blue-900 mb-1">Dépenses variables</h2>
+        <h2 className="font-display text-2xl font-bold text-blue-900 mb-1">Dépenses variables</h2>
         <p className="text-blue-500 text-sm">Les dépenses du quotidien — mets une moyenne mensuelle, pas besoin d'être parfait.</p>
       </div>
 
