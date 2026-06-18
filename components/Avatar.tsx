@@ -99,14 +99,14 @@ export function AvatarCard({ id, selected, onClick }: { id: AvatarId; selected: 
       className={`flex flex-col items-center gap-3 p-5 rounded-2xl border-2 transition-all duration-200 cursor-pointer ${
         selected
           ? `${av.color} ${av.bg} shadow-xl scale-105`
-          : 'border-[#D8DCD3] bg-white hover:border-[#D8DCD3] hover:scale-105 hover:shadow-md'
+          : 'border-blue-100 bg-white hover:border-blue-300 hover:scale-105 hover:shadow-md'
       }`}
     >
       <AvatarEmoji avatar={id} mood={selected ? 'excited' : 'happy'} size="xl" />
-      <p className="text-sm font-black text-[#142420] leading-tight text-center">{av.name}</p>
-      <p className="text-xs text-[#1B4332] leading-tight text-center">{av.tagline}</p>
+      <p className="text-sm font-black text-blue-900 leading-tight text-center">{av.name}</p>
+      <p className="text-xs text-blue-500 leading-tight text-center">{av.tagline}</p>
       {selected && (
-        <span className="text-xs bg-[#EEF1EC]0 text-white px-3 py-1 rounded-full font-bold animate-scaleUp shadow-sm">
+        <span className="text-xs bg-blue-500 text-white px-3 py-1 rounded-full font-bold animate-scaleUp shadow-sm">
           ✓ Choisi!
         </span>
       )}
@@ -166,9 +166,9 @@ export function AvatarBubble({ avatar, messageKey, size = 'md' }: BubbleProps) {
   return (
     <div className="flex items-end gap-3 animate-fadeIn">
       <AvatarEmoji avatar={avatar} mood={mood} size={bubbleSize} />
-      <div className="relative bg-white border border-[#D8DCD3] rounded-2xl rounded-bl-none px-4 py-3 shadow-sm max-w-xs">
-        <p className="text-xs font-bold text-[#1B4332] mb-0.5">{name}</p>
-        <p className="text-sm text-[#142420] leading-snug">{msg}</p>
+      <div className="relative bg-white border border-blue-100 rounded-2xl rounded-bl-none px-4 py-3 shadow-sm max-w-xs">
+        <p className="text-xs font-bold text-blue-400 mb-0.5">{name}</p>
+        <p className="text-sm text-blue-800 leading-snug">{msg}</p>
       </div>
     </div>
   );

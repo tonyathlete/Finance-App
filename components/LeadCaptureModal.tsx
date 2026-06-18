@@ -24,20 +24,20 @@ const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({ onConfirm, onCancel
     setInfo(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const inputClasses = "w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg focus:ring-2 focus:ring-[#1B4332] outline-none text-white placeholder:text-slate-500 transition";
+  const inputClasses = "w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-white placeholder:text-slate-500 transition";
   const labelClasses = "block text-xs font-bold text-slate-400 uppercase mb-1 tracking-wider";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
       <div className="bg-slate-900 rounded-3xl shadow-2xl w-full max-w-md overflow-hidden animate-scaleUp border border-slate-800">
         {/* Header de la modale */}
-        <div className="bg-[#1B4332] p-8 text-white text-center relative overflow-hidden">
+        <div className="bg-blue-600 p-8 text-white text-center relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
           <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 backdrop-blur-sm border border-white/30 rotate-3">
             <i className="fas fa-paper-plane text-2xl text-white"></i>
           </div>
           <h3 className="text-2xl font-black italic">DERNIÈRE ÉTAPE</h3>
-          <p className="text-[#EEF1EC] text-sm mt-1 font-medium">Où devrions-nous envoyer votre rapport ?</p>
+          <p className="text-blue-100 text-sm mt-1 font-medium">Où devrions-nous envoyer votre rapport ?</p>
         </div>
 
         <form onSubmit={handleSubmit} className="p-8 space-y-5">
@@ -97,7 +97,7 @@ const LeadCaptureModal: React.FC<LeadCaptureModalProps> = ({ onConfirm, onCancel
           <div className="pt-4 space-y-3">
             <button
               type="submit"
-              className="w-full bg-white text-slate-900 font-black py-4 rounded-xl hover:bg-[#EEF1EC] transition flex items-center justify-center gap-3 shadow-xl uppercase text-sm tracking-widest"
+              className="w-full bg-white text-slate-900 font-black py-4 rounded-xl hover:bg-blue-50 transition flex items-center justify-center gap-3 shadow-xl uppercase text-sm tracking-widest"
             >
               Voir mon analyse
               <i className="fas fa-chevron-right text-[10px]"></i>

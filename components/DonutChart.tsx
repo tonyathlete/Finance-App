@@ -25,7 +25,7 @@ export default function DonutChart({ categories, totalIncome }: Props) {
     color: c.color,
   }));
   if (surplusAmt > 0 && totalIncome > 0) {
-    allSlices.push({ name: 'Surplus / Épargne', percent: (surplusAmt / totalIncome) * 100, color: '#C9A227' });
+    allSlices.push({ name: 'Surplus / Épargne', percent: (surplusAmt / totalIncome) * 100, color: '#34d399' });
   }
 
   let cumulative = 0;
@@ -57,9 +57,9 @@ export default function DonutChart({ categories, totalIncome }: Props) {
         {slices.map((s, i) => (
           <path key={i} d={s.d} fill={s.color} className="transition-all duration-300" />
         ))}
-        <circle cx={cx} cy={cy} r={r - 4} fill="#FBFBF9" />
-        <text x={cx} y={cy - 4} textAnchor="middle" fill="#142420" fontSize="8" fontWeight="600">Dépenses</text>
-        <text x={cx} y={cy + 10} textAnchor="middle" fill="#142420" fontSize="8">{allSlices.length} catégories</text>
+        <circle cx={cx} cy={cy} r={r - 4} fill="white" />
+        <text x={cx} y={cy - 4} textAnchor="middle" fill="#1e3a5f" fontSize="8" fontWeight="600">Dépenses</text>
+        <text x={cx} y={cy + 10} textAnchor="middle" fill="#1e3a5f" fontSize="8">{allSlices.length} catégories</text>
       </svg>
 
       {/* Legend */}
@@ -67,7 +67,7 @@ export default function DonutChart({ categories, totalIncome }: Props) {
         {allSlices.map((s, i) => (
           <div key={i} className="flex items-center gap-2">
             <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: s.color }} />
-            <span className="text-[#142420]/80 truncate">{s.name} (<span className="font-mono-data">{s.percent.toFixed(0)}%</span>)</span>
+            <span className="text-blue-800 truncate">{s.name} ({s.percent.toFixed(0)}%)</span>
           </div>
         ))}
       </div>

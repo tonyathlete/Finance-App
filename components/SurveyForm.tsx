@@ -33,9 +33,9 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ onSubmit, isLoading }) => {
     onSubmit(formData);
   };
 
-  const inputClasses = "w-full px-4 py-2 rounded-lg border border-slate-700 bg-slate-900 text-white focus:ring-2 focus:ring-[#1B4332] outline-none transition placeholder:text-slate-500";
+  const inputClasses = "w-full px-4 py-2 rounded-lg border border-slate-700 bg-slate-900 text-white focus:ring-2 focus:ring-blue-500 outline-none transition placeholder:text-slate-500";
   const labelClasses = "block text-sm font-medium text-slate-300 mb-1";
-  const sectionTitleClasses = "text-[#1B4332] font-bold text-sm uppercase tracking-widest mb-4 flex items-center gap-2";
+  const sectionTitleClasses = "text-blue-400 font-bold text-sm uppercase tracking-widest mb-4 flex items-center gap-2";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8 max-w-2xl mx-auto bg-slate-900/50 p-8 rounded-2xl shadow-xl border border-slate-800 backdrop-blur-sm">
@@ -149,7 +149,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ onSubmit, isLoading }) => {
       <button 
         type="submit" 
         disabled={isLoading}
-        className="w-full bg-[#1B4332] text-white font-bold py-4 rounded-xl hover:bg-[#142420] transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-black/20"
+        className="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-500 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-blue-900/20"
       >
         {isLoading ? (
           <>

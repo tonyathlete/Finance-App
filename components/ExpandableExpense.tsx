@@ -36,22 +36,22 @@ export default function ExpandableExpense({
   };
 
   return (
-    <div className="border border-[#D8DCD3] rounded-md overflow-hidden bg-[#FBFBF9]">
+    <div className="border border-blue-100 rounded-xl overflow-hidden bg-white">
       {/* Main row */}
       <div className="p-4">
         <div className="flex items-center justify-between mb-2">
-          <label className="text-sm font-semibold text-[#142420]">
+          <label className="text-sm font-semibold text-blue-900">
             {icon} {label}
           </label>
           <button
             type="button"
             onClick={() => setExpanded(!expanded)}
-            className="text-xs bg-[#EEF1EC] hover:bg-[#D8DCD3] border border-[#D8DCD3] text-[#1B4332] font-semibold rounded-sm px-3 py-1.5 flex items-center gap-1 transition"
+            className="text-xs bg-blue-100 hover:bg-blue-200 border border-blue-300 text-blue-700 font-semibold rounded-lg px-3 py-1.5 flex items-center gap-1 transition"
           >
             {expanded ? '▲ Masquer' : '▼ Voir le détail'}
           </button>
         </div>
-        <p className="text-xs text-[#142420]/60 mb-2">{hint}</p>
+        <p className="text-xs text-blue-500 mb-2">{hint}</p>
         {!expanded && presets && presets.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mb-2">
             {presets.map((p) => (
@@ -60,10 +60,10 @@ export default function ExpandableExpense({
                 type="button"
                 onClick={() => onTotalChange(p)}
                 disabled={hasSubItems}
-                className={`text-xs px-2.5 py-1 rounded-sm border font-semibold transition-all disabled:opacity-40 ${
+                className={`text-xs px-2.5 py-1 rounded-full border font-semibold transition-all disabled:opacity-40 ${
                   displayTotal === p
-                    ? 'bg-[#1B4332] text-[#FBFBF9] border-[#1B4332]'
-                    : 'bg-[#FBFBF9] text-[#1B4332] border-[#D8DCD3] hover:border-[#1B4332]'
+                    ? 'bg-blue-500 text-white border-blue-500 shadow-sm'
+                    : 'bg-white text-blue-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50'
                 }`}
               >
                 {p >= 1000 ? `${p / 1000}k` : p}$
@@ -73,7 +73,7 @@ export default function ExpandableExpense({
         )}
         {!expanded && (
           <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#142420]/50 font-bold font-mono-data">$</span>
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 font-bold">$</span>
             <input
               type="text"
               inputMode="numeric"
@@ -84,12 +84,12 @@ export default function ExpandableExpense({
               }}
               placeholder="0"
               disabled={hasSubItems}
-              className="w-full pl-7 pr-4 py-3 rounded-sm border border-[#D8DCD3] bg-[#FBFBF9] focus:outline-none focus:ring-1 focus:ring-[#1B4332] focus:border-[#1B4332] text-[#142420] font-mono-data font-medium placeholder-[#142420]/30 transition disabled:bg-[#EEF1EC] disabled:text-[#142420]/60"
+              className="w-full pl-7 pr-4 py-3 rounded-xl border border-blue-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 text-blue-900 font-medium placeholder-blue-300 transition disabled:bg-blue-50 disabled:text-blue-600"
             />
           </div>
         )}
         {hasSubItems && !expanded && (
-          <p className="text-xs text-[#142420]/60 mt-1">
+          <p className="text-xs text-blue-500 mt-1">
             Total calculé depuis le détail : {new Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD', maximumFractionDigits: 0 }).format(subTotal)}
           </p>
         )}
@@ -97,7 +97,7 @@ export default function ExpandableExpense({
 
       {/* Sub-items */}
       {expanded && (
-        <div className="border-t border-[#D8DCD3] bg-[#EEF1EC] px-4 py-4 space-y-3">
+        <div className="border-t border-blue-100 bg-blue-50 px-4 py-4 space-y-3">
           {subItems.map((item) => (
             <CurrencyInput
               key={item.id}
@@ -108,9 +108,9 @@ export default function ExpandableExpense({
             />
           ))}
           {subTotal > 0 && (
-            <div className="bg-[#FBFBF9] rounded-sm p-3 border border-[#D8DCD3] text-right">
-              <span className="text-xs text-[#142420]/60 font-medium">Sous-total : </span>
-              <span className="font-mono-data font-bold text-[#142420]">
+            <div className="bg-white rounded-lg p-3 border border-blue-200 text-right">
+              <span className="text-xs text-blue-600 font-medium">Sous-total : </span>
+              <span className="font-black text-blue-900">
                 {new Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD', maximumFractionDigits: 0 }).format(subTotal)}
               </span>
             </div>
