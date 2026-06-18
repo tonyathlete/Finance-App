@@ -26,11 +26,11 @@ export default function StepRevenue({ data, onChange, onNext, onBack }: Props) {
       <ProgressBar step={2} total={6} />
 
       <div className="mb-6">
-        <h2 className="text-2xl font-black text-blue-900 mb-1">Tes revenus</h2>
-        <p className="text-blue-500 text-sm">Entre ton salaire brut — on calcule le net automatiquement.</p>
+        <h2 className="font-display text-2xl font-black text-[#142420] mb-1">Tes revenus</h2>
+        <p className="text-[#142420]/60 text-sm">Entre ton salaire brut — on calcule le net automatiquement.</p>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-blue-100 p-6 space-y-5">
+      <div className="bg-[#FBFBF9] rounded-md shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#D8DCD3] p-6 space-y-5">
         <CurrencyInput
           id="salaryNet"
           label="Revenu brut mensuel"
@@ -42,20 +42,20 @@ export default function StepRevenue({ data, onChange, onNext, onBack }: Props) {
 
         {/* Net estimate panel */}
         {tax && (
-          <div className="rounded-xl border border-blue-200 overflow-hidden animate-fadeIn">
-            <div className="bg-blue-50 px-4 py-3 flex items-center justify-between">
+          <div className="rounded-md border border-[#D8DCD3] overflow-hidden animate-fadeIn">
+            <div className="bg-[#EEF1EC] px-4 py-3 flex items-center justify-between">
               <div>
-                <p className="text-xs text-blue-600 font-medium uppercase tracking-wide">Revenu net estimé (Québec 2025)</p>
-                <p className="text-xl font-black text-blue-900">{fmt(tax.netMonthly)}<span className="text-sm font-semibold text-blue-500"> /mois</span></p>
+                <p className="text-xs text-[#142420]/60 font-medium uppercase tracking-wide">Revenu net estimé (Québec 2025)</p>
+                <p className="font-mono-data text-xl font-bold text-[#142420]">{fmt(tax.netMonthly)}<span className="text-sm font-semibold text-[#142420]/50"> /mois</span></p>
               </div>
               <div className="text-right">
-                <span className="inline-block bg-blue-100 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-full border border-blue-200">
+                <span className="inline-block bg-[#FBFBF9] text-[#1B4332] text-xs font-bold px-2.5 py-1 rounded-sm border border-[#D8DCD3] font-mono-data">
                   {tax.effectiveRate}% de déductions
                 </span>
                 <button
                   type="button"
                   onClick={() => setShowBreakdown(!showBreakdown)}
-                  className="block ml-auto mt-1 text-xs text-blue-500 hover:text-blue-700 underline"
+                  className="block ml-auto mt-1 text-xs text-[#1B4332] hover:text-[#142420] underline"
                 >
                   {showBreakdown ? 'Masquer' : 'Voir le détail'}
                 </button>
@@ -63,7 +63,7 @@ export default function StepRevenue({ data, onChange, onNext, onBack }: Props) {
             </div>
 
             {showBreakdown && (
-              <div className="bg-white px-4 py-3 border-t border-blue-100 text-xs space-y-1.5 animate-fadeIn">
+              <div className="bg-[#FBFBF9] px-4 py-3 border-t border-[#D8DCD3] text-xs space-y-1.5 animate-fadeIn">
                 {[
                   ['QPP (Régime de rentes)', tax.qpp],
                   ['Assurance-emploi (AE)', tax.ei],
@@ -71,16 +71,16 @@ export default function StepRevenue({ data, onChange, onNext, onBack }: Props) {
                   ['Impôt fédéral', tax.federalTax],
                   ['Impôt provincial (QC)', tax.provincialTax],
                 ].map(([label, amount]) => (
-                  <div key={label as string} className="flex justify-between text-blue-700">
+                  <div key={label as string} className="flex justify-between text-[#142420]/70">
                     <span>{label as string}</span>
-                    <span className="font-semibold text-red-500">− {fmt(amount as number)}</span>
+                    <span className="font-mono-data font-semibold text-[#C75D3D]">− {fmt(amount as number)}</span>
                   </div>
                 ))}
-                <div className="flex justify-between font-bold text-blue-900 border-t border-blue-100 pt-2 mt-1">
+                <div className="flex justify-between font-bold text-[#142420] border-t border-[#D8DCD3] pt-2 mt-1">
                   <span>Total des déductions</span>
-                  <span className="text-red-600">− {fmt(tax.totalDeductions)}</span>
+                  <span className="font-mono-data text-[#C75D3D]">− {fmt(tax.totalDeductions)}</span>
                 </div>
-                <p className="text-blue-400 italic pt-1">* Estimation basée sur les taux 2025. Peut varier selon votre situation.</p>
+                <p className="text-[#142420]/40 italic pt-1">* Estimation basée sur les taux 2025. Peut varier selon votre situation.</p>
               </div>
             )}
           </div>
@@ -96,14 +96,14 @@ export default function StepRevenue({ data, onChange, onNext, onBack }: Props) {
         />
 
         {data.otherIncome === 0 && (
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 animate-fadeIn">
-            <p className="text-sm font-semibold text-blue-900 mb-1">Tu aimerais augmenter tes revenus?</p>
-            <p className="text-xs text-blue-500 mb-3">Freelance, revenus locatifs, dividendes... il existe des stratégies concrètes selon ta situation.</p>
+          <div className="bg-[#EEF1EC] border border-[#D8DCD3] rounded-md p-4 animate-fadeIn">
+            <p className="text-sm font-semibold text-[#142420] mb-1">Tu aimerais augmenter tes revenus?</p>
+            <p className="text-xs text-[#142420]/60 mb-3">Freelance, revenus locatifs, dividendes... il existe des stratégies concrètes selon ta situation.</p>
             <a
               href="https://scheduler.zoom.us/anthony-goulet/appel-decouverte-30-minutes"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition"
+              className="inline-block text-xs font-bold text-[#FBFBF9] bg-[#1B4332] hover:bg-[#142420] px-4 py-2 rounded-sm transition"
             >
               Oui, j'aimerais ça! →
             </a>
@@ -111,10 +111,10 @@ export default function StepRevenue({ data, onChange, onNext, onBack }: Props) {
         )}
 
         {tax && (
-          <div className="bg-blue-50 rounded-xl p-4 border border-blue-200 text-center animate-fadeIn">
-            <p className="text-xs text-blue-600 font-medium uppercase tracking-wide">Revenu net total mensuel</p>
-            <p className="text-2xl font-black text-blue-900">{fmt(totalIncome)}</p>
-            <p className="text-xs text-blue-500 mt-0.5">utilisé pour l'analyse de votre budget</p>
+          <div className="bg-[#EEF1EC] rounded-md p-4 border border-[#D8DCD3] text-center animate-fadeIn">
+            <p className="text-xs text-[#142420]/60 font-medium uppercase tracking-wide">Revenu net total mensuel</p>
+            <p className="font-mono-data text-2xl font-bold text-[#142420]">{fmt(totalIncome)}</p>
+            <p className="text-xs text-[#142420]/50 mt-0.5">utilisé pour l'analyse de votre budget</p>
           </div>
         )}
       </div>
@@ -122,14 +122,14 @@ export default function StepRevenue({ data, onChange, onNext, onBack }: Props) {
       <div className="flex gap-3 mt-6">
         <button
           onClick={onBack}
-          className="flex-1 py-3 rounded-xl border border-blue-300 text-blue-700 font-semibold hover:bg-blue-50 transition"
+          className="flex-1 py-3 rounded-sm border border-[#D8DCD3] text-[#142420] font-semibold hover:bg-[#EEF1EC] transition"
         >
           ← Retour
         </button>
         <button
           onClick={onNext}
           disabled={!isValid}
-          className="flex-1 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold hover:from-blue-600 hover:to-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition"
+          className="flex-1 py-3 rounded-sm bg-[#1B4332] text-[#FBFBF9] font-bold hover:bg-[#142420] disabled:opacity-40 disabled:cursor-not-allowed transition"
         >
           Continuer →
         </button>

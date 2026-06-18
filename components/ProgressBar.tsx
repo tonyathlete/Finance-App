@@ -14,15 +14,15 @@ export default function ProgressBar({ step, total }: Props) {
   return (
     <div className="w-full max-w-xl mx-auto mb-8">
       <div className="flex justify-between items-center mb-2">
-        <p className="text-sm font-bold text-blue-800">
+        <p className="text-xs font-semibold text-[#1B4332] uppercase tracking-wide">
           {STEP_LABELS[idx] ?? 'Étape'}
         </p>
-        <p className="text-xs text-blue-400 font-medium">{pct}% complété</p>
+        <p className="text-xs text-[#142420]/50 font-mono-data">{pct}% complété</p>
       </div>
 
-      <div className="h-1.5 bg-blue-100 rounded-full overflow-hidden">
+      <div className="h-1.5 bg-[#D8DCD3] overflow-hidden">
         <div
-          className="h-full bg-blue-500 rounded-full transition-all duration-700 ease-out"
+          className="h-full bg-[#1B4332] transition-all duration-700 ease-out"
           style={{ width: `${pct}%` }}
         />
       </div>

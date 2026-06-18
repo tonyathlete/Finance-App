@@ -43,14 +43,14 @@ const ResultView: React.FC<ResultViewProps> = ({ result, onReset }) => {
       {/* Risks Analysis */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-slate-900 p-8 rounded-3xl shadow-xl border border-slate-800">
-          <h3 className="text-lg font-bold mb-6 flex items-center gap-2 text-blue-400">
+          <h3 className="text-lg font-bold mb-6 flex items-center gap-2 text-[#1B4332]">
             <i className="fas fa-shield-halved"></i>
             Risques principaux
           </h3>
           <ul className="space-y-4">
             {result.mainRisks.map((risk, i) => (
               <li key={i} className="flex gap-4 items-start">
-                <span className="flex-shrink-0 w-6 h-6 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-blue-400">{i + 1}</span>
+                <span className="flex-shrink-0 w-6 h-6 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-[#1B4332]">{i + 1}</span>
                 <span className="text-slate-300 leading-snug">{risk}</span>
               </li>
             ))}
@@ -80,15 +80,15 @@ const ResultView: React.FC<ResultViewProps> = ({ result, onReset }) => {
       </div>
 
       {/* Invitation - Updated for Team Follow-up */}
-      <div className="bg-blue-600 text-white p-10 rounded-3xl shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8 overflow-hidden relative border border-blue-400/30">
+      <div className="bg-[#1B4332] text-white p-10 rounded-3xl shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8 overflow-hidden relative border border-[#1B4332]/30">
         <div className="absolute top-0 right-0 w-80 h-80 bg-white/10 rounded-full -mr-40 -mt-40 blur-3xl"></div>
         <div className="max-w-xl text-center md:text-left relative z-10 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500 rounded-full text-[10px] font-bold uppercase tracking-widest border border-blue-400/50">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#EEF1EC]0 rounded-full text-[10px] font-bold uppercase tracking-widest border border-[#1B4332]/50">
             <i className="fas fa-calendar-check animate-pulse"></i>
             Prochaine étape confirmée
           </div>
           <h3 className="text-2xl font-black">Plan d'optimisation stratégique</h3>
-          <p className="text-blue-50 text-lg font-medium leading-relaxed">
+          <p className="text-[#EEF1EC] text-lg font-medium leading-relaxed">
             {result.invitation}
           </p>
         </div>

@@ -1,25 +1,26 @@
 import { BudgetData, BudgetAnalysis, CategoryAnalysis, PlaementsData } from '../types';
 import { calcNetFromGross } from './taxCalculator';
 
+// Ledger palette: pine (primary), gold (accent), clay (warning), plus muted supporting tones
 const BENCHMARKS: Record<string, { label: string; max: number; color: string }> = {
-  housing:     { label: 'Logement',        max: 30, color: '#f59e0b' },
-  transport:   { label: 'Transport',        max: 15, color: '#f97316' },
-  insurance:   { label: 'Assurances',       max: 10, color: '#84cc16' },
-  debts:       { label: 'Dettes',           max: 20, color: '#ef4444' },
-  groceries:   { label: 'Épicerie',         max: 15, color: '#10b981' },
-  restaurants: { label: 'Restaurants',      max: 5,  color: '#6366f1' },
-  leisure:     { label: 'Loisirs',          max: 5,  color: '#8b5cf6' },
-  clothing:    { label: 'Vêtements',        max: 5,  color: '#ec4899' },
-  health:      { label: 'Santé',            max: 5,  color: '#14b8a6' },
-  other:       { label: 'Autres dépenses',  max: 5,  color: '#94a3b8' },
+  housing:     { label: 'Logement',        max: 30, color: '#1B4332' },
+  transport:   { label: 'Transport',        max: 15, color: '#6E8CA0' },
+  insurance:   { label: 'Assurances',       max: 10, color: '#8DA68C' },
+  debts:       { label: 'Dettes',           max: 20, color: '#C75D3D' },
+  groceries:   { label: 'Épicerie',         max: 15, color: '#C9A227' },
+  restaurants: { label: 'Restaurants',      max: 5,  color: '#C9B38C' },
+  leisure:     { label: 'Loisirs',          max: 5,  color: '#6E8CA0' },
+  clothing:    { label: 'Vêtements',        max: 5,  color: '#8DA68C' },
+  health:      { label: 'Santé',            max: 5,  color: '#1B4332' },
+  other:       { label: 'Autres dépenses',  max: 5,  color: '#9C9C8F' },
 };
 
 const PLACEMENT_META: Record<keyof PlaementsData, { label: string; color: string }> = {
-  reer:   { label: 'REER',             color: '#0ea5e9' },
-  celi:   { label: 'CELI',             color: '#22d3ee' },
-  celiapp:{ label: 'CELIAPP',          color: '#a78bfa' },
-  reee:   { label: 'REEE',             color: '#fb923c' },
-  other:  { label: 'Autres placements', color: '#34d399' },
+  reer:   { label: 'REER',             color: '#1B4332' },
+  celi:   { label: 'CELI',             color: '#6E8CA0' },
+  celiapp:{ label: 'CELIAPP',          color: '#8DA68C' },
+  reee:   { label: 'REEE',             color: '#C9B38C' },
+  other:  { label: 'Autres placements', color: '#C9A227' },
 };
 
 export function analyzeBudget(data: BudgetData): BudgetAnalysis {

@@ -24,10 +24,10 @@ function AvgBadge({ amount, income, avgPct, label }: { amount: number; income: n
   const diff = pct - avgPct;
   const better = diff <= 0;
   return (
-    <div className={`mt-2 text-xs px-3 py-1.5 rounded-lg flex items-center gap-1.5 ${better ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-orange-50 text-orange-700 border border-orange-100'}`}>
+    <div className={`mt-2 text-xs px-3 py-1.5 rounded-sm flex items-center gap-1.5 border ${better ? 'bg-[#EEF1EC] text-[#1B4332] border-[#D8DCD3]' : 'bg-[#FBFBF9] text-[#C75D3D] border-[#D8DCD3]'}`}>
       <span>{better ? '✅' : '⚠️'}</span>
       <span>
-        <strong>{label} : {pct}%</strong> de tes revenus —{' '}
+        <strong className="font-mono-data">{label} : {pct}%</strong> de tes revenus —{' '}
         {better
           ? `dans la moyenne québécoise (${avgPct}%) 👏`
           : `${diff}% au-dessus de la moyenne québécoise (${avgPct}%)`}
@@ -44,8 +44,8 @@ export default function StepVariableExpenses({ data, onChange, onNext, onBack, t
       <ProgressBar step={4} total={6} />
 
       <div className="mb-6">
-        <h2 className="text-2xl font-black text-blue-900 mb-1">Dépenses variables</h2>
-        <p className="text-blue-500 text-sm">Les dépenses du quotidien — mets une moyenne mensuelle, pas besoin d'être parfait.</p>
+        <h2 className="font-display text-2xl font-black text-[#142420] mb-1">Dépenses variables</h2>
+        <p className="text-[#142420]/60 text-sm">Les dépenses du quotidien — mets une moyenne mensuelle, pas besoin d'être parfait.</p>
       </div>
 
       <div className="space-y-3">
@@ -156,10 +156,10 @@ export default function StepVariableExpenses({ data, onChange, onNext, onBack, t
       </div>
 
       <div className="flex gap-3 mt-6">
-        <button onClick={onBack} className="flex-1 py-3 rounded-xl border border-blue-300 text-blue-700 font-semibold hover:bg-blue-50 transition">
+        <button onClick={onBack} className="flex-1 py-3 rounded-sm border border-[#D8DCD3] text-[#142420] font-semibold hover:bg-[#EEF1EC] transition">
           ← Retour
         </button>
-        <button onClick={onNext} className="flex-1 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold hover:from-blue-600 hover:to-blue-700 transition">
+        <button onClick={onNext} className="flex-1 py-3 rounded-sm bg-[#1B4332] text-[#FBFBF9] font-bold hover:bg-[#142420] transition">
           Continuer →
         </button>
       </div>

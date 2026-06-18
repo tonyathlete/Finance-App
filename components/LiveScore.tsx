@@ -53,14 +53,14 @@ export default function LiveScore({ budget, step }: Props) {
   const score = calcLiveScore(budget);
   if (score === null) return null;
 
-  const color = score >= 75 ? '#10b981' : score >= 50 ? '#f59e0b' : '#ef4444';
+  const color = score >= 75 ? '#1B4332' : score >= 50 ? '#C9A227' : '#C75D3D';
   const label = score >= 75 ? 'Excellent' : score >= 50 ? 'Bien' : 'À améliorer';
 
   return (
     <div className="flex items-center gap-2 animate-fadeIn">
       <div className="relative w-9 h-9">
         <svg viewBox="0 0 36 36" className="w-9 h-9 -rotate-90">
-          <circle cx="18" cy="18" r="15" fill="none" stroke="#fef3c7" strokeWidth="3" />
+          <circle cx="18" cy="18" r="15" fill="none" stroke="#D8DCD3" strokeWidth="3" />
           <circle
             cx="18" cy="18" r="15" fill="none"
             stroke={color} strokeWidth="3"
@@ -69,13 +69,13 @@ export default function LiveScore({ budget, step }: Props) {
             style={{ transition: 'stroke-dasharray 0.8s ease-out' }}
           />
         </svg>
-        <span className="absolute inset-0 flex items-center justify-center text-xs font-black" style={{ color }}>
+        <span className="absolute inset-0 flex items-center justify-center font-mono-data text-xs font-black" style={{ color }}>
           {score}
         </span>
       </div>
       <div className="hidden sm:block">
         <p className="text-xs font-black leading-none" style={{ color }}>{label}</p>
-        <p className="text-xs text-blue-500 leading-none">Score live</p>
+        <p className="text-xs text-[#142420]/50 leading-none">Score live</p>
       </div>
     </div>
   );

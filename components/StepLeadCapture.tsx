@@ -36,18 +36,18 @@ export default function StepLeadCapture({ onSubmit, onBack, loading }: Props) {
 
   const field = (id: keyof LeadInfo, label: string, type: string, placeholder: string) => (
     <div className="flex flex-col gap-1">
-      <label htmlFor={id} className="text-sm font-semibold text-blue-900">
-        {label} <span className="text-blue-400">*</span>
+      <label htmlFor={id} className="text-sm font-semibold text-[#142420]">
+        {label} <span className="text-[#C75D3D]">*</span>
       </label>
       <input
         id={id} type={type} value={form[id]}
         onChange={(e) => setForm({ ...form, [id]: e.target.value })}
         placeholder={placeholder}
-        className={`w-full px-4 py-3 rounded-xl border ${
-          errors[id] ? 'border-red-400 bg-red-50' : 'border-blue-200 bg-white'
-        } focus:outline-none focus:ring-2 focus:ring-blue-400 text-blue-900 placeholder-blue-300 transition`}
+        className={`w-full px-4 py-3 rounded-sm border ${
+          errors[id] ? 'border-[#C75D3D] bg-[#FBFBF9]' : 'border-[#D8DCD3] bg-[#FBFBF9]'
+        } focus:outline-none focus:ring-1 focus:ring-[#1B4332] focus:border-[#1B4332] text-[#142420] placeholder-[#142420]/30 transition`}
       />
-      {errors[id] && <p className="text-xs text-red-500">{errors[id]}</p>}
+      {errors[id] && <p className="text-xs text-[#C75D3D]">{errors[id]}</p>}
     </div>
   );
 
@@ -56,19 +56,19 @@ export default function StepLeadCapture({ onSubmit, onBack, loading }: Props) {
       <ProgressBar step={6} total={6} />
 
       {/* Lock banner */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-5 text-white text-center mb-5 shadow-lg">
+      <div className="bg-[#1B4332] rounded-md p-5 text-[#FBFBF9] text-center mb-5 border border-[#142420]">
         <div className="text-4xl mb-2">🔐</div>
-        <h2 className="text-xl font-black mb-1">Ton analyse est prête — mais verrouillée!</h2>
-        <p className="text-blue-100 text-sm">Entre tes coordonnées pour tout débloquer gratuitement.</p>
+        <h2 className="font-display text-xl font-black mb-1">Ton analyse est prête — mais verrouillée!</h2>
+        <p className="text-[#FBFBF9]/70 text-sm">Entre tes coordonnées pour tout débloquer gratuitement.</p>
 
         {/* Teaser grid */}
         <div className="grid grid-cols-2 gap-2 mt-4">
           {TEASER_ITEMS.map((item, i) => (
-            <div key={i} className="bg-white/10 rounded-xl px-3 py-2 flex items-center gap-2 text-left">
+            <div key={i} className="bg-[#FBFBF9]/10 border border-[#FBFBF9]/20 rounded-sm px-3 py-2 flex items-center gap-2 text-left">
               <span className="text-lg">{item.icon}</span>
               <div>
-                <p className="text-xs font-semibold text-white leading-tight">{item.label}</p>
-                <p className="text-xs text-blue-200 blur-sm select-none font-bold">{item.value}</p>
+                <p className="text-xs font-semibold text-[#FBFBF9] leading-tight">{item.label}</p>
+                <p className="text-xs text-[#FBFBF9]/60 blur-sm select-none font-mono-data font-bold">{item.value}</p>
               </div>
             </div>
           ))}
@@ -76,8 +76,8 @@ export default function StepLeadCapture({ onSubmit, onBack, loading }: Props) {
       </div>
 
       {/* Form */}
-      <div className="bg-white rounded-2xl shadow-sm border border-blue-100 p-6 mb-4">
-        <p className="text-sm font-black text-blue-900 mb-4">✍️ Tes informations</p>
+      <div className="bg-[#FBFBF9] rounded-md border border-[#D8DCD3] p-6 mb-4">
+        <p className="text-sm font-black text-[#142420] mb-4">✍️ Tes informations</p>
         <form onSubmit={handleSubmit} noValidate className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             {field('firstName', 'Prénom', 'text', 'Jean')}
@@ -89,20 +89,20 @@ export default function StepLeadCapture({ onSubmit, onBack, loading }: Props) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 mt-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-black text-lg shadow-lg shadow-blue-200 disabled:opacity-50 transition hover:scale-105 active:scale-95"
+            className="w-full py-4 mt-2 rounded-sm bg-[#1B4332] hover:bg-[#142420] text-[#FBFBF9] font-black text-lg disabled:opacity-50 transition"
           >
             {loading ? '⏳ Génération en cours...' : '🔓 Révéler mon analyse →'}
           </button>
 
-          <p className="text-xs text-center text-blue-500">
+          <p className="text-xs text-center text-[#142420]/50">
             🔒 Confidentiel · Aucun spam · Conseiller disponible sous 24h
           </p>
         </form>
       </div>
 
       {/* What you get — below form */}
-      <div className="bg-blue-50 rounded-2xl border border-blue-100 px-4 py-4 mb-4">
-        <p className="text-xs font-black text-blue-700 uppercase tracking-wide mb-3">🎁 Ce que tu reçois gratuitement</p>
+      <div className="bg-[#EEF1EC] rounded-md border border-[#D8DCD3] px-4 py-4 mb-4">
+        <p className="text-xs font-black text-[#1B4332] uppercase tracking-wide mb-3">🎁 Ce que tu reçois gratuitement</p>
         <ul className="space-y-2">
           {[
             ['📊', 'Score financier détaillé avec explication'],
@@ -110,15 +110,15 @@ export default function StepLeadCapture({ onSubmit, onBack, loading }: Props) {
             ['🎯', '3 défis concrets avec économies calculées'],
             ['📞', 'Consultation gratuite avec un conseiller (30 min)'],
           ].map(([icon, text], i) => (
-            <li key={i} className="flex items-center gap-2 text-xs text-blue-800">
-              <span className="w-5 h-5 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs flex-shrink-0">✓</span>
+            <li key={i} className="flex items-center gap-2 text-xs text-[#142420]">
+              <span className="w-5 h-5 bg-[#1B4332] text-[#FBFBF9] rounded-full flex items-center justify-center text-xs flex-shrink-0">✓</span>
               <span><strong>{icon}</strong> {text}</span>
             </li>
           ))}
         </ul>
       </div>
 
-      <button onClick={onBack} className="w-full py-2 text-blue-500 text-sm font-medium hover:underline">
+      <button onClick={onBack} className="w-full py-2 text-[#142420]/60 text-sm font-medium hover:underline">
         ← Modifier mes réponses
       </button>
     </div>

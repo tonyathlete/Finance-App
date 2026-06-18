@@ -42,33 +42,35 @@ const DEFAULT_BUDGET: BudgetData = {
   },
 };
 
+const CONFETTI_PALETTE = ['#1B4332', '#C9A227', '#C75D3D', '#8DA68C'];
+
 function fireStepConfetti(nextStep: Step) {
   switch (nextStep) {
     case 2: // Welcome → Revenue: gold rain
-      confetti({ particleCount: 60, angle: 90, spread: 55, origin: { y: 0.7 }, colors: ['#fbbf24', '#f59e0b', '#fde68a'] });
+      confetti({ particleCount: 60, angle: 90, spread: 55, origin: { y: 0.7 }, colors: CONFETTI_PALETTE });
       break;
     case 3: // Revenue → Fixed: stars burst
-      confetti({ particleCount: 80, spread: 100, startVelocity: 30, shapes: ['star'], colors: ['#3b82f6', '#60a5fa', '#93c5fd', '#fff'] });
+      confetti({ particleCount: 80, spread: 100, startVelocity: 30, shapes: ['star'], colors: CONFETTI_PALETTE });
       break;
     case 4: // Fixed → Variable: confetti cannon left+right
-      confetti({ particleCount: 50, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#10b981', '#34d399', '#6ee7b7'] });
-      confetti({ particleCount: 50, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#10b981', '#34d399', '#6ee7b7'] });
+      confetti({ particleCount: 50, angle: 60, spread: 55, origin: { x: 0 }, colors: CONFETTI_PALETTE });
+      confetti({ particleCount: 50, angle: 120, spread: 55, origin: { x: 1 }, colors: CONFETTI_PALETTE });
       break;
     case 5: // Variable → Placements: money shower
-      confetti({ particleCount: 100, spread: 80, origin: { y: 0.3 }, colors: ['#22c55e', '#16a34a', '#86efac', '#fbbf24'] });
+      confetti({ particleCount: 100, spread: 80, origin: { y: 0.3 }, colors: CONFETTI_PALETTE });
       break;
     case 6: // Placements → Savings: green celebration
-      confetti({ particleCount: 100, spread: 100, origin: { y: 0.5 }, colors: ['#22c55e', '#86efac', '#fbbf24', '#f59e0b'] });
+      confetti({ particleCount: 100, spread: 100, origin: { y: 0.5 }, colors: CONFETTI_PALETTE });
       break;
     case 7: // Savings → Lead: purple celebration
-      confetti({ particleCount: 120, spread: 120, origin: { y: 0.5 }, colors: ['#8b5cf6', '#a78bfa', '#c4b5fd', '#f0abfc'] });
+      confetti({ particleCount: 120, spread: 120, origin: { y: 0.5 }, colors: CONFETTI_PALETTE });
       break;
     case 8: // Lead → Results: rainbow finale
-      confetti({ particleCount: 80, angle: 60, spread: 80, origin: { x: 0, y: 0.6 }, colors: ['#ef4444', '#f97316', '#fbbf24', '#22c55e', '#3b82f6', '#8b5cf6'] });
-      setTimeout(() => confetti({ particleCount: 80, angle: 120, spread: 80, origin: { x: 1, y: 0.6 }, colors: ['#ef4444', '#f97316', '#fbbf24', '#22c55e', '#3b82f6', '#8b5cf6'] }), 200);
+      confetti({ particleCount: 80, angle: 60, spread: 80, origin: { x: 0, y: 0.6 }, colors: CONFETTI_PALETTE });
+      setTimeout(() => confetti({ particleCount: 80, angle: 120, spread: 80, origin: { x: 1, y: 0.6 }, colors: CONFETTI_PALETTE }), 200);
       break;
     default:
-      confetti({ particleCount: 70, spread: 70, origin: { y: 0.6 } });
+      confetti({ particleCount: 70, spread: 70, origin: { y: 0.6 }, colors: CONFETTI_PALETTE });
   }
 }
 
@@ -126,7 +128,7 @@ const App: React.FC = () => {
     }
 
     // Big confetti for final reveal
-    confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 }, colors: ['#f59e0b', '#f97316', '#10b981', '#6366f1', '#fff'] });
+    confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 }, colors: CONFETTI_PALETTE });
     setSubmitting(false);
     setStep(8);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -141,16 +143,16 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-blue-50 font-sans">
+    <div className="min-h-screen bg-[#EEF1EC] font-sans">
       {step !== 1 && step !== 8 && (
-        <header className="bg-white border-b border-blue-100 py-3 px-4 sticky top-0 z-40 shadow-sm">
+        <header className="bg-[#FBFBF9] border-b border-[#D8DCD3] py-3 px-4 sticky top-0 z-40">
           <div className="max-w-2xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-black text-blue-900">GoBudget.ca</span>
+              <span className="font-display text-sm font-black text-[#142420]">GoBudget.ca</span>
             </div>
             <div className="flex items-center gap-3">
               <LiveScore budget={budget} step={step} />
-              <span className="text-xs text-blue-600 font-medium bg-blue-50 border border-blue-200 px-3 py-1 rounded-full hidden sm:block">
+              <span className="text-xs text-[#1B4332] font-medium bg-[#EEF1EC] border border-[#D8DCD3] px-3 py-1 rounded-sm hidden sm:block">
                 🔒 Confidentiel
               </span>
             </div>
@@ -214,8 +216,8 @@ const App: React.FC = () => {
         )}
       </main>
 
-      <footer className="mt-16 border-t border-blue-100 py-8 px-4">
-        <div className="max-w-2xl mx-auto text-center text-xs text-blue-500 space-y-2">
+      <footer className="mt-16 border-t border-[#D8DCD3] py-8 px-4">
+        <div className="max-w-2xl mx-auto text-center text-xs text-[#142420]/50 space-y-2">
           <p>Cet outil est fourni à titre informatif uniquement. Il ne constitue pas un conseil financier professionnel.</p>
           <p className="font-semibold">© {new Date().getFullYear()} GoBudget.ca • Outil de planification financière</p>
         </div>

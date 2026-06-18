@@ -152,9 +152,9 @@ export default function StepSavings({ data, onChange, onNext, onBack }: Props) {
       <ProgressBar step={1} total={6} />
 
       <div className="mb-6">
-        <p className="text-blue-400 text-sm font-medium mb-1">Avant de voir ton analyse</p>
-        <h2 className="text-2xl font-black text-blue-900 mb-1">10 questions pour trouver des économies cachées</h2>
-        <p className="text-blue-500 text-sm">Réponds honnêtement — on calcule ton potentiel d'économies en temps réel.</p>
+        <p className="text-[#142420]/50 text-sm font-medium mb-1">Avant de voir ton analyse</p>
+        <h2 className="font-display text-2xl font-black text-[#142420] mb-1">10 questions pour trouver des économies cachées</h2>
+        <p className="text-[#142420]/60 text-sm">Réponds honnêtement — on calcule ton potentiel d'économies en temps réel.</p>
       </div>
 
       <div className="space-y-4">
@@ -162,8 +162,8 @@ export default function StepSavings({ data, onChange, onNext, onBack }: Props) {
           const answer = data[item.id];
           const showTip = answer === 'no' || answer === 'unknown';
           return (
-            <div key={item.id} className="bg-white border border-blue-100 rounded-xl p-4">
-              <p className="text-sm font-semibold text-blue-900 mb-3">
+            <div key={item.id} className="bg-[#FBFBF9] border border-[#D8DCD3] rounded-md p-4">
+              <p className="text-sm font-semibold text-[#142420] mb-3">
                 {item.icon} {item.question}
               </p>
               <div className="flex gap-2 mb-3">
@@ -171,16 +171,16 @@ export default function StepSavings({ data, onChange, onNext, onBack }: Props) {
                   const labels: Record<string, string> = { yes: 'Oui', no: 'Non', unknown: 'Je sais pas' };
                   const active = answer === opt;
                   const colors = opt === 'yes'
-                    ? active ? 'bg-green-500 text-white border-green-500' : 'bg-white text-green-700 border-green-200 hover:border-green-400'
+                    ? active ? 'bg-[#1B4332] text-[#FBFBF9] border-[#1B4332]' : 'bg-[#FBFBF9] text-[#1B4332] border-[#D8DCD3] hover:border-[#1B4332]'
                     : opt === 'no'
-                    ? active ? 'bg-red-500 text-white border-red-500' : 'bg-white text-red-600 border-red-200 hover:border-red-400'
-                    : active ? 'bg-blue-400 text-white border-blue-400' : 'bg-white text-blue-500 border-blue-200 hover:border-blue-400';
+                    ? active ? 'bg-[#C75D3D] text-[#FBFBF9] border-[#C75D3D]' : 'bg-[#FBFBF9] text-[#C75D3D] border-[#D8DCD3] hover:border-[#C75D3D]'
+                    : active ? 'bg-[#142420]/70 text-[#FBFBF9] border-[#142420]/70' : 'bg-[#FBFBF9] text-[#142420]/60 border-[#D8DCD3] hover:border-[#142420]/40';
                   return (
                     <button
                       key={opt}
                       type="button"
                       onClick={() => set(item.id, active ? null : opt)}
-                      className={`flex-1 py-2 text-xs font-semibold rounded-lg border transition-all ${colors}`}
+                      className={`flex-1 py-2 text-xs font-semibold rounded-sm border transition-all ${colors}`}
                     >
                       {labels[opt as string]}
                     </button>
@@ -188,36 +188,36 @@ export default function StepSavings({ data, onChange, onNext, onBack }: Props) {
                 })}
               </div>
               {showTip && (
-                <div className="bg-amber-50 border border-amber-100 rounded-lg p-3 animate-fadeIn">
-                  <p className="text-xs text-amber-800 mb-2">{item.tip}</p>
-                  <p className="text-xs font-bold text-green-700">
+                <div className="bg-[#EEF1EC] border border-[#D8DCD3] rounded-sm p-3 animate-fadeIn">
+                  <p className="text-xs text-[#142420]/70 mb-2">{item.tip}</p>
+                  <p className="text-xs font-bold text-[#1B4332]">
                     💡 {item.stat}
                   </p>
                 </div>
               )}
               {answer === 'yes' && (
-                <p className="text-xs text-green-600 font-medium">✅ Super, tu es déjà sur la bonne voie!</p>
+                <p className="text-xs text-[#1B4332] font-medium">✅ Super, tu es déjà sur la bonne voie!</p>
               )}
             </div>
           );
         })}
       </div>
 
-      {/* Sticky bottom bar — always visible */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-green-200 shadow-lg">
+      {/* Sticky bottom bar — "receipt strip" */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#FBFBF9] border-t-2 border-dashed border-[#1B4332] shadow-[0_-1px_4px_rgba(0,0,0,0.05)]">
         <div className="max-w-xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between mb-2">
             <div>
-              <p className="text-xs text-green-600 font-semibold uppercase tracking-wide">Économies potentielles détectées</p>
-              <p className="text-2xl font-black text-green-800 transition-all duration-500">
-                {fmt(yearly)}<span className="text-sm font-semibold text-green-600"> /an</span>
+              <p className="text-xs text-[#1B4332] font-semibold uppercase tracking-wide">Économies potentielles</p>
+              <p className="font-mono-data text-2xl font-bold text-[#C9A227] transition-all duration-500">
+                {fmt(yearly)}<span className="text-sm font-semibold"> /an</span>
               </p>
             </div>
             <div className="flex gap-2">
-              <button onClick={onBack} className="py-2 px-4 rounded-xl border border-blue-300 text-blue-700 font-semibold hover:bg-blue-50 transition text-sm">
+              <button onClick={onBack} className="py-2 px-4 rounded-sm border border-[#D8DCD3] text-[#142420] font-semibold hover:bg-[#EEF1EC] transition text-sm">
                 ← Retour
               </button>
-              <button onClick={onNext} className="py-2 px-4 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition text-sm">
+              <button onClick={onNext} className="py-2 px-4 rounded-sm bg-[#1B4332] text-[#FBFBF9] font-bold hover:bg-[#142420] transition text-sm">
                 {answered === 0 ? 'Passer →' : 'Continuer →'}
               </button>
             </div>
