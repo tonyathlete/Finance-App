@@ -91,58 +91,6 @@ export default function StepAssurancesActuelles({ data, onChange }: Props) {
 
       <CapitalDeces data={data} onChange={onChange} />
 
-      {/* Assurance invalidité */}
-      <div className={`p-4 rounded-xl border-2 transition-all ${data.aAssuranceInvalidite ? 'border-brand-200 bg-brand-50' : 'border-slate-200 bg-white'}`}>
-        <div className="flex items-center justify-between gap-4 flex-wrap">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">🛡️</span>
-            <div>
-              <p className="text-sm font-semibold text-slate-700">Assurance invalidité</p>
-              <p className="text-xs text-slate-500">Si vous ne pouvez plus travailler, c&apos;est elle qui paie le chèque de paie</p>
-            </div>
-          </div>
-          <OuiNon name="aAssuranceInvalidite" value={data.aAssuranceInvalidite} onSet={v => onChange({ aAssuranceInvalidite: v })} />
-        </div>
-        {data.aAssuranceInvalidite === 'oui' && (
-          <div className="mt-4 pt-4 border-t border-brand-100 space-y-4">
-            <div>
-              <p className="text-xs font-semibold text-slate-600">Type de couverture</p>
-              <RadioGroup
-                name="assuranceInvaliditeType"
-                value={data.assuranceInvaliditeType}
-                options={[
-                  { value: 'collectif', label: '🏢 Collectif (employeur)' },
-                  { value: 'privee', label: '🔒 Privée (individuelle)' },
-                ]}
-                onSet={v => onChange({ assuranceInvaliditeType: v })}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="text-xs font-semibold text-slate-600">Durée de couverture</label>
-                <input className="input mt-1" placeholder="Ex: 2 ans, jusqu'à 65 ans…"
-                  value={data.assuranceInvaliditeDuree}
-                  onChange={e => onChange({ assuranceInvaliditeDuree: e.target.value })} />
-              </div>
-              <div>
-                <label className="text-xs font-semibold text-slate-600">Montant mensuel couvert</label>
-                <div className="relative mt-1">
-                  <input type="number" inputMode="numeric" className="input pr-7"
-                    placeholder="0" value={data.assuranceInvaliditeMontant}
-                    onChange={e => onChange({ assuranceInvaliditeMontant: e.target.value })} />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
-                </div>
-              </div>
-            </div>
-            {data.assuranceInvaliditeType === 'collectif' && (
-              <div className="bg-amber-50 border border-amber-100 rounded-lg p-3 text-xs text-amber-700 leading-relaxed">
-                ⚠️ Une assurance <strong>collective</strong> s'arrête si vous quittez votre employeur. Elle couvre généralement 66 % du salaire pour une durée limitée.
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-
       <StatPairs
         filled={4}
         tone="indigo"

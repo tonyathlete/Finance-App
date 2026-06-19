@@ -17,6 +17,7 @@ import Bilan from '@/components/quiz/Bilan'
 import ScoreLive from '@/components/quiz/ScoreLive'
 
 const STEPS = [
+  { label: 'Références', component: Step9References },
   { label: 'Connaissances financières', component: Step0Connaissances },
   { label: 'Autonomie financière', component: Step2Autonomie },
   { label: 'Invalidité', component: Step3Invalidite },
@@ -26,7 +27,6 @@ const STEPS = [
   { label: 'Habitation & protection des biens', component: StepHabitationBiens },
   { label: 'Assurances actuelles', component: StepAssurancesActuelles },
   { label: 'Testament et mandat', component: Step8Testament },
-  { label: 'Références', component: Step9References },
   { label: 'Bilan & recommandations', component: Bilan },
 ]
 
