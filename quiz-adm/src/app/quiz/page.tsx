@@ -141,7 +141,7 @@ function QuizContent() {
         <div className="max-w-2xl mx-auto card">
           {step === 0 && (
             <div className="insight-box mb-6">
-              💡 N&apos;oubliez pas de demander des références à la fin de la rencontre.
+              💡 Pensez à 5 personnes qui seraient intéressées à participer au sondage. L&apos;objectif est de rencontrer minimum 10 personnes par semaine pour atteindre notre objectif annuel.
             </div>
           )}
           <CurrentStep data={data} onChange={onChange} />

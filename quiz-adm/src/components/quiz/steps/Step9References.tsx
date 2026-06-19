@@ -15,7 +15,7 @@ export default function Step9References({ data, onChange }: Props) {
     <div className="space-y-6">
       <div className="section-title">Références</div>
       <p className="text-sm text-gray-600">
-        Connaissez-vous des gens qui pourraient bénéficier d&apos;une rencontre comme celle-ci?
+        Pensez à 5 personnes qui seraient intéressées à participer au sondage. L&apos;objectif est de rencontrer minimum 10 personnes par semaine pour atteindre notre objectif annuel.
       </p>
 
       <div className="space-y-6">
