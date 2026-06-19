@@ -34,7 +34,7 @@ export default function DashboardPage() {
             <div className="w-11 h-11 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center text-xl border border-white/20">📊</div>
             <div>
               <h1 className="text-xl font-bold tracking-tight">Tableau de bord</h1>
-              <p className="text-blue-200 text-xs">Quiz ADM — Tous les clients</p>
+              <p className="text-blue-200 text-xs">Quiz ADM, tous les clients</p>
             </div>
           </div>
           <Link href="/" className="bg-accent-500 hover:bg-accent-600 text-white font-semibold px-4 py-2.5 rounded-xl shadow-lg transition-all hover:-translate-y-0.5 text-sm">

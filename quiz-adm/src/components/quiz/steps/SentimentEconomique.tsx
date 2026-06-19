@@ -19,7 +19,7 @@ const STRESS_AVENIR: Choix[] = [
 ]
 
 const INFLATION_IMPACT: Choix[] = [
-  { value: 'beaucoup', label: 'Beaucoup — je le sens chaque mois', emoji: '📈' },
+  { value: 'beaucoup', label: 'Beaucoup, je le sens chaque mois', emoji: '📈' },
   { value: 'un_peu', label: 'Un peu, mais gérable', emoji: '📊' },
   { value: 'pas_vraiment', label: 'Pas vraiment d\'impact senti', emoji: '✅' },
 ]
@@ -85,7 +85,7 @@ export default function SentimentEconomique({ data, onChange }: Props) {
     <div className="space-y-6">
       <div className="bg-gradient-to-br from-slate-50 to-blue-50 border border-slate-200 rounded-2xl p-5">
         <p className="text-sm font-bold text-brand-900 flex items-center gap-2 mb-1">
-          🗞️ Avant tout — parlons de l&apos;économie
+          🗞️ Avant tout, parlons de l&apos;économie
         </p>
         <p className="text-xs text-slate-500">
           Comment vous voyez ça, vous, en ce moment? J&apos;veux juste votre vraie opinion.

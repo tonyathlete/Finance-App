@@ -48,7 +48,7 @@ export default function StepAssurancesActuelles({ data, onChange }: Props) {
     <div className="space-y-6">
       <div className="text-center pb-2">
         <h2 className="text-xl font-bold text-brand-900">Vos assurances actuelles</h2>
-        <p className="text-sm text-slate-500 mt-1">On regarde ce que vous avez déjà — et ce qui manque</p>
+        <p className="text-sm text-slate-500 mt-1">On regarde ce que vous avez déjà, et ce qui manque</p>
       </div>
 
       {/* Assurance vie */}
@@ -147,7 +147,7 @@ export default function StepAssurancesActuelles({ data, onChange }: Props) {
         filled={4}
         tone="indigo"
         label="Canadiens recevront un diagnostic de cancer au cours de leur vie"
-        caption="La maladie grave frappe sans prévenir — la question est : seriez-vous prêt financièrement?"
+        caption="La maladie grave frappe sans prévenir. La question, c'est: seriez-vous prêt financièrement?"
       />
 
       {/* Assurance maladie grave */}
@@ -191,7 +191,7 @@ export default function StepAssurancesActuelles({ data, onChange }: Props) {
 
         {/* Explication différence invalidité vs maladie grave */}
         <div className="mt-4 bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-100 rounded-xl p-4 space-y-3 text-xs">
-          <p className="font-bold text-slate-700 text-sm">Invalidité vs Maladie grave — quelle différence?</p>
+          <p className="font-bold text-slate-700 text-sm">Invalidité vs maladie grave: quelle différence?</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="flex gap-2">
               <span className="text-xl shrink-0">🛡️</span>
@@ -218,7 +218,7 @@ export default function StepAssurancesActuelles({ data, onChange }: Props) {
               </div>
             </div>
           </div>
-          <p className="text-slate-500 italic">💡 Les deux se complètent — l'une couvre le quotidien, l'autre donne la liberté de choix.</p>
+          <p className="text-slate-500 italic">💡 Les deux se complètent: l'une couvre le quotidien, l'autre donne la liberté de choix.</p>
         </div>
       </div>
 

@@ -143,7 +143,7 @@ export default function Step3Invalidite({ data, onChange }: Props) {
       )}
 
       <div className="insight-box">
-        On peut chiffrer exactement ce qui se passerait dans votre cas — pas une estimation vague, le vrai scénario.
+        On peut chiffrer exactement ce qui se passerait dans votre cas. Pas une estimation vague, le vrai scénario.
       </div>
     </div>
   )

@@ -13,7 +13,7 @@ export default function Step8Testament({ data, onChange }: Props) {
         filled={5}
         tone="amber"
         label="adultes canadiens n'ont pas de testament à jour"
-        caption="Sans testament, c'est la loi — pas vous — qui décide qui hérite de quoi."
+        caption="Sans testament, c'est la loi (pas vous) qui décide qui hérite de quoi."
       />
 
       <div>

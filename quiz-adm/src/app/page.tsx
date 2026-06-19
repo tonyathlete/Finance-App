@@ -74,7 +74,7 @@ export default function HomePage() {
             </div>
             <div>
               <h1 className="text-2xl font-bold tracking-tight">Quiz ADM</h1>
-              <p className="text-blue-200 text-sm">Analyse de marché — Conseiller financier</p>
+              <p className="text-blue-200 text-sm">Analyse de marché, conseiller financier</p>
             </div>
           </div>
           <a href="/dashboard" className="text-white/90 text-sm hover:text-white font-medium bg-white/10 hover:bg-white/20 backdrop-blur-sm px-4 py-2 rounded-xl transition-all border border-white/20">

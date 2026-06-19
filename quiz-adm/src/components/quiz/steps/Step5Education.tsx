@@ -30,12 +30,12 @@ export default function Step5Education({ data, onChange }: Props) {
         teaser="Combien coûte un parcours universitaire avec résidence aujourd'hui?"
         value={80000}
         prefix="+ de "
-        caption="La bonne nouvelle : le REEE offre des subventions gouvernementales pouvant atteindre 30 % — de l'argent gratuit qui s'ajoute à votre épargne. Plus on commence tôt, plus l'effet est puissant."
+        caption="La bonne nouvelle: le REEE offre des subventions gouvernementales pouvant atteindre 30 %, de l'argent gratuit qui s'ajoute à votre épargne. Plus on commence tôt, plus l'effet est fort."
       />
 
       {!aEnfants && (
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-800">
-          Pas d&apos;enfants pour l&apos;instant — mais si vous en prévoyez, ou si vous avez des petits-enfants,
+          Pas d&apos;enfants pour l&apos;instant, mais si vous en prévoyez, ou si vous avez des petits-enfants,
           on peut commencer à préparer ça dès maintenant.
         </div>
       )}

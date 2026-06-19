@@ -31,7 +31,7 @@ const QUESTIONS: Record<string, DiagQuestion[]> = {
         { label: 'Non', value: 'Non', bad: true },
         { label: 'Je ne connaissais pas', value: 'Je ne connaissais pas', bad: true },
       ],
-      tip: 'Reebee, Flipp et le cashback (Rakuten) réduisent l\'épicerie et les achats courants — sans changer vos habitudes.',
+      tip: 'Reebee, Flipp et le cashback (Rakuten) réduisent l\'épicerie et les achats courants, sans changer vos habitudes.',
       savings: 500,
     },
     {
@@ -55,7 +55,7 @@ const QUESTIONS: Record<string, DiagQuestion[]> = {
         { label: 'Oui, location', value: 'Location', extra: { aVehicule: 'oui' }, bad: true },
         { label: 'Non / payée comptant', value: 'Aucun', extra: { aVehicule: 'non' } },
       ],
-      tip: 'Taux de financement et assurance auto se magasinent. Au renouvellement, on compare — souvent 300 à 600 $ récupérés.',
+      tip: 'Taux de financement et assurance auto se magasinent. Au renouvellement, on compare, et c\'est souvent 300 à 600 $ de récupérés.',
       savings: 450,
     },
   ],
@@ -90,7 +90,7 @@ const QUESTIONS: Record<string, DiagQuestion[]> = {
         { label: 'Oui, je suis protégé', value: 'oui' },
         { label: 'Non', value: 'non', bad: true },
       ],
-      tip: 'Sans employeur, personne ne protège votre revenu automatiquement. C\'est LA priorité no 1 du travailleur autonome — et ça se règle bien.',
+      tip: 'Sans employeur, personne ne protège votre revenu automatiquement. C\'est la priorité no 1 du travailleur autonome, et ça se règle bien.',
     },
   ],
   entrepreneur: [
@@ -187,9 +187,9 @@ export default function DiagnosticExpress({ data, onChange }: Props) {
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div>
           <p className="font-bold text-brand-900 flex items-center gap-2">
-            ⚡ Diagnostic express — {PROFIL_LABELS[data.typeClient]}
+            ⚡ Diagnostic express: {PROFIL_LABELS[data.typeClient]}
           </p>
-          <p className="text-xs text-slate-500">3 questions, 1 minute chrono — on va voir si ça paraît</p>
+          <p className="text-xs text-slate-500">3 questions, 1 minute chrono, on va voir si ça paraît</p>
         </div>
         {totalSavings > 0 && (
           <div className="bg-green-100 border border-green-300 rounded-xl px-4 py-2 text-center animate-pop-in">
@@ -239,7 +239,7 @@ export default function DiagnosticExpress({ data, onChange }: Props) {
                 </div>
               )}
               {activeOption && !activeOption.bad && (
-                <p className="mt-2 text-xs font-medium text-green-600 animate-pop-in">✓ Déjà optimisé — bravo!</p>
+                <p className="mt-2 text-xs font-medium text-green-600 animate-pop-in">✓ Déjà optimisé, bravo!</p>
               )}
             </div>
           )

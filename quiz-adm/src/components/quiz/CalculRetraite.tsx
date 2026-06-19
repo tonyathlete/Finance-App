@@ -128,7 +128,7 @@ export default function CalculRetraite({ data, onChange }: Props) {
                   Pour combler l&apos;écart, il faudrait épargner{' '}
                   <strong>{fmt(mensuelleRequise)}/mois</strong>
                   {mensuelle > 0 && <> (vous épargnez actuellement {fmt(mensuelle)}/mois)</>}.
-                  Une stratégie adaptée peut réduire ce chiffre — c&apos;est exactement ce qu&apos;on bâtit ensemble.
+                  Une stratégie adaptée peut réduire ce chiffre. C&apos;est ça qu&apos;on bâtit ensemble.
                 </p>
               </>
             ) : (

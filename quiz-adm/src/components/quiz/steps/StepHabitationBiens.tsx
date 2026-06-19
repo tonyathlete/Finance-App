@@ -173,7 +173,7 @@ export default function StepHabitationBiens({ data, onChange }: Props) {
       </div>
 
       <div className="insight-box">
-        Regrouper auto, habitation et placements au même endroit, ça simplifie la vie — et ça finit souvent par coûter moins cher.
+        Regrouper auto, habitation et placements au même endroit, ça simplifie la vie, et ça finit souvent par coûter moins cher.
       </div>
     </div>
   )

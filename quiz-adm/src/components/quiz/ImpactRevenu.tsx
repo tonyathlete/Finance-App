@@ -57,7 +57,7 @@ export default function ImpactRevenu({ data, onChange }: Props) {
       {/* Revenus */}
       <div className="grid grid-cols-2 gap-4 mb-4">
         <div>
-          <label className="text-xs font-semibold text-slate-600">Revenu mensuel — vous</label>
+          <label className="text-xs font-semibold text-slate-600">Revenu mensuel (vous)</label>
           <div className="relative mt-1">
             <input type="number" inputMode="numeric" value={data.revenuMensuel1}
               onChange={e => onChange({ revenuMensuel1: e.target.value })}
@@ -66,7 +66,7 @@ export default function ImpactRevenu({ data, onChange }: Props) {
           </div>
         </div>
         <div>
-          <label className="text-xs font-semibold text-slate-600">Revenu mensuel — conjoint(e)</label>
+          <label className="text-xs font-semibold text-slate-600">Revenu mensuel (conjoint(e))</label>
           <div className="relative mt-1">
             <input type="number" inputMode="numeric" value={data.revenuMensuel2}
               onChange={e => onChange({ revenuMensuel2: e.target.value })}
@@ -169,7 +169,7 @@ export default function ImpactRevenu({ data, onChange }: Props) {
               <>
                 <p className="text-sm text-green-700 font-medium">Vos dépenses seraient couvertes</p>
                 <p className="text-xs text-green-600 mt-2">
-                  Le revenu restant couvre vos dépenses — mais sans marge pour l'épargne, les imprévus ou la dette.
+                  Le revenu restant couvre vos dépenses, mais sans marge pour l'épargne, les imprévus ou la dette.
                   Une protection sécurise tout de même votre niveau de vie.
                 </p>
               </>

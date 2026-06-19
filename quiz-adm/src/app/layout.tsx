@@ -3,7 +3,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Quiz ADM',
-  description: 'Analyse de marché — Conseiller financier',
+  description: 'Analyse de marché, conseiller financier',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

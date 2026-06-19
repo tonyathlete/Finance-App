@@ -138,7 +138,7 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
         </Section>
 
         {d.typeClient === 'salarie' && (
-          <Section title="Profil — Salarié">
+          <Section title="Profil: Salarié">
             <Row label="REER collectif (employeur)" value={d.reerCollectif} />
             <Row label="Employeur contribue" value={d.employeurContribue} />
             <Row label="Assurances collectives" value={d.assurancesCollectives} />
@@ -149,7 +149,7 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
         )}
 
         {d.typeClient === 'autonome' && (
-          <Section title="Profil — Travailleur autonome">
+          <Section title="Profil: Travailleur autonome">
             <Row label="A un comptable" value={d.aComptable} />
             <Row label="Est incorporé" value={d.estIncorpore} />
             <Row label="Fonds d'urgence" value={d.fondsUrgence} />
@@ -159,7 +159,7 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
         )}
 
         {d.typeClient === 'entrepreneur' && (
-          <Section title="Profil — Entrepreneur">
+          <Section title="Profil: Entrepreneur">
             <Row label="Chiffre d'affaires annuel" value={d.chiffreAffaires} />
             <Row label="Structure corporative (holding)" value={d.structureCorporative} />
             <Row label="A des associés" value={d.aAssocies} />
