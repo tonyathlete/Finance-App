@@ -17,12 +17,12 @@ import Bilan from '@/components/quiz/Bilan'
 import ScoreLive from '@/components/quiz/ScoreLive'
 
 const STEPS = [
-  { label: 'Références', component: Step9References },
   { label: 'Connaissances financières', component: Step0Connaissances },
   { label: 'Autonomie financière', component: Step2Autonomie },
   { label: 'Invalidité', component: Step3Invalidite },
   { label: 'Épargne', component: Step4Epargne },
   { label: 'Informations personnelles', component: Step1InfoPersonnelles },
+  { label: 'Références', component: Step9References },
   { label: 'Éducation', component: Step5Education },
   { label: 'Habitation & protection des biens', component: StepHabitationBiens },
   { label: 'Assurances actuelles', component: StepAssurancesActuelles },
@@ -139,7 +139,23 @@ function QuizContent() {
       {/* Content */}
       <main className="flex-1 px-4 py-8">
         <div className="max-w-2xl mx-auto card">
+          {step === 0 && (
+            <div className="insight-box mb-6">
+              💡 N&apos;oubliez pas de demander des références à la fin de la rencontre.
+            </div>
+          )}
           <CurrentStep data={data} onChange={onChange} />
+          {STEPS[step].label !== 'Bilan & recommandations' && (
+            <div className="mt-6 pt-4 border-t border-slate-100">
+              <label className="field-label">Note pour cette section (optionnel)</label>
+              <textarea
+                className="input mt-1 min-h-[70px]"
+                placeholder="Remarques personnelles sur cette section..."
+                value={data.notes[STEPS[step].label] || ''}
+                onChange={e => onChange({ notes: { ...data.notes, [STEPS[step].label]: e.target.value } })}
+              />
+            </div>
+          )}
         </div>
       </main>
 

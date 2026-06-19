@@ -1,19 +1,35 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { Submission } from '@/lib/types'
 import Bilan from '@/components/quiz/Bilan'
 
+const ReportEditContext = createContext<{
+  editMode: boolean
+  overrides: Record<string, string>
+  setOverride: (label: string, value: string) => void
+}>({ editMode: false, overrides: {}, setOverride: () => {} })
+
 function Row({ label, value }: { label: string; value?: string | string[] | null }) {
-  if (!value || (Array.isArray(value) && value.length === 0)) return null
+  const { editMode, overrides, setOverride } = useContext(ReportEditContext)
+  const base = Array.isArray(value) ? value.join(', ') : (value || '')
+  const override = overrides[label]
+  const display = override !== undefined ? override : base
+  if (!editMode && !display) return null
   return (
     <div className="flex gap-3 py-2 border-b border-gray-100 last:border-0">
       <span className="text-gray-500 text-sm w-48 shrink-0">{label}</span>
-      <span className="text-sm text-gray-900 font-medium">
-        {Array.isArray(value) ? value.join(', ') : value}
-      </span>
+      {editMode ? (
+        <input
+          className="text-sm text-gray-900 font-medium flex-1 border border-gray-200 rounded px-2 py-1"
+          value={display}
+          onChange={e => setOverride(label, e.target.value)}
+        />
+      ) : (
+        <span className="text-sm text-gray-900 font-medium">{display}</span>
+      )}
     </div>
   )
 }
@@ -41,10 +57,22 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
   const [submission, setSubmission] = useState<Submission | null>(null)
   const [loading, setLoading] = useState(true)
   const [deleting, setDeleting] = useState(false)
+  const [editMode, setEditMode] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [overrides, setOverrides] = useState<Record<string, string>>({})
+  const [email, setEmail] = useState('')
+  const [sending, setSending] = useState(false)
+  const [sendStatus, setSendStatus] = useState<'idle' | 'sent' | 'error'>('idle')
 
   useEffect(() => {
     supabase.from('submissions').select('*').eq('id', params.id).single()
-      .then(({ data }) => { setSubmission(data as Submission); setLoading(false) })
+      .then(({ data }) => {
+        const sub = data as Submission
+        setSubmission(sub)
+        setOverrides(sub?.data?.reportOverrides || {})
+        setEmail(sub?.data?.courriel || '')
+        setLoading(false)
+      })
   }, [params.id])
 
   const handleDelete = async () => {
@@ -59,10 +87,44 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
     }
   }
 
+  const setOverride = (label: string, value: string) => setOverrides(prev => ({ ...prev, [label]: value }))
+
+  const handleSave = async () => {
+    if (!submission) return
+    setSaving(true)
+    const updatedData = { ...submission.data, reportOverrides: overrides }
+    const { error } = await supabase.from('submissions').update({ data: updatedData }).eq('id', params.id)
+    setSaving(false)
+    if (error) {
+      alert('Erreur lors de l\'enregistrement.')
+    } else {
+      setSubmission({ ...submission, data: updatedData })
+      setEditMode(false)
+    }
+  }
+
+  const handleSend = async () => {
+    if (!email) return
+    setSending(true)
+    setSendStatus('idle')
+    try {
+      const res = await fetch('/api/send-report', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: params.id, email }),
+      })
+      setSendStatus(res.ok ? 'sent' : 'error')
+    } catch {
+      setSendStatus('error')
+    }
+    setSending(false)
+  }
+
   if (loading) return <div className="text-center py-20 text-gray-400">Chargement...</div>
   if (!submission) return <div className="text-center py-20 text-gray-400">Client introuvable.</div>
 
   const d = submission.data
+  const notes = d.notes || {}
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -86,6 +148,17 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
             </h1>
             <p className="text-blue-200 text-xs">{new Date(submission.created_at).toLocaleDateString('fr-CA', { dateStyle: 'long' })}</p>
           </div>
+          {editMode ? (
+            <button onClick={handleSave} disabled={saving}
+              className="text-white/90 hover:text-white text-sm bg-green-500/30 hover:bg-green-500/50 backdrop-blur-sm px-3 py-2 rounded-xl transition-all border border-green-300/30 disabled:opacity-50">
+              {saving ? '...' : '💾 Enregistrer'}
+            </button>
+          ) : (
+            <button onClick={() => setEditMode(true)}
+              className="text-white/90 hover:text-white text-sm bg-white/10 hover:bg-white/20 backdrop-blur-sm px-3 py-2 rounded-xl transition-all border border-white/20">
+              ✏️ Modifier
+            </button>
+          )}
           <button onClick={() => window.print()}
             className="text-white/90 hover:text-white text-sm bg-white/10 hover:bg-white/20 backdrop-blur-sm px-3 py-2 rounded-xl transition-all border border-white/20">
             🖨️ Imprimer
@@ -98,9 +171,24 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-8">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-card border border-white mb-5 p-6 print:hidden">
+          <p className="field-label">Envoyer le rapport par courriel</p>
+          <div className="flex gap-2 mt-2">
+            <input type="email" className="input" placeholder="courriel@exemple.com"
+              value={email} onChange={e => setEmail(e.target.value)} />
+            <button className="btn-primary shrink-0" onClick={handleSend} disabled={sending || !email}>
+              {sending ? 'Envoi...' : '📧 Envoyer'}
+            </button>
+          </div>
+          {sendStatus === 'sent' && <p className="text-green-600 text-sm mt-2">Rapport envoyé avec succès.</p>}
+          {sendStatus === 'error' && <p className="text-red-500 text-sm mt-2">L&apos;envoi a échoué. Vérifiez la configuration du service de courriel.</p>}
+        </div>
+
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-card border border-white mb-5 p-6">
           <Bilan data={d} />
         </div>
+
+        <ReportEditContext.Provider value={{ editMode, overrides, setOverride }}>
 
         <Section title="Sentiment économique">
           <Row label="Vis-à-vis l'économie du Canada" value={d.sentimentEconomieCanada} />
@@ -260,6 +348,21 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
                     {r.statut && <span>{r.statut === 'proprietaire' ? 'Propriétaire' : 'Locataire'}</span>}
                     {r.statutCivil && <span>{r.statutCivil}</span>}
                   </div>
+                </div>
+              ))}
+            </div>
+          </Section>
+        )}
+
+        </ReportEditContext.Provider>
+
+        {Object.values(notes).some(n => n) && (
+          <Section title="Notes du conseiller">
+            <div className="space-y-3">
+              {Object.entries(notes).filter(([, n]) => n).map(([section, n]) => (
+                <div key={section}>
+                  <p className="text-xs font-semibold text-gray-500 mb-1">{section}</p>
+                  <p className="text-sm text-gray-800 whitespace-pre-wrap">{n}</p>
                 </div>
               ))}
             </div>

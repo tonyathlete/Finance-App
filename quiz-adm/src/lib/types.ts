@@ -156,6 +156,12 @@ export interface QuizData {
 
   // Étape 9 — Références
   references: Reference[]
+
+  // Notes libres du conseiller, une par étape (clé = label de l'étape)
+  notes: Record<string, string>
+
+  // Corrections manuelles apportées au rapport final (clé = label du champ)
+  reportOverrides: Record<string, string>
 }
 
 export const defaultQuizData: QuizData = {
@@ -270,6 +276,8 @@ export const defaultQuizData: QuizData = {
     nom: '', telDom: '', cell: '', lien: '', emploi: '',
     nbreEnfants: '', statut: '', statutCivil: '',
   })),
+  notes: {},
+  reportOverrides: {},
 }
 
 export interface Submission {
