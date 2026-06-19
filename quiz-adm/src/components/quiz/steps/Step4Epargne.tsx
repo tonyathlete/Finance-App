@@ -53,7 +53,7 @@ export default function Step4Epargne({ data, onChange }: Props) {
         teaser="200 $ par mois investis à 7 % pendant 30 ans… ça donne combien?"
         value={244000}
         prefix="≈ "
-        caption="Et de ce montant, seulement 72 000 $ viennent de votre poche. Le reste? Ce sont les intérêts composés qui travaillent pour vous, jour et nuit."
+        caption="Vous en mettez seulement 72 000 $ de votre poche. Le reste, 172 000 $, c'est les intérêts composés."
       />
 
       <div>
@@ -206,7 +206,7 @@ export default function Step4Epargne({ data, onChange }: Props) {
       <CalculRetraite data={data} onChange={onChange} />
 
       <div className="insight-box">
-        C&apos;est intéressant! Saviez-vous qu&apos;il y a des stratégies qui permettent aux gens d&apos;atteindre leurs objectifs d&apos;épargne tout en bénéficiant d&apos;avantages qui sont uniques aux compagnies d&apos;assurance?
+        Il existe des façons d&apos;épargner qui passent par des produits d&apos;assurance — avec des avantages fiscaux que les comptes de placement classiques n&apos;offrent pas. On peut regarder ça ensemble.
       </div>
 
       <InvestmentGraph />

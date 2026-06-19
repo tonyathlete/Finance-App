@@ -36,7 +36,7 @@ export default function Step3Invalidite({ data, onChange }: Props) {
         filled={3}
         tone="red"
         label="travailleurs vivront une invalidité de 90 jours ou plus avant l'âge de 65 ans"
-        caption="Et la majorité n'ont aucun plan B. Voyons où vous vous situez."
+        caption="La plupart n'ont rien prévu pour ça. Vous, où est-ce que vous vous situez?"
       />
 
       <ImpactRevenu data={data} onChange={onChange} />
@@ -143,7 +143,7 @@ export default function Step3Invalidite({ data, onChange }: Props) {
       )}
 
       <div className="insight-box">
-        À l&apos;aide d&apos;un outil, il est possible d&apos;établir clairement quel serait le scénario pour vous dans une telle situation.
+        On peut chiffrer exactement ce qui se passerait dans votre cas — pas une estimation vague, le vrai scénario.
       </div>
     </div>
   )

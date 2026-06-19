@@ -107,7 +107,7 @@ export default function Step0Connaissances({ data, onChange }: Props) {
     <div className="space-y-8">
       <div className="text-center pb-2">
         <h2 className="text-xl font-bold text-brand-900">Votre situation économique</h2>
-        <p className="text-sm text-slate-500 mt-1">Aucune bonne ou mauvaise réponse — soyez honnête!</p>
+        <p className="text-sm text-slate-500 mt-1">Dites-moi ce que vous pensez vraiment, on n'est pas à l'examen.</p>
       </div>
 
       {/* Sentiment économique — leur avis sur la situation actuelle */}

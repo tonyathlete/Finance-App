@@ -183,7 +183,7 @@ export default function Bilan({ data }: { data: QuizData; onChange?: (u: Partial
 
         {bilan.recommandations.length === 0 ? (
           <div className="bg-green-50 border border-green-200 rounded-xl p-5 text-center text-green-700 font-medium">
-            🎉 Félicitations! Aucune lacune majeure détectée. Votre situation est bien protégée.
+            🎉 Solide! Rien de majeur qui manque en ce moment.
           </div>
         ) : (
           <div className="space-y-3">
@@ -214,7 +214,7 @@ export default function Bilan({ data }: { data: QuizData; onChange?: (u: Partial
       </div>
 
       <div className="insight-box">
-        Ces recommandations sont un point de départ pour notre discussion. Prochaine étape : une rencontre approfondie pour bâtir votre plan personnalisé.
+        C&apos;est le portrait d&apos;aujourd&apos;hui. On se reprend une rencontre pour regarder ça point par point et mettre un plan en place.
       </div>
     </div>
   )

@@ -173,8 +173,7 @@ export default function StepHabitationBiens({ data, onChange }: Props) {
       </div>
 
       <div className="insight-box">
-        En regroupant vos assurances auto, habitation et vos placements au même endroit, des économies importantes
-        sont souvent possibles — tout en simplifiant votre vie financière.
+        Regrouper auto, habitation et placements au même endroit, ça simplifie la vie — et ça finit souvent par coûter moins cher.
       </div>
     </div>
   )

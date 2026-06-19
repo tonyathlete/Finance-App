@@ -33,7 +33,7 @@ export default function Step2Autonomie({ data, onChange }: Props) {
       <div>
         <div className="section-title">Autonomie financière</div>
         <p className="text-sm text-gray-600 mb-2">
-          Que signifie être <strong>financièrement autonome</strong> pour vous?
+          C'est quoi, pour vous, être <strong>financièrement autonome</strong>?
         </p>
         <div className="space-y-2 mt-2">
           {SIGNIFICATION_OPTIONS.map((opt, i) => (

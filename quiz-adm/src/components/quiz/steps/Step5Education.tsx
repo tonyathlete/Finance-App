@@ -35,8 +35,8 @@ export default function Step5Education({ data, onChange }: Props) {
 
       {!aEnfants && (
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-800">
-          Aucun enfant n’a été indiqué. Si vous prévoyez en avoir (ou avez des petits-enfants),
-          il existe des stratégies pour préparer leur avenir dès aujourd’hui.
+          Pas d&apos;enfants pour l&apos;instant — mais si vous en prévoyez, ou si vous avez des petits-enfants,
+          on peut commencer à préparer ça dès maintenant.
         </div>
       )}
 
@@ -91,8 +91,7 @@ export default function Step5Education({ data, onChange }: Props) {
       )}
 
       <div className="insight-box">
-        Une stratégie REEE bien structurée permet non seulement d’atteindre l’objectif, mais aussi d’aller chercher
-        le maximum des subventions gouvernementales auxquelles vous avez droit.
+        Un REEE bien monté, c&apos;est l&apos;objectif atteint <strong>et</strong> les subventions gouvernementales encaissées au maximum.
       </div>
     </div>
   )

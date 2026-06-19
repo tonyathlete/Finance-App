@@ -88,8 +88,7 @@ export default function SentimentEconomique({ data, onChange }: Props) {
           🗞️ Avant tout — parlons de l&apos;économie
         </p>
         <p className="text-xs text-slate-500">
-          J&apos;aimerais connaître votre ressenti par rapport à la situation actuelle. Aucune bonne réponse —
-          c&apos;est votre opinion qui compte.
+          Comment vous voyez ça, vous, en ce moment? J&apos;veux juste votre vraie opinion.
         </p>
       </div>
 
@@ -142,9 +141,7 @@ export default function SentimentEconomique({ data, onChange }: Props) {
 
       {(data.stressAvenirFinancier === 'oui' || data.sentimentEconomieCanada === 'tres_inquiet') && (
         <div className="insight-box">
-          C&apos;est tout à fait normal de ressentir ça dans le contexte actuel — vous n&apos;êtes pas seul(e).
-          C&apos;est exactement pour ça qu&apos;on prend le temps aujourd&apos;hui : avoir un plan clair change
-          complètement la façon dont on vit l&apos;incertitude économique.
+          Vous êtes loin d&apos;être seul(e) à ressentir ça. C&apos;est exactement pour ça qu&apos;on fait cet exercice aujourd&apos;hui.
         </div>
       )}
     </div>

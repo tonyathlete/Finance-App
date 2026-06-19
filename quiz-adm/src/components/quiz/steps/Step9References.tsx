@@ -15,7 +15,7 @@ export default function Step9References({ data, onChange }: Props) {
     <div className="space-y-6">
       <div className="section-title">Références</div>
       <p className="text-sm text-gray-600">
-        Parmi les personnes que vous connaissez, lesquelles auraient, comme vous, l&apos;amabilité de prendre un peu de temps pour m&apos;aider à poursuivre mon projet?
+        Connaissez-vous des gens qui pourraient bénéficier d&apos;une rencontre comme celle-ci?
       </p>
 
       <div className="space-y-6">

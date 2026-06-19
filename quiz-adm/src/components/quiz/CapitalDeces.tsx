@@ -40,9 +40,9 @@ export default function CapitalDeces({ data, onChange }: Props) {
 
   return (
     <div className="p-5 bg-gradient-to-br from-violet-50 to-purple-50 rounded-2xl border border-violet-100">
-      <h3 className="text-lg font-bold text-brand-900 mb-1">💎 Combien « vaut » votre protection?</h3>
+      <h3 className="text-lg font-bold text-brand-900 mb-1">💎 De combien votre famille aurait besoin?</h3>
       <p className="text-xs text-slate-500 mb-5">
-        Calculons en 30 secondes le capital dont votre famille aurait réellement besoin
+        Quelques chiffres et on sait exactement le montant
       </p>
 
       <div className="grid grid-cols-2 gap-4 mb-5">
@@ -99,7 +99,7 @@ export default function CapitalDeces({ data, onChange }: Props) {
                 <p className="text-3xl font-bold text-red-700 mt-1">− {fmt(manque)}</p>
                 <p className="text-xs text-red-600 mt-3">
                   C&apos;est le montant que votre famille devrait absorber sans vous.
-                  La bonne nouvelle : combler cet écart coûte souvent <strong>moins cher qu&apos;un café par jour</strong>.
+                  La bonne nouvelle : combler cet écart coûte souvent juste <strong>quelques dollars par jour</strong>.
                 </p>
               </>
             ) : (

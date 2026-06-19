@@ -48,7 +48,7 @@ export default function StepAssurancesActuelles({ data, onChange }: Props) {
     <div className="space-y-6">
       <div className="text-center pb-2">
         <h2 className="text-xl font-bold text-brand-900">Vos assurances actuelles</h2>
-        <p className="text-sm text-slate-500 mt-1">Faisons le tour de ce que vous détenez déjà</p>
+        <p className="text-sm text-slate-500 mt-1">On regarde ce que vous avez déjà — et ce qui manque</p>
       </div>
 
       {/* Assurance vie */}
@@ -58,7 +58,7 @@ export default function StepAssurancesActuelles({ data, onChange }: Props) {
             <span className="text-2xl">💙</span>
             <div>
               <p className="text-sm font-semibold text-slate-700">Assurance vie</p>
-              <p className="text-xs text-slate-500">Protège vos proches en cas de décès</p>
+              <p className="text-xs text-slate-500">S&apos;il vous arrive quelque chose, vos proches reçoivent un capital</p>
             </div>
           </div>
           <OuiNon name="aAssuranceVie" value={data.aAssuranceVie} onSet={v => onChange({ aAssuranceVie: v })} />
@@ -98,7 +98,7 @@ export default function StepAssurancesActuelles({ data, onChange }: Props) {
             <span className="text-2xl">🛡️</span>
             <div>
               <p className="text-sm font-semibold text-slate-700">Assurance invalidité</p>
-              <p className="text-xs text-slate-500">Remplace votre revenu si vous ne pouvez plus travailler</p>
+              <p className="text-xs text-slate-500">Si vous ne pouvez plus travailler, c&apos;est elle qui paie le chèque de paie</p>
             </div>
           </div>
           <OuiNon name="aAssuranceInvalidite" value={data.aAssuranceInvalidite} onSet={v => onChange({ aAssuranceInvalidite: v })} />
@@ -157,7 +157,7 @@ export default function StepAssurancesActuelles({ data, onChange }: Props) {
             <span className="text-2xl">🏥</span>
             <div>
               <p className="text-sm font-semibold text-slate-700">Assurance maladie grave</p>
-              <p className="text-xs text-slate-500">Montant forfaitaire au diagnostic (cancer, AVC…)</p>
+              <p className="text-xs text-slate-500">Un chèque, cash, le jour du diagnostic (cancer, AVC…)</p>
             </div>
           </div>
           <OuiNon name="aAssuranceMaladieGrave" value={data.aAssuranceMaladieGrave} onSet={v => onChange({ aAssuranceMaladieGrave: v })} />
@@ -223,7 +223,7 @@ export default function StepAssurancesActuelles({ data, onChange }: Props) {
       </div>
 
       <div className="insight-box">
-        Détenir une assurance, c'est bien. S'assurer qu'elle correspond toujours à votre situation actuelle, c'est encore mieux. Nous pourrons réviser vos protections ensemble.
+        Avoir une assurance ne veut pas dire qu&apos;elle est encore adaptée. On va vérifier ça ensemble pendant qu&apos;on y est.
       </div>
     </div>
   )

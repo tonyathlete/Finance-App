@@ -52,7 +52,7 @@ export default function ImpactRevenu({ data, onChange }: Props) {
   return (
     <div className="mt-8 p-5 bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl border border-red-100">
       <h3 className="text-lg font-bold text-brand-900 mb-1">Que se passe-t-il si un revenu disparaît?</h3>
-      <p className="text-xs text-slate-500 mb-5">Entrez vos chiffres pour visualiser l'impact d'une invalidité sur votre ménage</p>
+      <p className="text-xs text-slate-500 mb-5">On fait le calcul avec vos vrais chiffres</p>
 
       {/* Revenus */}
       <div className="grid grid-cols-2 gap-4 mb-4">

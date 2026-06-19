@@ -189,7 +189,7 @@ export default function DiagnosticExpress({ data, onChange }: Props) {
           <p className="font-bold text-brand-900 flex items-center gap-2">
             ⚡ Diagnostic express — {PROFIL_LABELS[data.typeClient]}
           </p>
-          <p className="text-xs text-slate-500">3 questions, 60 secondes — voyons ce qu&apos;on peut déjà trouver</p>
+          <p className="text-xs text-slate-500">3 questions, 1 minute chrono — on va voir si ça paraît</p>
         </div>
         {totalSavings > 0 && (
           <div className="bg-green-100 border border-green-300 rounded-xl px-4 py-2 text-center animate-pop-in">
