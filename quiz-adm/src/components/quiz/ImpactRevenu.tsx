@@ -50,7 +50,7 @@ export default function ImpactRevenu({ data, onChange }: Props) {
   const aDonnees = revenuTotal > 0 && dep > 0
 
   return (
-    <div className="mt-8 p-5 bg-papier-card border border-encre/15">
+    <div className="mt-8 card">
       <h3 className="text-lg font-display font-semibold text-encre mb-1">Que se passe-t-il si un revenu disparaît?</h3>
       <p className="text-xs text-encre/50 mb-5">On fait le calcul avec vos vrais chiffres</p>
 
@@ -90,7 +90,7 @@ export default function ImpactRevenu({ data, onChange }: Props) {
         </div>
 
         {modeDetail ? (
-          <div className="space-y-2 bg-papier p-3 border border-encre/15">
+          <div className="space-y-2 rounded-xl bg-brand-50/50 p-3 border border-encre/8">
             {DEPENSES.map(d => (
               <div key={d.key} className="flex items-center gap-3">
                 <span className="text-xs text-encre/60 w-36 shrink-0">{d.label}</span>
@@ -127,8 +127,8 @@ export default function ImpactRevenu({ data, onChange }: Props) {
                 <span className="font-medium text-encre/60">Revenu actuel du ménage</span>
                 <span className="font-bold text-sauge font-ledger">{fmt(revenuTotal)}</span>
               </div>
-              <div className="w-full bg-encre/10 h-2 overflow-hidden">
-                <div className="h-full bg-sauge" style={{ width: pct(revenuTotal) }} />
+              <div className="w-full bg-encre/10 h-2 rounded-full overflow-hidden">
+                <div className="h-full rounded-full bg-gradient-green" style={{ width: pct(revenuTotal) }} />
               </div>
             </div>
 
@@ -137,8 +137,8 @@ export default function ImpactRevenu({ data, onChange }: Props) {
                 <span className="font-medium text-encre/60">Revenu si invalidité (1 revenu perdu)</span>
                 <span className="font-bold text-sceau font-ledger">{fmt(revenuRestant)}</span>
               </div>
-              <div className="w-full bg-encre/10 h-2 overflow-hidden">
-                <div className="h-full bg-sceau" style={{ width: pct(revenuRestant) }} />
+              <div className="w-full bg-encre/10 h-2 rounded-full overflow-hidden">
+                <div className="h-full rounded-full bg-gradient-red" style={{ width: pct(revenuRestant) }} />
               </div>
             </div>
 
@@ -147,14 +147,14 @@ export default function ImpactRevenu({ data, onChange }: Props) {
                 <span className="font-medium text-encre/60">Vos dépenses mensuelles</span>
                 <span className="font-bold text-encre/80 font-ledger">{fmt(dep)}</span>
               </div>
-              <div className="w-full bg-encre/10 h-2 overflow-hidden">
-                <div className="h-full bg-manille-dark" style={{ width: pct(dep) }} />
+              <div className="w-full bg-encre/10 h-2 rounded-full overflow-hidden">
+                <div className="h-full rounded-full bg-gradient-blue" style={{ width: pct(dep) }} />
               </div>
             </div>
           </div>
 
           {/* Résultat */}
-          <div className={`mt-6 border p-5 text-center ${manqueParMois > 0 ? 'bg-sceau-light border-sceau/40' : 'bg-sauge-light border-sauge/40'}`}>
+          <div className={`mt-6 rounded-2xl border p-5 text-center ${manqueParMois > 0 ? 'bg-sceau-light border-sceau/30' : 'bg-sauge-light border-sauge/30'}`}>
             {manqueParMois > 0 ? (
               <>
                 <p className="text-xs font-ledger tracking-wide text-sceau">MANQUE À GAGNER CHAQUE MOIS</p>

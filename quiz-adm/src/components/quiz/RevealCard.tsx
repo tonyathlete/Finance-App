@@ -39,10 +39,10 @@ export default function RevealCard({ teaser, value, prefix = '', suffix = ' $', 
       type="button"
       onClick={() => setRevealed(true)}
       disabled={revealed}
-      className={`w-full text-left border p-5 transition-all duration-300 ${
+      className={`w-full text-left rounded-2xl border p-5 transition-all duration-300 ${
         revealed
-          ? 'border-encre/20 bg-papier cursor-default'
-          : 'border-sceau/40 bg-papier-card hover:border-sceau cursor-pointer'
+          ? 'border-encre/10 bg-white/60 cursor-default'
+          : 'border-sceau/30 bg-white/80 backdrop-blur-sm shadow-card hover:border-sceau cursor-pointer'
       }`}
     >
       <div className="flex items-center gap-3">

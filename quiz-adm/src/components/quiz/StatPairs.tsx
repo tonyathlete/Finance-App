@@ -9,9 +9,9 @@ interface Props {
 }
 
 const TONES = {
-  red: { active: 'bg-sceau', big: 'text-sceau' },
-  amber: { active: 'bg-manille-dark', big: 'text-manille-dark' },
-  indigo: { active: 'bg-encre', big: 'text-encre' },
+  red: { active: 'bg-gradient-red', big: 'text-sceau' },
+  amber: { active: 'bg-gradient-blue', big: 'text-manille-dark' },
+  indigo: { active: 'bg-gradient-blue', big: 'text-brand-600' },
 }
 
 export default function StatPairs({ filled, label, caption, tone = 'red' }: Props) {
@@ -31,18 +31,18 @@ export default function StatPairs({ filled, label, caption, tone = 'red' }: Prop
   }, [])
 
   return (
-    <div ref={ref} className="border border-encre/15 bg-papier-card p-5">
+    <div ref={ref} className="card">
       <div className="flex items-center gap-4 flex-wrap">
-        <div className="flex gap-1 h-8 items-end">
+        <div className="flex gap-1.5 h-8 items-end">
           {Array.from({ length: 10 }).map((_, i) => (
             <span
               key={i}
-              className={`w-2 h-8 ${i < filled ? t.active : 'bg-encre/12'} ${visible && i < filled ? 'animate-pop-in' : ''}`}
+              className={`w-2.5 h-8 rounded-full ${i < filled ? t.active : 'bg-encre/10'} ${visible && i < filled ? 'animate-pop-in' : ''}`}
               style={visible && i < filled ? { animationDelay: `${i * 70}ms` } : { opacity: i < filled && !visible ? 0 : undefined }}
             />
           ))}
         </div>
-        <p className={`text-2xl font-display font-semibold ${t.big} shrink-0`}>
+        <p className={`text-2xl font-display font-bold ${t.big} shrink-0`}>
           {filled} sur 10
         </p>
       </div>

@@ -39,7 +39,7 @@ export default function CapitalDeces({ data, onChange }: Props) {
   const aDonnees = revenu > 0 && annees > 0
 
   return (
-    <div className="p-5 bg-papier-card border border-encre/15">
+    <div className="card">
       <h3 className="text-lg font-display font-semibold text-encre mb-1">De combien votre famille aurait besoin?</h3>
       <p className="text-xs text-encre/50 mb-5">
         Quelques chiffres et on sait exactement le montant
@@ -66,7 +66,7 @@ export default function CapitalDeces({ data, onChange }: Props) {
       {aDonnees ? (
         <>
           {/* Décomposition */}
-          <div className="bg-papier border border-encre/15 p-4 space-y-2 text-sm font-ledger">
+          <div className="rounded-xl bg-brand-50/50 border border-encre/8 p-4 space-y-2 text-sm font-ledger">
             <div className="flex justify-between">
               <span className="text-encre/60">Remplacement du revenu ({annees} ans)</span>
               <span className="font-semibold text-encre tabular-nums">{fmt(remplacementRevenu)}</span>
@@ -92,7 +92,7 @@ export default function CapitalDeces({ data, onChange }: Props) {
           </div>
 
           {/* Verdict */}
-          <div className={`mt-4 border p-5 text-center ${manque > 0 ? 'bg-sceau-light border-sceau/40' : 'bg-sauge-light border-sauge/40'}`}>
+          <div className={`mt-4 rounded-2xl border p-5 text-center ${manque > 0 ? 'bg-sceau-light border-sceau/30' : 'bg-sauge-light border-sauge/30'}`}>
             {manque > 0 ? (
               <>
                 <p className="text-xs font-ledger tracking-wide text-sceau">PROTECTION MANQUANTE</p>

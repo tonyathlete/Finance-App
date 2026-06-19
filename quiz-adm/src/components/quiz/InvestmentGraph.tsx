@@ -53,7 +53,7 @@ export default function InvestmentGraph() {
   const diff = finalOptimized - finalCurrent
 
   return (
-    <div className="mt-8 p-5 bg-papier-card border border-encre/15">
+    <div className="mt-8 card">
       <h3 className="text-lg font-display font-semibold text-encre mb-1">Comparaison de placement</h3>
       <p className="text-xs text-encre/50 mb-5">Visualisez l&apos;impact d&apos;un taux de rendement optimisé sur votre épargne</p>
 
@@ -108,7 +108,7 @@ export default function InvestmentGraph() {
           {yTicks.map((t, i) => (
             <g key={i}>
               <line x1={PAD.left} x2={W - PAD.right} y1={toY(t)} y2={toY(t)}
-                stroke="#1C2B3A" strokeOpacity="0.1" strokeWidth="1" strokeDasharray="4 3" />
+                stroke="#312E81" strokeOpacity="0.1" strokeWidth="1" strokeDasharray="4 3" />
               <text x={PAD.left - 6} y={toY(t) + 4} textAnchor="end"
                 className="fill-encre/40" style={{ fontSize: 10 }}>
                 {Math.round(t / 1000)}k
@@ -120,7 +120,7 @@ export default function InvestmentGraph() {
           {xTicks.map(t => (
             <g key={t}>
               <line x1={toX(t)} x2={toX(t)} y1={PAD.top} y2={H - PAD.bottom + 4}
-                stroke="#1C2B3A" strokeOpacity="0.1" strokeWidth="1" />
+                stroke="#312E81" strokeOpacity="0.1" strokeWidth="1" />
               <text x={toX(t)} y={H - PAD.bottom + 16} textAnchor="middle"
                 className="fill-encre/40" style={{ fontSize: 10 }}>
                 {t}
@@ -135,22 +135,22 @@ export default function InvestmentGraph() {
           </text>
 
           {/* Current rate curve */}
-          <path d={pathD(currentPoints)} fill="none" stroke="#B7A877" strokeWidth="2.5" strokeLinejoin="round" />
+          <path d={pathD(currentPoints)} fill="none" stroke="#5B5FEF" strokeWidth="2.5" strokeLinejoin="round" />
 
           {/* Optimized rate curve */}
-          <path d={pathD(optimizedPoints)} fill="none" stroke="#46604E" strokeWidth="2.5" strokeLinejoin="round" />
+          <path d={pathD(optimizedPoints)} fill="none" stroke="#10B981" strokeWidth="2.5" strokeLinejoin="round" />
 
           {/* Filled area between curves */}
           <path
             d={`${pathD(optimizedPoints)} L${toX(years).toFixed(1)},${toY(finalCurrent).toFixed(1)} ${currentPoints.map((v, i) => `L${toX(years - i).toFixed(1)},${toY(currentPoints[years - i]).toFixed(1)}`).join(' ')} Z`}
-            fill="#46604E" opacity="0.1" />
+            fill="#10B981" opacity="0.1" />
         </svg>
       </div>
 
       {/* Legend */}
       <div className="flex gap-4 justify-center mb-4 text-xs font-ledger">
         <div className="flex items-center gap-1.5">
-          <div className="w-6 h-0.5 bg-manille-dark" />
+          <div className="w-6 h-0.5 bg-brand-600" />
           <span className="text-encre/60">Taux actuel ({rateCurrent}%)</span>
         </div>
         <div className="flex items-center gap-1.5">
@@ -160,16 +160,16 @@ export default function InvestmentGraph() {
       </div>
 
       {/* Results */}
-      <div className="grid grid-cols-3 gap-px bg-encre/15 mt-2">
-        <div className="text-center p-3 bg-papier-card">
-          <p className="text-xs text-manille-dark font-semibold mb-1 font-ledger">Valeur finale ({rateCurrent}%)</p>
+      <div className="grid grid-cols-3 gap-3 mt-2">
+        <div className="text-center p-3 rounded-xl bg-brand-50/50">
+          <p className="text-xs text-brand-600 font-semibold mb-1 font-ledger">Valeur finale ({rateCurrent}%)</p>
           <p className="text-sm font-bold text-encre font-ledger">{fmt(finalCurrent)}</p>
         </div>
-        <div className="text-center p-3 bg-papier-card">
+        <div className="text-center p-3 rounded-xl bg-sauge-light">
           <p className="text-xs text-sauge font-semibold mb-1 font-ledger">Valeur finale ({rateOptimized}%)</p>
           <p className="text-sm font-bold text-encre font-ledger">{fmt(finalOptimized)}</p>
         </div>
-        <div className="text-center p-3 bg-papier-card">
+        <div className="text-center p-3 rounded-xl bg-sceau-light">
           <p className="text-xs text-sceau font-semibold mb-1 font-ledger">Différence</p>
           <p className="text-sm font-bold text-sceau font-ledger">+ {fmt(diff)}</p>
         </div>

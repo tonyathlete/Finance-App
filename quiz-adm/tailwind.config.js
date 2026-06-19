@@ -9,62 +9,67 @@ module.exports = {
         ledger: ['var(--font-ledger)', 'monospace'],
       },
       colors: {
-        // "Dossier" palette — a financial meeting rendered as paper, ink and a wax seal.
+        // "Control Room" palette — a periwinkle/indigo AI-dashboard look:
+        // light glass surfaces, glossy indigo actions, gradient stat tiles.
         encre: {
-          DEFAULT: '#1C2B3A', // ink navy — display type, primary surfaces
-          light: '#324456',
+          DEFAULT: '#1E1B4B', // indigo-950 — headings, primary text
+          light: '#4338CA',
         },
         papier: {
-          DEFAULT: '#EEECE1', // ledger paper — page background
-          card: '#F7F5EC', // dossier card surface, slightly lighter than the page
+          DEFAULT: '#F3F4FC', // periwinkle-tinted page background
+          card: '#FFFFFF', // glass card surface
         },
         manille: {
-          DEFAULT: '#D8CDA9', // kraft folder tab
-          dark: '#B7A877',
+          DEFAULT: '#60A5FA', // sky accent — secondary highlight / "this week"
+          dark: '#2563EB',
         },
         sceau: {
-          DEFAULT: '#8C3324', // stamp red — the one accent, used sparingly
-          light: '#FBEAE5',
+          DEFAULT: '#EF4444', // alert red — overdue / urgent
+          light: '#FEE2E2',
         },
         sauge: {
-          DEFAULT: '#46604E', // ledger green — affirmative / "ok" states
-          light: '#E6ECE3',
+          DEFAULT: '#10B981', // affirmative green — done / on track
+          light: '#D1FAE5',
         },
         // legacy aliases so existing brand-*/accent-*/ia-* utility classes
         // resolve to the new palette without a file-by-file rename
         ia: {
-          blue: '#1C2B3A',
-          lightblue: '#EBEEF1',
-          dark: '#1C2B3A',
+          blue: '#5B5FEF',
+          lightblue: '#EEF0FF',
+          dark: '#1E1B4B',
         },
         brand: {
-          50: '#EBEEF1',
-          100: '#D8CDA9',
-          500: '#1C2B3A',
-          600: '#19242F',
-          700: '#142029',
-          900: '#0F171F',
+          50: '#EEF0FF',
+          100: '#E0E3FB',
+          500: '#5B5FEF',
+          600: '#4C51E0',
+          700: '#3730A3',
+          900: '#1E1B4B',
         },
         accent: {
-          500: '#8C3324',
-          600: '#6F2A1D',
+          500: '#A855F7',
+          600: '#9333EA',
         },
       },
       backgroundImage: {
-        'gradient-hero': 'linear-gradient(180deg, #1C2B3A 0%, #1C2B3A 100%)',
-        'gradient-soft': 'linear-gradient(180deg, #EEECE1 0%, #F7F5EC 100%)',
-        'gradient-card': 'linear-gradient(180deg, #F7F5EC 0%, #F7F5EC 100%)',
-        'ledger-lines': 'repeating-linear-gradient(to bottom, transparent 0, transparent 27px, rgba(28,43,58,0.06) 28px)',
+        'gradient-hero': 'linear-gradient(135deg, #6366F1 0%, #4C51E0 100%)',
+        'gradient-soft': 'linear-gradient(180deg, #F3F4FC 0%, #EEF0FF 100%)',
+        'gradient-card': 'linear-gradient(180deg, #FFFFFF 0%, #FAFAFF 100%)',
+        'gradient-glossy': 'linear-gradient(180deg, #93C5FD 0%, #5B5FEF 100%)',
+        'gradient-blue': 'linear-gradient(135deg, #6366F1 0%, #4338CA 100%)',
+        'gradient-magenta': 'linear-gradient(135deg, #D946EF 0%, #A21CAF 100%)',
+        'gradient-red': 'linear-gradient(135deg, #F87171 0%, #DC2626 100%)',
+        'gradient-green': 'linear-gradient(135deg, #34D399 0%, #059669 100%)',
       },
       boxShadow: {
-        // a flat, offset "stamped paper" shadow instead of a soft glow
-        'glow': '4px 4px 0 0 rgba(28,43,58,0.18)',
-        'card': '0 1px 2px rgba(28,43,58,0.1)',
-        'stamp': '4px 4px 0 0 rgba(28,43,58,0.16)',
-        'stamp-sm': '2px 2px 0 0 rgba(28,43,58,0.14)',
+        'glow': '0 8px 24px -8px rgba(91,95,239,0.35)',
+        'card': '0 1px 2px rgba(30,27,75,0.06), 0 8px 24px -12px rgba(30,27,75,0.08)',
+        'stamp': '0 8px 20px -6px rgba(91,95,239,0.4)',
+        'stamp-sm': '0 4px 12px -4px rgba(91,95,239,0.35)',
+        'glass': 'inset 0 1px 0 0 rgba(255,255,255,0.6), 0 8px 30px -10px rgba(30,27,75,0.12)',
       },
       borderRadius: {
-        DEFAULT: '4px',
+        DEFAULT: '0.875rem',
       },
       animation: {
         'fade-in': 'fadeIn 0.3s ease-out',
@@ -81,8 +86,8 @@ module.exports = {
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         stampIn: {
-          '0%': { opacity: '0', transform: 'scale(1.3) rotate(-6deg)' },
-          '100%': { opacity: '1', transform: 'scale(1) rotate(-2deg)' },
+          '0%': { opacity: '0', transform: 'scale(0.85)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
         },
       },
     },

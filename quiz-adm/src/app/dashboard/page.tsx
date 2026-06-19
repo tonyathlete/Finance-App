@@ -27,13 +27,13 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen">
-      <header className="bg-encre text-papier-card py-6 px-6">
+      <header className="py-6 px-6">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-display font-semibold tracking-tight">Tableau de bord</h1>
-            <p className="text-papier-card/55 text-xs font-ledger tracking-wide">QUIZ ADM — TOUS LES DOSSIERS</p>
+            <h1 className="text-xl font-display font-bold tracking-tight text-encre">Tableau de bord</h1>
+            <p className="text-encre/45 text-xs font-ledger tracking-wide">QUIZ ADM — TOUS LES DOSSIERS</p>
           </div>
-          <Link href="/" className="bg-sceau hover:bg-sceau/90 text-papier-card font-semibold px-4 py-2.5 shadow-stamp-sm hover:translate-x-[1px] hover:translate-y-[1px] transition-all text-sm">
+          <Link href="/" className="btn-primary !px-4 !py-2.5 text-sm">
             + Nouveau client
           </Link>
         </div>
@@ -56,9 +56,9 @@ export default function DashboardPage() {
             {search ? 'Aucun résultat trouvé.' : 'Aucun client pour le moment.'}
           </div>
         ) : (
-          <div className="bg-papier-card border border-encre/15 overflow-hidden">
+          <div className="card !p-0 overflow-hidden">
             <table className="w-full text-sm">
-              <thead className="border-b border-encre/15 text-encre">
+              <thead className="border-b border-encre/10 text-encre">
                 <tr>
                   <th className="text-left px-4 py-3 font-ledger text-xs tracking-wide font-medium">Client</th>
                   <th className="text-left px-4 py-3 font-ledger text-xs tracking-wide font-medium hidden sm:table-cell">Type</th>
@@ -67,9 +67,9 @@ export default function DashboardPage() {
                   <th className="px-4 py-3"></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-encre/10">
+              <tbody className="divide-y divide-encre/8">
                 {filtered.map(s => (
-                  <tr key={s.id} className="hover:bg-encre/5 transition-colors">
+                  <tr key={s.id} className="hover:bg-brand-50/60 transition-colors">
                     <td className="px-4 py-3">
                       <div className="font-medium text-encre">
                         {s.data.prenom} {s.data.nom}
@@ -86,7 +86,7 @@ export default function DashboardPage() {
                       {new Date(s.created_at).toLocaleDateString('fr-CA')}
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <Link href={`/dashboard/${s.id}`} className="inline-flex items-center gap-1 text-encre hover:text-sceau font-semibold text-xs px-3 py-1.5 transition-colors">
+                      <Link href={`/dashboard/${s.id}`} className="inline-flex items-center gap-1 text-brand-600 hover:text-brand-700 font-semibold text-xs px-3 py-1.5 transition-colors">
                         Voir →
                       </Link>
                     </td>

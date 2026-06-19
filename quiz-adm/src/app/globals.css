@@ -5,17 +5,17 @@
 @layer base {
   body {
     @apply text-encre antialiased font-body;
-    background-color: #EEECE1;
+    background: linear-gradient(180deg, #F3F4FC 0%, #EEF0FF 100%);
     min-height: 100vh;
   }
   h1, h2, h3 {
     @apply font-display;
   }
   ::selection {
-    background: #D8CDA9;
+    background: #E0E3FB;
   }
   :focus-visible {
-    outline: 2px solid #8C3324;
+    outline: 2px solid #5B5FEF;
     outline-offset: 2px;
   }
 }
@@ -30,7 +30,7 @@
   main {
     padding: 0 !important;
   }
-  .shadow-card, .shadow-glow, .shadow-stamp, .shadow-lg, .shadow-md {
+  .shadow-card, .shadow-glow, .shadow-stamp, .shadow-lg, .shadow-md, .shadow-glass {
     box-shadow: none !important;
   }
   .animate-slide-up {
@@ -39,86 +39,81 @@
 }
 
 @layer components {
-  /* A dossier-tab heading: the kraft-folder tab sticking up from a paper card */
+  /* Section heading: a soft indigo pill, like a dashboard module label */
   .section-title {
-    @apply relative inline-flex items-center gap-2 bg-encre text-papier-card
-           font-display font-semibold text-lg px-5 py-2.5 mb-6 rounded-none;
-    box-shadow: 3px 3px 0 0 rgba(28,43,58,0.14);
-  }
-  .section-title::after {
-    content: '';
-    position: absolute;
-    left: 0; bottom: -6px;
-    height: 6px;
-    background: #8C3324;
-    width: 28px;
+    @apply relative inline-flex items-center gap-2 bg-gradient-blue text-white
+           font-display font-bold text-lg px-5 py-2.5 mb-6 rounded-2xl shadow-stamp-sm;
   }
 
   .field-label {
-    @apply block text-sm font-medium text-encre/80 mb-1.5 font-body;
+    @apply block text-sm font-medium text-encre/70 mb-1.5 font-body;
   }
 
   .input {
-    @apply w-full bg-papier-card border border-encre/25 rounded px-4 py-2.5 text-sm font-body text-encre
-           transition-colors duration-150
-           focus:outline-none focus:border-sceau focus:ring-2 focus:ring-sceau/15
-           hover:border-encre/40;
+    @apply w-full bg-white/80 border border-encre/10 rounded-xl px-4 py-2.5 text-sm font-body text-encre
+           shadow-card backdrop-blur-sm
+           transition-all duration-150
+           focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20
+           hover:border-encre/20;
   }
   input[type="number"].input {
-    font-family: var(--font-ledger), monospace;
+    font-family: var(--font-ledger), sans-serif;
+    font-variant-numeric: tabular-nums;
   }
 
   .radio-group {
     @apply flex gap-2.5 flex-wrap mt-1;
   }
   .radio-label {
-    @apply flex items-center gap-2 text-sm cursor-pointer px-4 py-2 rounded border border-encre/20 bg-papier-card font-body
-           transition-colors duration-150
-           hover:border-encre/50;
+    @apply flex items-center gap-2 text-sm cursor-pointer px-4 py-2 rounded-xl border border-encre/10 bg-white/70 font-body
+           shadow-card backdrop-blur-sm
+           transition-all duration-150
+           hover:border-brand-500/40;
   }
   .radio-label input {
-    accent-color: #8C3324;
+    accent-color: #5B5FEF;
   }
   .radio-label:has(input:checked) {
-    @apply border-encre bg-encre text-papier-card;
+    @apply border-transparent bg-gradient-blue text-white shadow-stamp-sm;
   }
 
-  /* Margin annotation, not a gradient callout — like a note pencilled beside a ledger line */
+  /* AI-style insight callout — a soft violet glass note, like the mockup's "AI Recommendation" card */
   .insight-box {
-    @apply bg-transparent border-l-2 border-sceau pl-4 py-1 text-sm font-body italic text-encre/80 my-6;
+    @apply bg-accent-500/5 border border-accent-500/20 rounded-2xl pl-4 pr-4 py-3 text-sm font-body text-encre/80 my-6;
   }
   .insight-box::before {
-    content: 'Note du conseiller — ';
+    content: 'Suggestion';
     font-style: normal;
-    font-family: var(--font-ledger), monospace;
+    font-family: var(--font-ledger), sans-serif;
     font-size: 0.7rem;
     letter-spacing: 0.06em;
-    color: #8C3324;
+    color: #9333EA;
     display: block;
     margin-bottom: 0.25rem;
-    font-weight: 500;
+    font-weight: 700;
+    text-transform: uppercase;
   }
 
-  /* The stamp: pressed ink, not a glowing gradient pill */
+  /* Glossy pill button, like "NEXT" / "GET STARTED" in the mockup */
   .btn-primary {
-    @apply bg-encre text-papier-card px-6 py-3 rounded font-body font-semibold text-sm tracking-wide
+    @apply bg-gradient-glossy text-white px-6 py-3 rounded-full font-body font-semibold text-sm tracking-wide
            shadow-stamp
-           hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-stamp-sm
-           active:translate-x-[3px] active:translate-y-[3px] active:shadow-none
-           transition-all duration-100
-           disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:shadow-stamp;
+           hover:shadow-glow hover:-translate-y-0.5
+           active:translate-y-0 active:shadow-stamp-sm
+           transition-all duration-150
+           disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:shadow-stamp;
   }
   .btn-secondary {
-    @apply border border-encre/30 text-encre bg-transparent px-6 py-3 rounded font-body font-semibold text-sm
-           hover:border-encre hover:bg-encre/5
+    @apply border border-encre/15 text-encre bg-white/70 px-6 py-3 rounded-full font-body font-semibold text-sm
+           backdrop-blur-sm
+           hover:border-brand-500/40 hover:bg-white
            transition-colors duration-150
            disabled:opacity-40 disabled:cursor-not-allowed;
   }
 
-  /* The dossier card: a sheet of paper stacked with a hard offset shadow, not a soft glassy blur */
+  /* The glass card: frosted white surface floating over the periwinkle background */
   .card {
-    @apply bg-papier-card rounded border border-encre/15 p-6 md:p-8 animate-slide-up;
-    box-shadow: 5px 5px 0 0 rgba(28,43,58,0.08);
+    @apply bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 p-6 md:p-8 animate-slide-up shadow-card;
   }
 }
 
@@ -139,8 +134,8 @@
 .animate-pop-in { animation: pop-in 0.3s cubic-bezier(0.34, 1.2, 0.64, 1) both; }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 4px 4px 0 0 rgba(140,51,36,0.25); }
-  50% { box-shadow: 4px 4px 0 0 rgba(140,51,36,0.45); }
+  0%, 100% { box-shadow: 0 8px 20px -6px rgba(91,95,239,0.3); }
+  50% { box-shadow: 0 8px 26px -6px rgba(91,95,239,0.55); }
 }
 .animate-pulse-glow { animation: pulse-glow 2.2s ease-in-out infinite; }
 

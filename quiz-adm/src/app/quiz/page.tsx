@@ -65,10 +65,10 @@ function QuizContent() {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="card max-w-md w-full text-center animate-stamp-in">
-          <div className="w-16 h-16 mx-auto mb-5 border-2 border-sauge rounded-full flex items-center justify-center text-2xl text-sauge font-display -rotate-3">
+          <div className="w-16 h-16 mx-auto mb-5 rounded-full bg-gradient-green shadow-stamp flex items-center justify-center text-2xl text-white font-display">
             ✓
           </div>
-          <h1 className="text-2xl font-display font-semibold text-encre mb-3">Dossier complété</h1>
+          <h1 className="text-2xl font-display font-bold text-encre mb-3">Dossier complété</h1>
           <p className="text-encre/60 mb-8">Les réponses ont été enregistrées avec succès.</p>
           <div className="flex gap-3 justify-center">
             <button className="btn-primary" onClick={() => { setData(defaultQuizData); setStep(0); setSubmitted(false) }}>
@@ -84,26 +84,26 @@ function QuizContent() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="bg-encre text-papier-card py-5 px-6">
+      <header className="py-5 px-6">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <a href="/" className="w-9 h-9 flex items-center justify-center text-lg border border-papier-card/25 hover:border-papier-card/60 transition-colors">
+            <a href="/" className="w-9 h-9 flex items-center justify-center text-lg rounded-full bg-white/70 border border-encre/10 shadow-card hover:bg-white transition-colors">
               ←
             </a>
             <div>
-              <h1 className="text-lg font-display font-semibold tracking-tight">Quiz ADM</h1>
-              <p className="text-papier-card/55 text-[11px] font-ledger tracking-wide">DOSSIER EN COURS</p>
+              <h1 className="text-lg font-display font-bold tracking-tight text-encre">Quiz ADM</h1>
+              <p className="text-encre/45 text-[11px] font-ledger tracking-wide">DOSSIER EN COURS</p>
             </div>
           </div>
-          <a href="/dashboard" className="text-papier-card/80 text-sm hover:text-papier-card font-medium border border-papier-card/25 hover:border-papier-card/60 px-4 py-2 transition-colors">
+          <a href="/dashboard" className="btn-secondary !px-4 !py-2 text-sm">
             Dashboard →
           </a>
         </div>
       </header>
 
-      {/* Progress: a ledger ruler — one tick per step, filled as the meeting advances */}
-      <div className="bg-papier-card border-b border-encre/15 px-6 py-4">
-        <div className="max-w-2xl mx-auto">
+      {/* Progress: a glassy card, like the mockup's status pills */}
+      <div className="px-6 pb-4">
+        <div className="max-w-2xl mx-auto card !p-4">
           <div className="flex items-center justify-between gap-3 mb-3">
             <div className="flex items-center gap-2 min-w-0">
               <span className="text-sm font-semibold text-encre truncate">{STEPS[step].label}</span>
@@ -113,14 +113,14 @@ function QuizContent() {
             </div>
             <ScoreLive data={data} />
           </div>
-          <div className="flex gap-1">
+          <div className="flex gap-1.5">
             {STEPS.map((s, i) => (
               <button
                 key={i}
                 title={s.label}
                 onClick={() => setStep(i)}
-                className={`h-1.5 flex-1 transition-colors ${
-                  i === step ? 'bg-sceau' : i < step ? 'bg-encre' : 'bg-encre/15'
+                className={`h-2 flex-1 rounded-full transition-colors ${
+                  i === step ? 'bg-gradient-blue' : i < step ? 'bg-sauge' : 'bg-encre/10'
                 }`}
               />
             ))}
@@ -129,7 +129,7 @@ function QuizContent() {
       </div>
 
       {/* Content */}
-      <main className="flex-1 px-4 py-8">
+      <main className="flex-1 px-4 py-4">
         <div className="max-w-2xl mx-auto card">
           {step === 0 && (
             <div className="insight-box mb-6">
@@ -138,7 +138,7 @@ function QuizContent() {
           )}
           <CurrentStep data={data} onChange={onChange} />
           {STEPS[step].label !== 'Bilan & recommandations' && (
-            <div className="mt-6 pt-4 border-t border-slate-100">
+            <div className="mt-6 pt-4 border-t border-encre/10">
               <label className="field-label">Note pour cette section (optionnel)</label>
               <textarea
                 className="input mt-1 min-h-[70px]"
@@ -152,8 +152,8 @@ function QuizContent() {
       </main>
 
       {/* Navigation */}
-      <footer className="bg-papier-card border-t border-encre/15 px-6 py-4 sticky bottom-0">
-        <div className="max-w-2xl mx-auto flex justify-between items-center gap-4">
+      <footer className="px-6 py-4 sticky bottom-0">
+        <div className="max-w-2xl mx-auto card !p-4 flex justify-between items-center gap-4">
           <button
             className="btn-secondary"
             onClick={() => setStep(s => Math.max(0, s - 1))}
@@ -162,7 +162,7 @@ function QuizContent() {
             ← Précédent
           </button>
 
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {error && <p className="text-sceau text-sm">{error}</p>}
 
           {step < STEPS.length - 1 ? (
             <button className="btn-primary" onClick={() => setStep(s => s + 1)}>

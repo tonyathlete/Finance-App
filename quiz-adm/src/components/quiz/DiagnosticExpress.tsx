@@ -183,7 +183,7 @@ export default function DiagnosticExpress({ data, onChange }: Props) {
   if (!questions) return null
 
   return (
-    <div className="border border-encre/20 bg-papier-card p-5 space-y-4">
+    <div className="card space-y-4">
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div>
           <p className="font-display font-semibold text-encre">
@@ -192,7 +192,7 @@ export default function DiagnosticExpress({ data, onChange }: Props) {
           <p className="text-xs text-encre/50">3 questions, 1 minute chrono, on va voir si ça paraît</p>
         </div>
         {totalSavings > 0 && (
-          <div className="bg-sauge-light border border-sauge/40 px-4 py-2 text-center animate-pop-in">
+          <div className="rounded-2xl bg-sauge-light border border-sauge/30 px-4 py-2 text-center animate-pop-in">
             <p className="text-[10px] font-ledger text-sauge uppercase tracking-wide">Opportunités identifiées</p>
             <p className="text-lg font-display font-semibold text-sauge tabular-nums">
               jusqu&apos;à {animatedTotal.toLocaleString('fr-CA')} $/an
@@ -206,16 +206,16 @@ export default function DiagnosticExpress({ data, onChange }: Props) {
           const activeOption = findActive(q, data)
 
           return (
-            <div key={q.field as string} className="bg-papier border border-encre/15 p-4">
+            <div key={q.field as string} className="rounded-xl bg-brand-50/50 border border-encre/8 p-4">
               <p className="text-sm font-semibold text-encre">
                 {q.question}
               </p>
               <div className="flex flex-wrap gap-2 mt-3">
                 {q.options.map((o, i) => (
-                  <label key={i} className={`px-3.5 py-2 border cursor-pointer text-xs font-medium transition-all ${
+                  <label key={i} className={`rounded-full px-3.5 py-2 border cursor-pointer text-xs font-medium transition-all ${
                     isOptionSelected(o, q, data)
                       ? o.bad ? 'border-manille-dark bg-manille/30 text-manille-dark' : 'border-sauge bg-sauge-light text-sauge'
-                      : 'border-encre/20 text-encre/60 hover:border-sceau/50'
+                      : 'border-encre/15 text-encre/60 hover:border-sceau/50'
                   }`}>
                     <input type="radio" name={q.field as string} className="sr-only"
                       checked={isOptionSelected(o, q, data)}

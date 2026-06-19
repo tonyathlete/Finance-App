@@ -59,7 +59,7 @@ export default function CalculRetraite({ data, onChange }: Props) {
   const pct = (v: number) => `${Math.min(100, (v / maxBar) * 100)}%`
 
   return (
-    <div className="p-5 bg-papier-card border border-encre/15">
+    <div className="card">
       <h3 className="text-lg font-display font-semibold text-encre mb-1">Êtes-vous sur la bonne trajectoire pour votre retraite?</h3>
       <p className="text-xs text-encre/50 mb-5">Quelques chiffres suffisent pour le savoir en direct</p>
 
@@ -103,8 +103,8 @@ export default function CalculRetraite({ data, onChange }: Props) {
                 <span className="font-medium text-encre/60">Capital nécessaire ({fmt(revenuVise)}/an de revenu)</span>
                 <span className="font-bold text-encre/80 font-ledger">{fmt(capitalNecessaire)}</span>
               </div>
-              <div className="w-full bg-encre/10 h-2 overflow-hidden">
-                <div className="h-full bg-manille-dark transition-all duration-500" style={{ width: pct(capitalNecessaire) }} />
+              <div className="w-full bg-encre/10 h-2 rounded-full overflow-hidden">
+                <div className="h-full rounded-full bg-gradient-blue transition-all duration-500" style={{ width: pct(capitalNecessaire) }} />
               </div>
             </div>
             <div>
@@ -112,14 +112,14 @@ export default function CalculRetraite({ data, onChange }: Props) {
                 <span className="font-medium text-encre/60">Votre trajectoire actuelle à {ageVise} ans</span>
                 <span className={`font-bold font-ledger ${ecart > 0 ? 'text-sceau' : 'text-sauge'}`}>{fmt(capitalProjete)}</span>
               </div>
-              <div className="w-full bg-encre/10 h-2 overflow-hidden">
-                <div className={`h-full transition-all duration-500 ${ecart > 0 ? 'bg-sceau' : 'bg-sauge'}`}
+              <div className="w-full bg-encre/10 h-2 rounded-full overflow-hidden">
+                <div className={`h-full rounded-full transition-all duration-500 ${ecart > 0 ? 'bg-gradient-red' : 'bg-gradient-green'}`}
                   style={{ width: pct(capitalProjete) }} />
               </div>
             </div>
           </div>
 
-          <div className={`mt-5 border p-5 text-center ${ecart > 0 ? 'bg-sceau-light border-sceau/40' : 'bg-sauge-light border-sauge/40'}`}>
+          <div className={`mt-5 rounded-2xl border p-5 text-center ${ecart > 0 ? 'bg-sceau-light border-sceau/30' : 'bg-sauge-light border-sauge/30'}`}>
             {ecart > 0 ? (
               <>
                 <p className="text-xs font-ledger tracking-wide text-sceau">ÉCART PROJETÉ À LA RETRAITE</p>

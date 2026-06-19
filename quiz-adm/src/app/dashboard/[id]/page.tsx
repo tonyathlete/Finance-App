@@ -23,7 +23,7 @@ function Row({ label, value }: { label: string; value?: string | string[] | null
       <span className="text-encre/50 text-sm w-48 shrink-0 font-ledger text-xs pt-0.5">{label}</span>
       {editMode ? (
         <input
-          className="text-sm text-encre font-medium flex-1 border border-encre/25 px-2 py-1 bg-papier-card"
+          className="text-sm text-encre font-medium flex-1 rounded-lg border border-encre/15 px-2 py-1 bg-white/80"
           value={display}
           onChange={e => setOverride(label, e.target.value)}
         />
@@ -36,8 +36,8 @@ function Row({ label, value }: { label: string; value?: string | string[] | null
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-papier-card border border-encre/15 mb-5">
-      <div className="bg-encre text-papier-card font-display font-semibold px-5 py-3 text-sm">
+    <div className="card !p-0 mb-5 overflow-hidden">
+      <div className="bg-gradient-blue text-white font-display font-semibold px-5 py-3 text-sm">
         {title}
       </div>
       <div className="px-5 py-3">{children}</div>
@@ -127,49 +127,46 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
 
   return (
     <div className="min-h-screen bg-papier">
-      <header className="bg-encre text-papier-card py-6 px-6 print:hidden">
-        <div className="max-w-3xl mx-auto flex items-center gap-4">
-          <Link href="/dashboard" className="text-papier-card/80 hover:text-papier-card text-sm border border-papier-card/25 hover:border-papier-card/60 px-3 py-2 transition-colors">
+      <header className="py-6 px-6 print:hidden">
+        <div className="max-w-3xl mx-auto card !p-4 flex items-center gap-4">
+          <Link href="/dashboard" className="btn-secondary !px-3 !py-2 text-sm">
             ← Retour
           </Link>
-          <div className="w-11 h-11 border border-papier-card/30 flex items-center justify-center text-base font-display font-semibold">
+          <div className="w-11 h-11 rounded-xl bg-gradient-blue text-white flex items-center justify-center text-base font-display font-semibold shadow-stamp-sm">
             {(d.prenom?.[0] || '?') + (d.nom?.[0] || '')}
           </div>
           <div className="flex-1">
-            <h1 className="text-xl font-display font-semibold tracking-tight">
+            <h1 className="text-xl font-display font-semibold tracking-tight text-encre">
               {d.prenom} {d.nom}
               {d.typeClient && (
-                <span className="ml-2 align-middle text-xs font-ledger border border-manille/50 text-manille px-2 py-0.5">
+                <span className="ml-2 align-middle text-xs font-ledger rounded-full bg-brand-50 text-brand-600 px-2.5 py-0.5">
                   {TYPE_LABELS[d.typeClient] || d.typeClient}
                 </span>
               )}
             </h1>
-            <p className="text-papier-card/55 text-xs font-ledger">{new Date(submission.created_at).toLocaleDateString('fr-CA', { dateStyle: 'long' })}</p>
+            <p className="text-encre/45 text-xs font-ledger">{new Date(submission.created_at).toLocaleDateString('fr-CA', { dateStyle: 'long' })}</p>
           </div>
           {editMode ? (
-            <button onClick={handleSave} disabled={saving}
-              className="text-papier-card text-sm bg-sauge hover:bg-sauge/85 px-3 py-2 transition-colors disabled:opacity-50">
+            <button onClick={handleSave} disabled={saving} className="btn-primary !px-3 !py-2 text-sm disabled:opacity-50">
               {saving ? '...' : 'Enregistrer'}
             </button>
           ) : (
-            <button onClick={() => setEditMode(true)}
-              className="text-papier-card/80 hover:text-papier-card text-sm border border-papier-card/25 hover:border-papier-card/60 px-3 py-2 transition-colors">
+            <button onClick={() => setEditMode(true)} className="btn-secondary !px-3 !py-2 text-sm">
               Modifier
             </button>
           )}
-          <button onClick={() => window.print()}
-            className="text-papier-card/80 hover:text-papier-card text-sm border border-papier-card/25 hover:border-papier-card/60 px-3 py-2 transition-colors">
+          <button onClick={() => window.print()} className="btn-secondary !px-3 !py-2 text-sm">
             Imprimer
           </button>
           <button onClick={handleDelete} disabled={deleting}
-            className="text-papier-card/80 hover:text-sceau text-sm border border-papier-card/25 hover:border-sceau/60 px-3 py-2 transition-colors disabled:opacity-50">
+            className="text-encre/50 hover:text-sceau text-sm rounded-full border border-encre/15 hover:border-sceau/40 px-3 py-2 transition-colors disabled:opacity-50">
             {deleting ? '...' : 'Supprimer'}
           </button>
         </div>
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-8">
-        <div className="bg-papier-card border border-encre/15 mb-5 p-6 print:hidden">
+        <div className="card mb-5 print:hidden">
           <p className="field-label">Envoyer le rapport par courriel</p>
           <div className="flex gap-2 mt-2">
             <input type="email" className="input" placeholder="courriel@exemple.com"
@@ -182,7 +179,7 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
           {sendStatus === 'error' && <p className="text-sceau text-sm mt-2">L&apos;envoi a échoué. Vérifiez la configuration du service de courriel.</p>}
         </div>
 
-        <div className="bg-papier-card border border-encre/15 mb-5 p-6">
+        <div className="card mb-5">
           <Bilan data={d} />
         </div>
 
@@ -335,9 +332,9 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
           <Section title="Références">
             <div className="space-y-4">
               {d.references.filter(r => r.nom).map((r, i) => (
-                <div key={i} className="border border-gray-100 rounded-lg p-3">
-                  <p className="font-medium text-gray-900 mb-1">{r.nom}</p>
-                  <div className="grid grid-cols-2 gap-1 text-xs text-gray-500">
+                <div key={i} className="rounded-xl bg-brand-50/50 border border-encre/8 p-3">
+                  <p className="font-medium text-encre mb-1">{r.nom}</p>
+                  <div className="grid grid-cols-2 gap-1 text-xs text-encre/50">
                     {r.telDom && <span>Tél: {r.telDom}</span>}
                     {r.cell && <span>Cell: {r.cell}</span>}
                     {r.lien && <span>Lien: {r.lien}</span>}
@@ -359,8 +356,8 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
             <div className="space-y-3">
               {Object.entries(notes).filter(([, n]) => n).map(([section, n]) => (
                 <div key={section}>
-                  <p className="text-xs font-semibold text-gray-500 mb-1">{section}</p>
-                  <p className="text-sm text-gray-800 whitespace-pre-wrap">{n}</p>
+                  <p className="text-xs font-semibold text-encre/45 mb-1">{section}</p>
+                  <p className="text-sm text-encre/80 whitespace-pre-wrap">{n}</p>
                 </div>
               ))}
             </div>

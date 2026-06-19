@@ -3,16 +3,16 @@ import { useMemo } from 'react'
 import { QuizData } from '@/lib/types'
 import { genererBilan, Priorite } from '@/lib/recommendations'
 
-const PRIORITE_STYLES: Record<Priorite, { rule: string; label: string }> = {
-  haute: { rule: 'border-sceau', label: 'PRIORITÉ HAUTE' },
-  moyenne: { rule: 'border-manille-dark', label: 'À CONSIDÉRER' },
-  info: { rule: 'border-encre/25', label: 'BON À SAVOIR' },
+const PRIORITE_STYLES: Record<Priorite, { dot: string; text: string; label: string }> = {
+  haute: { dot: 'bg-gradient-red', text: 'text-sceau', label: 'PRIORITÉ HAUTE' },
+  moyenne: { dot: 'bg-gradient-blue', text: 'text-manille-dark', label: 'À CONSIDÉRER' },
+  info: { dot: 'bg-encre/30', text: 'text-encre/50', label: 'BON À SAVOIR' },
 }
 
 function scoreStamp(score: number) {
-  if (score >= 75) return { ring: '#46604E', text: 'text-sauge', label: 'Excellente situation', stamp: 'APPROUVÉ' }
-  if (score >= 50) return { ring: '#B7A877', text: 'text-manille-dark', label: 'Situation à renforcer', stamp: 'À REVOIR' }
-  return { ring: '#8C3324', text: 'text-sceau', label: 'Plusieurs lacunes importantes', stamp: 'URGENT' }
+  if (score >= 75) return { ring: '#10B981', text: 'text-sauge', label: 'Excellente situation', stamp: 'EXCELLENT' }
+  if (score >= 50) return { ring: '#5B5FEF', text: 'text-brand-600', label: 'Situation à renforcer', stamp: 'À REVOIR' }
+  return { ring: '#EF4444', text: 'text-sceau', label: 'Plusieurs lacunes importantes', stamp: 'URGENT' }
 }
 
 export default function Bilan({ data }: { data: QuizData; onChange?: (u: Partial<QuizData>) => void }) {
@@ -34,30 +34,47 @@ export default function Bilan({ data }: { data: QuizData; onChange?: (u: Partial
         <p className="text-sm text-encre/55 mt-1">Portrait personnalisé pour {prenom}</p>
       </div>
 
-      {/* Score, rendu comme un sceau officiel plutôt qu'un anneau lumineux */}
+      {/* Score, rendu comme un anneau lumineux flottant sur une carte de verre */}
       <div className="flex flex-col items-center">
-        <div className="relative w-36 h-36 -rotate-2">
+        <div className="relative w-36 h-36">
           <svg viewBox="0 0 120 120" className="w-full h-full -rotate-90">
-            <circle cx="60" cy="60" r={R} fill="none" stroke="#1C2B3A" strokeOpacity="0.1" strokeWidth="2" />
+            <circle cx="60" cy="60" r={R} fill="none" stroke="#1E1B4B" strokeOpacity="0.08" strokeWidth="8" />
             <circle
-              cx="60" cy="60" r={R} fill="none" stroke={sc.ring} strokeWidth="2"
+              cx="60" cy="60" r={R} fill="none" stroke={sc.ring} strokeWidth="8" strokeLinecap="round"
               strokeDasharray={C} strokeDashoffset={offset}
-              style={{ transition: 'stroke-dashoffset 0.8s ease' }}
+              style={{ transition: 'stroke-dashoffset 0.8s ease', filter: `drop-shadow(0 4px 10px ${sc.ring}66)` }}
             />
           </svg>
-          <div className="absolute inset-3 rounded-full border-2 flex flex-col items-center justify-center" style={{ borderColor: sc.ring }}>
-            <span className={`text-3xl font-display font-semibold ${sc.text}`}>{bilan.score}</span>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <span className={`text-3xl font-display font-bold ${sc.text}`}>{bilan.score}</span>
             <span className="text-[10px] font-ledger text-encre/40">/ 100</span>
-            <span className={`text-[10px] font-ledger tracking-[0.15em] mt-1 ${sc.text}`}>{sc.stamp}</span>
+            <span className={`text-[10px] font-ledger font-bold tracking-[0.1em] mt-1 ${sc.text}`}>{sc.stamp}</span>
           </div>
         </div>
         <p className={`mt-3 font-semibold font-body ${sc.text}`}>{sc.label}</p>
-        <p className="text-xs text-encre/50 mt-1 font-ledger">
-          {bilan.okChecks} / {bilan.totalChecks} points évalués sont en place
-        </p>
       </div>
 
-      {/* Barres par catégorie, dans le même registre que la règle de progression du quiz */}
+      {/* Quatre tuiles de stats en dégradé, comme le tableau de bord du mockup */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="rounded-2xl bg-gradient-blue text-white p-4 shadow-stamp-sm">
+          <p className="text-2xl font-display font-bold font-ledger">{Object.keys(bilan.parCategorie).length}</p>
+          <p className="text-xs text-white/80 mt-0.5">Catégories</p>
+        </div>
+        <div className="rounded-2xl bg-gradient-green text-white p-4 shadow-stamp-sm">
+          <p className="text-2xl font-display font-bold font-ledger">{bilan.okChecks}</p>
+          <p className="text-xs text-white/80 mt-0.5">En place</p>
+        </div>
+        <div className="rounded-2xl bg-gradient-red text-white p-4 shadow-stamp-sm">
+          <p className="text-2xl font-display font-bold font-ledger">{bilan.totalChecks - bilan.okChecks}</p>
+          <p className="text-xs text-white/80 mt-0.5">À prioriser</p>
+        </div>
+        <div className="rounded-2xl bg-gradient-magenta text-white p-4 shadow-stamp-sm">
+          <p className="text-2xl font-display font-bold font-ledger">{bilan.recommandations.length}</p>
+          <p className="text-xs text-white/80 mt-0.5">Recommandations</p>
+        </div>
+      </div>
+
+      {/* Barres par catégorie */}
       <div className="space-y-3">
         {Object.entries(bilan.parCategorie).map(([cat, { total, ok }]) => {
           const pct = total === 0 ? 100 : Math.round((ok / total) * 100)
@@ -67,10 +84,8 @@ export default function Bilan({ data }: { data: QuizData; onChange?: (u: Partial
                 <span className="font-medium text-encre/80">{cat}</span>
                 <span className="text-encre/40 font-ledger">{ok}/{total}</span>
               </div>
-              <div className="flex gap-0.5 h-1.5">
-                {Array.from({ length: Math.max(total, 1) }).map((_, i) => (
-                  <div key={i} className={`flex-1 ${i < ok ? 'bg-sauge' : 'bg-encre/12'}`} />
-                ))}
+              <div className="w-full bg-encre/8 h-1.5 rounded-full overflow-hidden">
+                <div className="h-full rounded-full bg-gradient-green transition-all duration-500" style={{ width: `${pct}%` }} />
               </div>
             </div>
           )
@@ -79,12 +94,12 @@ export default function Bilan({ data }: { data: QuizData; onChange?: (u: Partial
 
       {/* Recommandations */}
       <div>
-        <h3 className="font-display font-semibold text-encre mb-3">
+        <h3 className="font-display font-bold text-encre mb-3">
           Recommandations ({bilan.recommandations.length})
         </h3>
 
         {bilan.recommandations.length === 0 ? (
-          <div className="border border-sauge/40 bg-sauge-light p-5 text-center text-sauge font-medium">
+          <div className="rounded-2xl border border-sauge/30 bg-sauge-light p-5 text-center text-sauge font-medium">
             Solide. Rien de majeur qui manque en ce moment.
           </div>
         ) : (
@@ -92,16 +107,20 @@ export default function Bilan({ data }: { data: QuizData; onChange?: (u: Partial
             {bilan.recommandations.map((rec, i) => {
               const st = PRIORITE_STYLES[rec.priorite]
               return (
-                <div key={rec.id} className={`border-l-2 ${st.rule} bg-papier-card pl-4 py-2`}>
-                  <div className="flex items-center gap-2 flex-wrap mb-1">
-                    <span className="font-ledger text-[10px] text-encre/40">{String(i + 1).padStart(2, '0')}</span>
-                    <span className="text-[10px] font-ledger tracking-wide text-encre/60">
-                      {st.label}
-                    </span>
-                    <span className="text-[10px] text-encre/35">· {rec.categorie}</span>
+                <div key={rec.id} className="card !p-4 flex gap-3">
+                  <span className={`w-7 h-7 rounded-lg shrink-0 flex items-center justify-center text-[10px] font-ledger font-bold text-white ${st.dot}`}>
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <div>
+                    <div className="flex items-center gap-2 flex-wrap mb-1">
+                      <span className={`text-[10px] font-ledger font-bold tracking-wide ${st.text}`}>
+                        {st.label}
+                      </span>
+                      <span className="text-[10px] text-encre/35">· {rec.categorie}</span>
+                    </div>
+                    <p className="font-semibold text-encre text-sm">{rec.titre}</p>
+                    <p className="text-xs text-encre/60 mt-1 leading-relaxed">{rec.description}</p>
                   </div>
-                  <p className="font-semibold text-encre text-sm">{rec.titre}</p>
-                  <p className="text-xs text-encre/60 mt-1 leading-relaxed">{rec.description}</p>
                 </div>
               )
             })}

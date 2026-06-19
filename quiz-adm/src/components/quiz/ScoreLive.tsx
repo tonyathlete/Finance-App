@@ -20,13 +20,13 @@ export default function ScoreLive({ data }: { data: QuizData }) {
   }, [score])
 
   const tone = score >= 75
-    ? { txt: 'text-sauge', bar: 'bg-sauge' }
+    ? { txt: 'text-sauge', bar: 'bg-gradient-green' }
     : score >= 50
-    ? { txt: 'text-manille-dark', bar: 'bg-manille-dark' }
-    : { txt: 'text-sceau', bar: 'bg-sceau' }
+    ? { txt: 'text-manille-dark', bar: 'bg-gradient-blue' }
+    : { txt: 'text-sceau', bar: 'bg-gradient-red' }
 
   return (
-    <div className="relative flex items-center gap-2.5 border border-encre/20 px-3 py-1.5 select-none">
+    <div className="relative flex items-center gap-2.5 bg-white/70 border border-encre/10 rounded-full px-3.5 py-1.5 shadow-card select-none">
       {delta !== null && (
         <span
           key={prev.current}
@@ -38,13 +38,13 @@ export default function ScoreLive({ data }: { data: QuizData }) {
       <div className="min-w-[88px]">
         <div className="flex items-baseline justify-between gap-2">
           <span className="text-[10px] font-ledger text-encre/45 uppercase tracking-wide">Santé fin.</span>
-          <span className={`text-sm font-ledger font-medium tabular-nums ${tone.txt} ${bump ? 'animate-score-bump' : ''}`}>
+          <span className={`text-sm font-ledger font-bold tabular-nums ${tone.txt} ${bump ? 'animate-score-bump' : ''}`}>
             {score}
           </span>
         </div>
-        <div className="w-full bg-encre/12 h-1 overflow-hidden mt-0.5">
+        <div className="w-full bg-encre/10 h-1.5 rounded-full overflow-hidden mt-0.5">
           <div
-            className={`h-full transition-all duration-700 ease-out ${tone.bar}`}
+            className={`h-full rounded-full transition-all duration-700 ease-out ${tone.bar}`}
             style={{ width: `${score}%` }}
           />
         </div>

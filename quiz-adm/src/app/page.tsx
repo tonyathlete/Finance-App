@@ -50,18 +50,16 @@ export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="bg-encre text-papier-card py-6 px-6 relative">
+      <header className="py-6 px-6 relative">
         <div className="max-w-4xl mx-auto flex items-center justify-between relative">
           <div className="flex items-center gap-3">
-            <span className="font-ledger text-xs tracking-[0.2em] text-manille border border-manille/40 px-2 py-1">
-              DOSSIER
-            </span>
+            <span className="w-9 h-9 rounded-xl bg-gradient-blue shadow-stamp-sm shrink-0" />
             <div>
-              <h1 className="text-xl font-display font-semibold tracking-tight">Quiz ADM</h1>
-              <p className="text-papier-card/60 text-xs font-ledger tracking-wide">RENCONTRE — CONSEILLER &amp; CLIENT</p>
+              <h1 className="text-xl font-display font-bold tracking-tight text-encre">Quiz ADM</h1>
+              <p className="text-encre/45 text-xs font-ledger tracking-wide">RENCONTRE — CONSEILLER &amp; CLIENT</p>
             </div>
           </div>
-          <a href="/dashboard" className="text-papier-card/80 text-sm hover:text-papier-card font-medium border border-papier-card/25 hover:border-papier-card/60 px-4 py-2 transition-colors">
+          <a href="/dashboard" className="btn-secondary !px-4 !py-2 text-sm">
             Dashboard →
           </a>
         </div>
@@ -72,8 +70,8 @@ export default function HomePage() {
         <div className="max-w-4xl mx-auto">
           {/* Title block */}
           <div className="mb-12 max-w-2xl">
-            <p className="font-ledger text-xs tracking-[0.2em] text-sceau mb-3">AVANT DE COMMENCER</p>
-            <h2 className="text-3xl md:text-4xl font-display font-semibold text-encre mb-3 leading-tight">
+            <p className="font-ledger text-xs tracking-[0.2em] text-brand-500 font-bold mb-3">AVANT DE COMMENCER</p>
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-encre mb-3 leading-tight">
               Quel type de client recevez-vous?
             </h2>
             <p className="text-encre/60 text-base font-body">
@@ -82,27 +80,27 @@ export default function HomePage() {
           </div>
 
           {/* Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-encre/15 border border-encre/15">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {CLIENT_TYPES.map((ct) => (
               <button
                 key={ct.key}
                 onClick={() => startQuiz(ct.key)}
-                className="group relative flex flex-col text-left bg-papier-card p-6 transition-colors duration-150 hover:bg-encre focus:outline-none"
+                className="group relative flex flex-col text-left card hover:shadow-glow hover:-translate-y-1 transition-all duration-200 focus:outline-none"
               >
-                <span className="font-ledger text-xs text-sceau group-hover:text-manille mb-4 block">{ct.code}</span>
-                <h3 className="font-display font-semibold text-lg text-encre group-hover:text-papier-card mb-1">{ct.label}</h3>
-                <p className="text-encre/55 group-hover:text-papier-card/60 text-xs mb-5">{ct.subtitle}</p>
+                <span className="w-8 h-8 rounded-lg bg-gradient-blue text-white text-xs font-ledger font-bold flex items-center justify-center mb-4">{ct.code}</span>
+                <h3 className="font-display font-bold text-lg text-encre mb-1">{ct.label}</h3>
+                <p className="text-encre/50 text-xs mb-5">{ct.subtitle}</p>
 
                 <ul className="space-y-2.5 flex-1 mb-6">
                   {ct.points.map((point, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-encre/75 group-hover:text-papier-card/85">
-                      <span className="font-ledger text-[11px] mt-0.5 text-encre/40 group-hover:text-manille shrink-0">{String(i + 1).padStart(2, '0')}</span>
+                    <li key={i} className="flex items-start gap-2 text-sm text-encre/70">
+                      <span className="w-1.5 h-1.5 rounded-full bg-brand-500 mt-1.5 shrink-0" />
                       {point}
                     </li>
                   ))}
                 </ul>
 
-                <div className="flex items-center gap-2 text-sm font-semibold text-encre group-hover:text-papier-card">
+                <div className="flex items-center gap-2 text-sm font-semibold text-brand-600">
                   Démarrer le quiz
                   <span className="transition-transform group-hover:translate-x-1">→</span>
                 </div>
