@@ -4,10 +4,19 @@
 
 @layer base {
   body {
-    @apply text-slate-800 antialiased;
-    background: linear-gradient(135deg, #eef4ff 0%, #f8fafc 50%, #fef3c7 100%);
-    background-attachment: fixed;
+    @apply text-encre antialiased font-body;
+    background-color: #EEECE1;
     min-height: 100vh;
+  }
+  h1, h2, h3 {
+    @apply font-display;
+  }
+  ::selection {
+    background: #D8CDA9;
+  }
+  :focus-visible {
+    outline: 2px solid #8C3324;
+    outline-offset: 2px;
   }
 }
 
@@ -21,7 +30,7 @@
   main {
     padding: 0 !important;
   }
-  .shadow-card, .shadow-glow, .shadow-lg, .shadow-md {
+  .shadow-card, .shadow-glow, .shadow-stamp, .shadow-lg, .shadow-md {
     box-shadow: none !important;
   }
   .animate-slide-up {
@@ -30,69 +39,86 @@
 }
 
 @layer components {
+  /* A dossier-tab heading: the kraft-folder tab sticking up from a paper card */
   .section-title {
-    @apply bg-gradient-to-r from-brand-700 to-brand-500 text-white font-bold text-lg px-5 py-3 rounded-xl mb-5 shadow-md;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
+    @apply relative inline-flex items-center gap-2 bg-encre text-papier-card
+           font-display font-semibold text-lg px-5 py-2.5 mb-6 rounded-none;
+    box-shadow: 3px 3px 0 0 rgba(28,43,58,0.14);
   }
-  .section-title::before {
+  .section-title::after {
     content: '';
-    @apply w-1.5 h-6 bg-accent-500 rounded-full;
+    position: absolute;
+    left: 0; bottom: -6px;
+    height: 6px;
+    background: #8C3324;
+    width: 28px;
   }
+
   .field-label {
-    @apply block text-sm font-semibold text-slate-700 mb-1.5;
+    @apply block text-sm font-medium text-encre/80 mb-1.5 font-body;
   }
+
   .input {
-    @apply w-full bg-white border-2 border-slate-200 rounded-xl px-4 py-2.5 text-sm
-           transition-all duration-200
-           focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100
-           hover:border-slate-300;
+    @apply w-full bg-papier-card border border-encre/25 rounded px-4 py-2.5 text-sm font-body text-encre
+           transition-colors duration-150
+           focus:outline-none focus:border-sceau focus:ring-2 focus:ring-sceau/15
+           hover:border-encre/40;
   }
-  .input:focus {
-    box-shadow: 0 0 0 4px rgba(59, 108, 255, 0.12);
+  input[type="number"].input {
+    font-family: var(--font-ledger), monospace;
   }
+
   .radio-group {
-    @apply flex gap-3 flex-wrap mt-1;
+    @apply flex gap-2.5 flex-wrap mt-1;
   }
   .radio-label {
-    @apply flex items-center gap-2 text-sm cursor-pointer px-4 py-2 rounded-xl border-2 border-slate-200 bg-white
-           transition-all duration-200
-           hover:border-brand-500 hover:bg-brand-50 hover:shadow-sm;
+    @apply flex items-center gap-2 text-sm cursor-pointer px-4 py-2 rounded border border-encre/20 bg-papier-card font-body
+           transition-colors duration-150
+           hover:border-encre/50;
   }
   .radio-label input {
-    @apply accent-brand-500;
+    accent-color: #8C3324;
   }
   .radio-label:has(input:checked) {
-    @apply border-brand-500 bg-brand-50 shadow-sm;
+    @apply border-encre bg-encre text-papier-card;
   }
+
+  /* Margin annotation, not a gradient callout — like a note pencilled beside a ledger line */
   .insight-box {
-    @apply bg-gradient-to-br from-amber-50 to-orange-50 border-l-4 border-accent-500
-           p-5 rounded-xl text-sm font-medium text-amber-900 my-5 shadow-sm;
-    display: flex;
-    gap: 0.75rem;
+    @apply bg-transparent border-l-2 border-sceau pl-4 py-1 text-sm font-body italic text-encre/80 my-6;
   }
   .insight-box::before {
-    content: '💡';
-    font-size: 1.25rem;
-    flex-shrink: 0;
+    content: 'Note du conseiller — ';
+    font-style: normal;
+    font-family: var(--font-ledger), monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    color: #8C3324;
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
   }
+
+  /* The stamp: pressed ink, not a glowing gradient pill */
   .btn-primary {
-    @apply bg-gradient-to-br from-brand-600 to-brand-700 text-white px-6 py-3 rounded-xl font-semibold
-           shadow-lg shadow-brand-500/30
-           hover:shadow-xl hover:shadow-brand-500/40 hover:-translate-y-0.5
-           active:translate-y-0
-           transition-all duration-200
-           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0;
+    @apply bg-encre text-papier-card px-6 py-3 rounded font-body font-semibold text-sm tracking-wide
+           shadow-stamp
+           hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-stamp-sm
+           active:translate-x-[3px] active:translate-y-[3px] active:shadow-none
+           transition-all duration-100
+           disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:shadow-stamp;
   }
   .btn-secondary {
-    @apply border-2 border-slate-300 text-slate-700 bg-white px-6 py-3 rounded-xl font-semibold
-           hover:border-brand-500 hover:text-brand-700 hover:bg-brand-50
-           transition-all duration-200
-           disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply border border-encre/30 text-encre bg-transparent px-6 py-3 rounded font-body font-semibold text-sm
+           hover:border-encre hover:bg-encre/5
+           transition-colors duration-150
+           disabled:opacity-40 disabled:cursor-not-allowed;
   }
+
+  /* The dossier card: a sheet of paper stacked with a hard offset shadow, not a soft glassy blur */
   .card {
-    @apply bg-white/80 backdrop-blur-sm rounded-2xl shadow-card border border-white p-6 md:p-8 animate-slide-up;
+    @apply bg-papier-card rounded border border-encre/15 p-6 md:p-8 animate-slide-up;
+    box-shadow: 5px 5px 0 0 rgba(28,43,58,0.08);
   }
 }
 
@@ -107,19 +133,19 @@
 
 @keyframes pop-in {
   0% { transform: scale(0); opacity: 0; }
-  60% { transform: scale(1.3); }
+  60% { transform: scale(1.15); }
   100% { transform: scale(1); opacity: 1; }
 }
-.animate-pop-in { animation: pop-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.animate-pop-in { animation: pop-in 0.3s cubic-bezier(0.34, 1.2, 0.64, 1) both; }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.35); }
-  50% { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
+  0%, 100% { box-shadow: 4px 4px 0 0 rgba(140,51,36,0.25); }
+  50% { box-shadow: 4px 4px 0 0 rgba(140,51,36,0.45); }
 }
-.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+.animate-pulse-glow { animation: pulse-glow 2.2s ease-in-out infinite; }
 
 @keyframes score-bump {
   0%, 100% { transform: scale(1); }
-  40% { transform: scale(1.18); }
+  40% { transform: scale(1.12); }
 }
-.animate-score-bump { animation: score-bump 0.5s ease-out; }
+.animate-score-bump { animation: score-bump 0.4s ease-out; }

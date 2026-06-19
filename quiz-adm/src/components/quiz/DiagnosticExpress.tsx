@@ -183,18 +183,18 @@ export default function DiagnosticExpress({ data, onChange }: Props) {
   if (!questions) return null
 
   return (
-    <div className="rounded-2xl border-2 border-brand-200 bg-gradient-to-br from-brand-50/60 to-indigo-50/60 p-5 space-y-4">
+    <div className="border border-encre/20 bg-papier-card p-5 space-y-4">
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div>
-          <p className="font-bold text-brand-900 flex items-center gap-2">
-            ⚡ Diagnostic express: {PROFIL_LABELS[data.typeClient]}
+          <p className="font-display font-semibold text-encre">
+            Diagnostic express: {PROFIL_LABELS[data.typeClient]}
           </p>
-          <p className="text-xs text-slate-500">3 questions, 1 minute chrono, on va voir si ça paraît</p>
+          <p className="text-xs text-encre/50">3 questions, 1 minute chrono, on va voir si ça paraît</p>
         </div>
         {totalSavings > 0 && (
-          <div className="bg-green-100 border border-green-300 rounded-xl px-4 py-2 text-center animate-pop-in">
-            <p className="text-[10px] font-bold text-green-700 uppercase tracking-wide">Opportunités identifiées</p>
-            <p className="text-lg font-extrabold text-green-700 tabular-nums">
+          <div className="bg-sauge-light border border-sauge/40 px-4 py-2 text-center animate-pop-in">
+            <p className="text-[10px] font-ledger text-sauge uppercase tracking-wide">Opportunités identifiées</p>
+            <p className="text-lg font-display font-semibold text-sauge tabular-nums">
               jusqu&apos;à {animatedTotal.toLocaleString('fr-CA')} $/an
             </p>
           </div>
@@ -206,17 +206,16 @@ export default function DiagnosticExpress({ data, onChange }: Props) {
           const activeOption = findActive(q, data)
 
           return (
-            <div key={q.field as string} className="bg-white rounded-xl border border-slate-200 p-4">
-              <p className="text-sm font-semibold text-slate-700 flex items-start gap-2">
-                <span className="text-lg shrink-0">{q.emoji}</span>
+            <div key={q.field as string} className="bg-papier border border-encre/15 p-4">
+              <p className="text-sm font-semibold text-encre">
                 {q.question}
               </p>
               <div className="flex flex-wrap gap-2 mt-3">
                 {q.options.map((o, i) => (
-                  <label key={i} className={`px-3.5 py-2 rounded-lg border-2 cursor-pointer text-xs font-medium transition-all ${
+                  <label key={i} className={`px-3.5 py-2 border cursor-pointer text-xs font-medium transition-all ${
                     isOptionSelected(o, q, data)
-                      ? o.bad ? 'border-amber-400 bg-amber-50 text-amber-700' : 'border-green-400 bg-green-50 text-green-700'
-                      : 'border-slate-200 text-slate-600 hover:border-brand-300'
+                      ? o.bad ? 'border-manille-dark bg-manille/30 text-manille-dark' : 'border-sauge bg-sauge-light text-sauge'
+                      : 'border-encre/20 text-encre/60 hover:border-sceau/50'
                   }`}>
                     <input type="radio" name={q.field as string} className="sr-only"
                       checked={isOptionSelected(o, q, data)}
@@ -226,20 +225,17 @@ export default function DiagnosticExpress({ data, onChange }: Props) {
                 ))}
               </div>
               {activeOption?.bad && (
-                <div className="mt-3 flex gap-2 bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded-lg p-3 animate-pop-in">
-                  <span className="shrink-0">💡</span>
-                  <div>
-                    <p className="text-xs text-amber-800 leading-relaxed">{q.tip}</p>
-                    {q.savings && (
-                      <p className="text-xs font-bold text-green-700 mt-1">
-                        💰 Potentiel : ~{q.savings.toLocaleString('fr-CA')} $/an
-                      </p>
-                    )}
-                  </div>
+                <div className="mt-3 border-l-2 border-manille-dark pl-3 py-1 animate-pop-in">
+                  <p className="text-xs text-encre/70 leading-relaxed">{q.tip}</p>
+                  {q.savings && (
+                    <p className="text-xs font-semibold text-sauge mt-1 font-ledger">
+                      Potentiel : ~{q.savings.toLocaleString('fr-CA')} $/an
+                    </p>
+                  )}
                 </div>
               )}
               {activeOption && !activeOption.bad && (
-                <p className="mt-2 text-xs font-medium text-green-600 animate-pop-in">✓ Déjà optimisé, bravo!</p>
+                <p className="mt-2 text-xs font-medium text-sauge animate-pop-in">Déjà optimisé, bravo!</p>
               )}
             </div>
           )

@@ -20,32 +20,31 @@ export default function ScoreLive({ data }: { data: QuizData }) {
   }, [score])
 
   const tone = score >= 75
-    ? { txt: 'text-green-600', bar: 'bg-green-500', emoji: '💪' }
+    ? { txt: 'text-sauge', bar: 'bg-sauge' }
     : score >= 50
-    ? { txt: 'text-amber-600', bar: 'bg-amber-500', emoji: '⚠️' }
-    : { txt: 'text-red-600', bar: 'bg-red-500', emoji: '🚨' }
+    ? { txt: 'text-manille-dark', bar: 'bg-manille-dark' }
+    : { txt: 'text-sceau', bar: 'bg-sceau' }
 
   return (
-    <div className="relative flex items-center gap-2.5 bg-white/90 border border-slate-200 rounded-xl px-3 py-1.5 shadow-sm select-none">
+    <div className="relative flex items-center gap-2.5 border border-encre/20 px-3 py-1.5 select-none">
       {delta !== null && (
         <span
           key={prev.current}
-          className={`absolute -top-4 right-2 text-xs font-bold animate-float-delta ${delta > 0 ? 'text-green-600' : 'text-red-500'}`}
+          className={`absolute -top-4 right-2 text-xs font-ledger font-bold animate-float-delta ${delta > 0 ? 'text-sauge' : 'text-sceau'}`}
         >
           {delta > 0 ? `+${delta}` : delta}
         </span>
       )}
-      <span className="text-base leading-none">{tone.emoji}</span>
       <div className="min-w-[88px]">
         <div className="flex items-baseline justify-between gap-2">
-          <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Santé fin.</span>
-          <span className={`text-sm font-extrabold tabular-nums ${tone.txt} ${bump ? 'animate-score-bump' : ''}`}>
+          <span className="text-[10px] font-ledger text-encre/45 uppercase tracking-wide">Santé fin.</span>
+          <span className={`text-sm font-ledger font-medium tabular-nums ${tone.txt} ${bump ? 'animate-score-bump' : ''}`}>
             {score}
           </span>
         </div>
-        <div className="w-full bg-slate-200/70 rounded-full h-1.5 overflow-hidden mt-0.5">
+        <div className="w-full bg-encre/12 h-1 overflow-hidden mt-0.5">
           <div
-            className={`h-full rounded-full transition-all duration-700 ease-out ${tone.bar}`}
+            className={`h-full transition-all duration-700 ease-out ${tone.bar}`}
             style={{ width: `${score}%` }}
           />
         </div>

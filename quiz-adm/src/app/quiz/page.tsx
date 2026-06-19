@@ -64,12 +64,12 @@ function QuizContent() {
   if (submitted) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
-        <div className="card max-w-md w-full text-center animate-slide-up">
-          <div className="w-20 h-20 mx-auto mb-5 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center text-4xl shadow-glow">
+        <div className="card max-w-md w-full text-center animate-stamp-in">
+          <div className="w-16 h-16 mx-auto mb-5 border-2 border-sauge rounded-full flex items-center justify-center text-2xl text-sauge font-display -rotate-3">
             ✓
           </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-brand-700 to-brand-500 bg-clip-text text-transparent mb-3">Merci!</h1>
-          <p className="text-slate-600 mb-8">Le formulaire a été soumis avec succès.</p>
+          <h1 className="text-2xl font-display font-semibold text-encre mb-3">Dossier complété</h1>
+          <p className="text-encre/60 mb-8">Les réponses ont été enregistrées avec succès.</p>
           <div className="flex gap-3 justify-center">
             <button className="btn-primary" onClick={() => { setData(defaultQuizData); setStep(0); setSubmitted(false) }}>
               + Nouveau client
@@ -84,51 +84,43 @@ function QuizContent() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="bg-gradient-hero text-white py-6 px-6 shadow-glow relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-        <div className="max-w-2xl mx-auto flex items-center justify-between relative">
+      <header className="bg-encre text-papier-card py-5 px-6">
+        <div className="max-w-2xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <a href="/" className="w-11 h-11 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center text-xl border border-white/20 hover:bg-white/25 transition-all">
+            <a href="/" className="w-9 h-9 flex items-center justify-center text-lg border border-papier-card/25 hover:border-papier-card/60 transition-colors">
               ←
             </a>
             <div>
-              <h1 className="text-xl font-bold tracking-tight">Quiz ADM</h1>
-              <p className="text-blue-200 text-xs">Analyse de marché, conseiller financier</p>
+              <h1 className="text-lg font-display font-semibold tracking-tight">Quiz ADM</h1>
+              <p className="text-papier-card/55 text-[11px] font-ledger tracking-wide">DOSSIER EN COURS</p>
             </div>
           </div>
-          <a href="/dashboard" className="text-white/90 text-sm hover:text-white font-medium bg-white/10 hover:bg-white/20 backdrop-blur-sm px-4 py-2 rounded-xl transition-all border border-white/20">
+          <a href="/dashboard" className="text-papier-card/80 text-sm hover:text-papier-card font-medium border border-papier-card/25 hover:border-papier-card/60 px-4 py-2 transition-colors">
             Dashboard →
           </a>
         </div>
       </header>
 
-      {/* Progress bar */}
-      <div className="bg-white/70 backdrop-blur-sm border-b border-white/40 px-6 py-4 shadow-sm">
+      {/* Progress: a ledger ruler — one tick per step, filled as the meeting advances */}
+      <div className="bg-papier-card border-b border-encre/15 px-6 py-4">
         <div className="max-w-2xl mx-auto">
           <div className="flex items-center justify-between gap-3 mb-3">
             <div className="flex items-center gap-2 min-w-0">
-              <span className="text-sm font-semibold text-brand-900 truncate">{STEPS[step].label}</span>
-              <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full shrink-0">
-                {step + 1} / {STEPS.length}
+              <span className="text-sm font-semibold text-encre truncate">{STEPS[step].label}</span>
+              <span className="text-xs font-ledger text-encre/50 shrink-0">
+                {String(step + 1).padStart(2, '0')} / {String(STEPS.length).padStart(2, '0')}
               </span>
             </div>
             <ScoreLive data={data} />
           </div>
-          <div className="w-full bg-slate-200/60 rounded-full h-2.5 overflow-hidden">
-            <div
-              className="bg-gradient-to-r from-brand-500 to-brand-700 h-full rounded-full transition-all duration-500 shadow-sm"
-              style={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
-            />
-          </div>
-          {/* Step dots */}
-          <div className="flex justify-between mt-3">
+          <div className="flex gap-1">
             {STEPS.map((s, i) => (
               <button
                 key={i}
                 title={s.label}
                 onClick={() => setStep(i)}
-                className={`w-2.5 h-2.5 rounded-full transition-all ${
-                  i === step ? 'bg-accent-500 scale-125 shadow-md' : i < step ? 'bg-brand-500' : 'bg-slate-300'
+                className={`h-1.5 flex-1 transition-colors ${
+                  i === step ? 'bg-sceau' : i < step ? 'bg-encre' : 'bg-encre/15'
                 }`}
               />
             ))}
@@ -141,7 +133,7 @@ function QuizContent() {
         <div className="max-w-2xl mx-auto card">
           {step === 0 && (
             <div className="insight-box mb-6">
-              💡 Pensez à 5 personnes qui seraient intéressées à participer au sondage. L&apos;objectif est de rencontrer minimum 10 personnes par semaine pour atteindre notre objectif annuel.
+              Pensez à 5 personnes qui seraient intéressées à participer au sondage. L&apos;objectif est de rencontrer minimum 10 personnes par semaine pour atteindre notre objectif annuel.
             </div>
           )}
           <CurrentStep data={data} onChange={onChange} />
@@ -160,7 +152,7 @@ function QuizContent() {
       </main>
 
       {/* Navigation */}
-      <footer className="bg-white/80 backdrop-blur-sm border-t border-white/40 px-6 py-4 sticky bottom-0">
+      <footer className="bg-papier-card border-t border-encre/15 px-6 py-4 sticky bottom-0">
         <div className="max-w-2xl mx-auto flex justify-between items-center gap-4">
           <button
             className="btn-secondary"

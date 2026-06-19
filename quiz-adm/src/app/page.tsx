@@ -4,14 +4,9 @@ import { useRouter } from 'next/navigation'
 const CLIENT_TYPES = [
   {
     key: 'salarie',
+    code: '01',
     label: 'Salarié',
-    icon: '👔',
     subtitle: 'Employé à temps plein ou partiel',
-    gradient: 'from-blue-500 to-brand-700',
-    bgGradient: 'from-blue-50 to-indigo-100',
-    borderColor: 'border-blue-200',
-    hoverBorder: 'hover:border-blue-400',
-    badgeBg: 'bg-blue-100 text-blue-700',
     points: [
       'Économiser sur ses dépenses courantes (Reebee, Flipp)',
       'Magasiner son assurance auto et habitation',
@@ -21,14 +16,9 @@ const CLIENT_TYPES = [
   },
   {
     key: 'autonome',
+    code: '02',
     label: 'Travailleur autonome',
-    icon: '💼',
     subtitle: 'Freelance, consultant, auto-entrepreneur',
-    gradient: 'from-violet-500 to-purple-700',
-    bgGradient: 'from-violet-50 to-purple-100',
-    borderColor: 'border-violet-200',
-    hoverBorder: 'hover:border-violet-400',
-    badgeBg: 'bg-violet-100 text-violet-700',
     points: [
       'Avoir un bon comptable (économies d\'impôt significatives)',
       'Fonds d\'urgence (3-6 mois de revenus)',
@@ -38,14 +28,9 @@ const CLIENT_TYPES = [
   },
   {
     key: 'entrepreneur',
+    code: '03',
     label: 'Entrepreneur',
-    icon: '🏢',
     subtitle: 'Propriétaire d\'entreprise incorporée',
-    gradient: 'from-amber-500 to-orange-600',
-    bgGradient: 'from-amber-50 to-orange-100',
-    borderColor: 'border-amber-200',
-    hoverBorder: 'hover:border-amber-400',
-    badgeBg: 'bg-amber-100 text-amber-700',
     points: [
       'Connaître ses chiffres d\'affaires et marges',
       'Structure corporative optimisée (holding, dividendes)',
@@ -65,74 +50,68 @@ export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="bg-gradient-hero text-white py-8 px-6 shadow-glow relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+      <header className="bg-encre text-papier-card py-6 px-6 relative">
         <div className="max-w-4xl mx-auto flex items-center justify-between relative">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center text-2xl border border-white/20">
-              📋
-            </div>
+          <div className="flex items-center gap-3">
+            <span className="font-ledger text-xs tracking-[0.2em] text-manille border border-manille/40 px-2 py-1">
+              DOSSIER
+            </span>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">Quiz ADM</h1>
-              <p className="text-blue-200 text-sm">Analyse de marché, conseiller financier</p>
+              <h1 className="text-xl font-display font-semibold tracking-tight">Quiz ADM</h1>
+              <p className="text-papier-card/60 text-xs font-ledger tracking-wide">RENCONTRE — CONSEILLER &amp; CLIENT</p>
             </div>
           </div>
-          <a href="/dashboard" className="text-white/90 text-sm hover:text-white font-medium bg-white/10 hover:bg-white/20 backdrop-blur-sm px-4 py-2 rounded-xl transition-all border border-white/20">
+          <a href="/dashboard" className="text-papier-card/80 text-sm hover:text-papier-card font-medium border border-papier-card/25 hover:border-papier-card/60 px-4 py-2 transition-colors">
             Dashboard →
           </a>
         </div>
       </header>
 
       {/* Main */}
-      <main className="flex-1 px-4 py-12">
+      <main className="flex-1 px-4 py-14">
         <div className="max-w-4xl mx-auto">
           {/* Title block */}
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-brand-900 mb-3">
-              Quel type de client êtes-vous?
+          <div className="mb-12 max-w-2xl">
+            <p className="font-ledger text-xs tracking-[0.2em] text-sceau mb-3">AVANT DE COMMENCER</p>
+            <h2 className="text-3xl md:text-4xl font-display font-semibold text-encre mb-3 leading-tight">
+              Quel type de client recevez-vous?
             </h2>
-            <p className="text-slate-500 text-lg max-w-xl mx-auto">
-              Sélectionnez le profil qui correspond le mieux à votre situation. Le quiz s&apos;adaptera pour vous offrir la meilleure expérience.
+            <p className="text-encre/60 text-base font-body">
+              Le profil choisi détermine quelles questions s&apos;ajoutent au dossier. Vous pourrez toujours revenir en arrière.
             </p>
           </div>
 
           {/* Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-encre/15 border border-encre/15">
             {CLIENT_TYPES.map((ct) => (
               <button
                 key={ct.key}
                 onClick={() => startQuiz(ct.key)}
-                className={`group relative flex flex-col text-left rounded-2xl border-2 ${ct.borderColor} ${ct.hoverBorder} bg-gradient-to-br ${ct.bgGradient} p-6 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-brand-200/40 focus:outline-none focus:ring-4 focus:ring-brand-300`}
+                className="group relative flex flex-col text-left bg-papier-card p-6 transition-colors duration-150 hover:bg-encre focus:outline-none"
               >
-                {/* Icon + gradient header */}
-                <div className={`w-full -mx-0 -mt-0 mb-5 bg-gradient-to-br ${ct.gradient} rounded-xl py-6 flex flex-col items-center text-white shadow-lg`}>
-                  <span className="text-5xl mb-2">{ct.icon}</span>
-                  <span className="font-bold text-xl tracking-tight">{ct.label}</span>
-                  <span className="text-white/75 text-xs mt-1">{ct.subtitle}</span>
-                </div>
+                <span className="font-ledger text-xs text-sceau group-hover:text-manille mb-4 block">{ct.code}</span>
+                <h3 className="font-display font-semibold text-lg text-encre group-hover:text-papier-card mb-1">{ct.label}</h3>
+                <p className="text-encre/55 group-hover:text-papier-card/60 text-xs mb-5">{ct.subtitle}</p>
 
-                {/* Points */}
-                <ul className="space-y-2.5 flex-1">
+                <ul className="space-y-2.5 flex-1 mb-6">
                   {ct.points.map((point, i) => (
-                    <li key={i} className="flex items-start gap-2.5 text-sm text-slate-700">
-                      <span className={`mt-0.5 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${ct.badgeBg}`}>
-                        {i + 1}
-                      </span>
+                    <li key={i} className="flex items-start gap-2 text-sm text-encre/75 group-hover:text-papier-card/85">
+                      <span className="font-ledger text-[11px] mt-0.5 text-encre/40 group-hover:text-manille shrink-0">{String(i + 1).padStart(2, '0')}</span>
                       {point}
                     </li>
                   ))}
                 </ul>
 
-                {/* CTA */}
-                <div className={`mt-6 w-full text-center py-3 rounded-xl bg-gradient-to-r ${ct.gradient} text-white font-semibold text-sm shadow group-hover:shadow-lg transition-all`}>
-                  Démarrer le quiz →
+                <div className="flex items-center gap-2 text-sm font-semibold text-encre group-hover:text-papier-card">
+                  Démarrer le quiz
+                  <span className="transition-transform group-hover:translate-x-1">→</span>
                 </div>
               </button>
             ))}
           </div>
 
           {/* Footer note */}
-          <p className="text-center text-slate-400 text-sm mt-8">
+          <p className="text-encre/45 text-sm mt-8 font-body italic">
             Le conseiller remplit ce formulaire en face du client. Les réponses sont sauvegardées dans le dashboard.
           </p>
         </div>

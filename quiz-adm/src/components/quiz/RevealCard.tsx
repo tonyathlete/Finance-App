@@ -28,7 +28,7 @@ function useCountUp(target: number, start: boolean, duration = 1600) {
   return val
 }
 
-export default function RevealCard({ emoji, teaser, value, prefix = '', suffix = ' $', caption }: Props) {
+export default function RevealCard({ teaser, value, prefix = '', suffix = ' $', caption }: Props) {
   const [revealed, setRevealed] = useState(false)
   const count = useCountUp(value, revealed)
   const cardRef = useRef<HTMLButtonElement>(null)
@@ -39,19 +39,18 @@ export default function RevealCard({ emoji, teaser, value, prefix = '', suffix =
       type="button"
       onClick={() => setRevealed(true)}
       disabled={revealed}
-      className={`w-full text-left rounded-2xl border-2 p-5 transition-all duration-300 ${
+      className={`w-full text-left border p-5 transition-all duration-300 ${
         revealed
-          ? 'border-indigo-200 bg-gradient-to-br from-indigo-50 to-purple-50 cursor-default'
-          : 'border-brand-300 bg-white hover:border-brand-500 hover:-translate-y-0.5 cursor-pointer animate-pulse-glow'
+          ? 'border-encre/20 bg-papier cursor-default'
+          : 'border-sceau/40 bg-papier-card hover:border-sceau cursor-pointer'
       }`}
     >
       <div className="flex items-center gap-3">
-        <span className="text-3xl shrink-0">{emoji}</span>
         <div className="flex-1">
-          <p className="text-sm font-bold text-slate-800">{teaser}</p>
+          <p className="text-sm font-semibold text-encre">{teaser}</p>
           {!revealed && (
-            <p className="text-xs text-brand-600 font-semibold mt-1">
-              👆 Touchez pour révéler la réponse
+            <p className="text-xs text-sceau font-semibold mt-1 font-ledger">
+              Touchez pour révéler la réponse
             </p>
           )}
         </div>
@@ -59,10 +58,10 @@ export default function RevealCard({ emoji, teaser, value, prefix = '', suffix =
 
       {revealed && (
         <div className="mt-4 text-center animate-pop-in">
-          <p className="text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent tabular-nums">
+          <p className="text-4xl font-display font-semibold text-encre tabular-nums font-ledger">
             {prefix}{count.toLocaleString('fr-CA')}{suffix}
           </p>
-          <p className="text-xs text-slate-600 mt-2 leading-relaxed">{caption}</p>
+          <p className="text-xs text-encre/60 mt-2 leading-relaxed">{caption}</p>
         </div>
       )}
     </button>

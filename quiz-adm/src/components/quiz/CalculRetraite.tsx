@@ -13,12 +13,12 @@ function ChampMontant({ label, value, onSet, placeholder = '0', suffix = '$' }: 
 }) {
   return (
     <div>
-      <label className="text-xs font-semibold text-slate-600">{label}</label>
+      <label className="text-xs font-semibold text-encre/70 font-ledger">{label}</label>
       <div className="relative mt-1">
         <input type="number" inputMode="numeric" value={value}
           onChange={e => onSet(e.target.value)}
           placeholder={placeholder} className="input pr-8" />
-        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">{suffix}</span>
+        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-encre/40 text-sm font-ledger">{suffix}</span>
       </div>
     </div>
   )
@@ -59,9 +59,9 @@ export default function CalculRetraite({ data, onChange }: Props) {
   const pct = (v: number) => `${Math.min(100, (v / maxBar) * 100)}%`
 
   return (
-    <div className="p-5 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl border border-blue-100">
-      <h3 className="text-lg font-bold text-brand-900 mb-1">🎯 Êtes-vous sur la bonne trajectoire pour votre retraite?</h3>
-      <p className="text-xs text-slate-500 mb-5">Quelques chiffres suffisent pour le savoir en direct</p>
+    <div className="p-5 bg-papier-card border border-encre/15">
+      <h3 className="text-lg font-display font-semibold text-encre mb-1">Êtes-vous sur la bonne trajectoire pour votre retraite?</h3>
+      <p className="text-xs text-encre/50 mb-5">Quelques chiffres suffisent pour le savoir en direct</p>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-4">
         <ChampMontant label="Votre âge" suffix="ans"
@@ -84,13 +84,13 @@ export default function CalculRetraite({ data, onChange }: Props) {
       {/* Rendement ajustable */}
       <div className="mb-5">
         <div className="flex justify-between text-xs mb-1">
-          <span className="font-semibold text-slate-600">Rendement annuel moyen</span>
-          <span className="font-bold text-brand-700">{rendement} %</span>
+          <span className="font-semibold text-encre/70 font-ledger">Rendement annuel moyen</span>
+          <span className="font-bold text-encre font-ledger">{rendement} %</span>
         </div>
         <input type="range" min={2} max={10} step={0.5} value={rendement}
           onChange={e => setRendement(parseFloat(e.target.value))}
-          className="w-full accent-brand-500" />
-        <div className="flex justify-between text-[10px] text-slate-400">
+          className="w-full accent-sceau" />
+        <div className="flex justify-between text-[10px] text-encre/40 font-ledger">
           <span>2 % (CPG)</span><span>6 % (équilibré)</span><span>10 % (croissance)</span>
         </div>
       </div>
@@ -100,31 +100,31 @@ export default function CalculRetraite({ data, onChange }: Props) {
           <div className="space-y-4">
             <div>
               <div className="flex justify-between text-xs mb-1">
-                <span className="font-medium text-slate-600">Capital nécessaire ({fmt(revenuVise)}/an de revenu)</span>
-                <span className="font-bold text-slate-700">{fmt(capitalNecessaire)}</span>
+                <span className="font-medium text-encre/60">Capital nécessaire ({fmt(revenuVise)}/an de revenu)</span>
+                <span className="font-bold text-encre/80 font-ledger">{fmt(capitalNecessaire)}</span>
               </div>
-              <div className="w-full bg-slate-100 rounded-full h-6 overflow-hidden">
-                <div className="h-full bg-slate-500 rounded-full transition-all duration-500" style={{ width: pct(capitalNecessaire) }} />
+              <div className="w-full bg-encre/10 h-2 overflow-hidden">
+                <div className="h-full bg-manille-dark transition-all duration-500" style={{ width: pct(capitalNecessaire) }} />
               </div>
             </div>
             <div>
               <div className="flex justify-between text-xs mb-1">
-                <span className="font-medium text-slate-600">Votre trajectoire actuelle à {ageVise} ans</span>
-                <span className={`font-bold ${ecart > 0 ? 'text-red-600' : 'text-green-600'}`}>{fmt(capitalProjete)}</span>
+                <span className="font-medium text-encre/60">Votre trajectoire actuelle à {ageVise} ans</span>
+                <span className={`font-bold font-ledger ${ecart > 0 ? 'text-sceau' : 'text-sauge'}`}>{fmt(capitalProjete)}</span>
               </div>
-              <div className="w-full bg-slate-100 rounded-full h-6 overflow-hidden">
-                <div className={`h-full rounded-full transition-all duration-500 ${ecart > 0 ? 'bg-red-400' : 'bg-green-500'}`}
+              <div className="w-full bg-encre/10 h-2 overflow-hidden">
+                <div className={`h-full transition-all duration-500 ${ecart > 0 ? 'bg-sceau' : 'bg-sauge'}`}
                   style={{ width: pct(capitalProjete) }} />
               </div>
             </div>
           </div>
 
-          <div className={`mt-5 rounded-xl p-5 text-center ${ecart > 0 ? 'bg-red-100 border border-red-300' : 'bg-green-100 border border-green-300'}`}>
+          <div className={`mt-5 border p-5 text-center ${ecart > 0 ? 'bg-sceau-light border-sceau/40' : 'bg-sauge-light border-sauge/40'}`}>
             {ecart > 0 ? (
               <>
-                <p className="text-sm text-red-700 font-medium">Écart projeté à la retraite</p>
-                <p className="text-3xl font-bold text-red-700 mt-1">− {fmt(ecart)}</p>
-                <p className="text-xs text-red-600 mt-3">
+                <p className="text-xs font-ledger tracking-wide text-sceau">ÉCART PROJETÉ À LA RETRAITE</p>
+                <p className="text-3xl font-display font-semibold text-sceau mt-1">− {fmt(ecart)}</p>
+                <p className="text-xs text-sceau/80 mt-3">
                   Pour combler l&apos;écart, il faudrait épargner{' '}
                   <strong>{fmt(mensuelleRequise)}/mois</strong>
                   {mensuelle > 0 && <> (vous épargnez actuellement {fmt(mensuelle)}/mois)</>}.
@@ -133,8 +133,8 @@ export default function CalculRetraite({ data, onChange }: Props) {
               </>
             ) : (
               <>
-                <p className="text-sm text-green-700 font-medium">🎉 Vous êtes sur la bonne trajectoire!</p>
-                <p className="text-xs text-green-600 mt-2">
+                <p className="text-xs font-ledger tracking-wide text-sauge">BONNE TRAJECTOIRE</p>
+                <p className="text-xs text-sauge/80 mt-2">
                   Prochaine étape : valider que cette projection tient compte de l&apos;inflation, de la fiscalité
                   et du bon ordre de décaissement (REER, CELI, non-enregistré).
                 </p>
@@ -143,7 +143,7 @@ export default function CalculRetraite({ data, onChange }: Props) {
           </div>
         </>
       ) : (
-        <p className="text-center text-sm text-slate-400 py-4">
+        <p className="text-center text-sm text-encre/40 py-4">
           Remplissez l&apos;âge, l&apos;âge de retraite visé et le revenu souhaité pour voir la projection.
         </p>
       )}

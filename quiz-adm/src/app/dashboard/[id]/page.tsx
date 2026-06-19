@@ -19,16 +19,16 @@ function Row({ label, value }: { label: string; value?: string | string[] | null
   const display = override !== undefined ? override : base
   if (!editMode && !display) return null
   return (
-    <div className="flex gap-3 py-2 border-b border-gray-100 last:border-0">
-      <span className="text-gray-500 text-sm w-48 shrink-0">{label}</span>
+    <div className="flex gap-3 py-2 border-b border-encre/8 last:border-0">
+      <span className="text-encre/50 text-sm w-48 shrink-0 font-ledger text-xs pt-0.5">{label}</span>
       {editMode ? (
         <input
-          className="text-sm text-gray-900 font-medium flex-1 border border-gray-200 rounded px-2 py-1"
+          className="text-sm text-encre font-medium flex-1 border border-encre/25 px-2 py-1 bg-papier-card"
           value={display}
           onChange={e => setOverride(label, e.target.value)}
         />
       ) : (
-        <span className="text-sm text-gray-900 font-medium">{display}</span>
+        <span className="text-sm text-encre font-medium">{display}</span>
       )}
     </div>
   )
@@ -36,9 +36,8 @@ function Row({ label, value }: { label: string; value?: string | string[] | null
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-card border border-white mb-5 overflow-hidden animate-slide-up">
-      <div className="bg-gradient-to-r from-brand-700 to-brand-500 text-white font-semibold px-5 py-3 text-sm flex items-center gap-2">
-        <span className="w-1.5 h-5 bg-accent-500 rounded-full" />
+    <div className="bg-papier-card border border-encre/15 mb-5">
+      <div className="bg-encre text-papier-card font-display font-semibold px-5 py-3 text-sm">
         {title}
       </div>
       <div className="px-5 py-3">{children}</div>
@@ -127,64 +126,63 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
   const notes = d.notes || {}
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-gradient-hero text-white py-6 px-6 shadow-glow relative overflow-hidden print:hidden">
-        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-        <div className="max-w-3xl mx-auto flex items-center gap-4 relative">
-          <Link href="/dashboard" className="text-white/90 hover:text-white text-sm bg-white/10 hover:bg-white/20 backdrop-blur-sm px-3 py-2 rounded-xl transition-all border border-white/20">
+    <div className="min-h-screen bg-papier">
+      <header className="bg-encre text-papier-card py-6 px-6 print:hidden">
+        <div className="max-w-3xl mx-auto flex items-center gap-4">
+          <Link href="/dashboard" className="text-papier-card/80 hover:text-papier-card text-sm border border-papier-card/25 hover:border-papier-card/60 px-3 py-2 transition-colors">
             ← Retour
           </Link>
-          <div className="w-12 h-12 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center text-lg font-bold border border-white/20">
+          <div className="w-11 h-11 border border-papier-card/30 flex items-center justify-center text-base font-display font-semibold">
             {(d.prenom?.[0] || '?') + (d.nom?.[0] || '')}
           </div>
           <div className="flex-1">
-            <h1 className="text-xl font-bold tracking-tight">
+            <h1 className="text-xl font-display font-semibold tracking-tight">
               {d.prenom} {d.nom}
               {d.typeClient && (
-                <span className="ml-2 align-middle text-xs font-semibold bg-white/20 px-2 py-0.5 rounded-full">
+                <span className="ml-2 align-middle text-xs font-ledger border border-manille/50 text-manille px-2 py-0.5">
                   {TYPE_LABELS[d.typeClient] || d.typeClient}
                 </span>
               )}
             </h1>
-            <p className="text-blue-200 text-xs">{new Date(submission.created_at).toLocaleDateString('fr-CA', { dateStyle: 'long' })}</p>
+            <p className="text-papier-card/55 text-xs font-ledger">{new Date(submission.created_at).toLocaleDateString('fr-CA', { dateStyle: 'long' })}</p>
           </div>
           {editMode ? (
             <button onClick={handleSave} disabled={saving}
-              className="text-white/90 hover:text-white text-sm bg-green-500/30 hover:bg-green-500/50 backdrop-blur-sm px-3 py-2 rounded-xl transition-all border border-green-300/30 disabled:opacity-50">
-              {saving ? '...' : '💾 Enregistrer'}
+              className="text-papier-card text-sm bg-sauge hover:bg-sauge/85 px-3 py-2 transition-colors disabled:opacity-50">
+              {saving ? '...' : 'Enregistrer'}
             </button>
           ) : (
             <button onClick={() => setEditMode(true)}
-              className="text-white/90 hover:text-white text-sm bg-white/10 hover:bg-white/20 backdrop-blur-sm px-3 py-2 rounded-xl transition-all border border-white/20">
-              ✏️ Modifier
+              className="text-papier-card/80 hover:text-papier-card text-sm border border-papier-card/25 hover:border-papier-card/60 px-3 py-2 transition-colors">
+              Modifier
             </button>
           )}
           <button onClick={() => window.print()}
-            className="text-white/90 hover:text-white text-sm bg-white/10 hover:bg-white/20 backdrop-blur-sm px-3 py-2 rounded-xl transition-all border border-white/20">
-            🖨️ Imprimer
+            className="text-papier-card/80 hover:text-papier-card text-sm border border-papier-card/25 hover:border-papier-card/60 px-3 py-2 transition-colors">
+            Imprimer
           </button>
           <button onClick={handleDelete} disabled={deleting}
-            className="text-white/90 hover:text-white text-sm bg-red-500/30 hover:bg-red-500/50 backdrop-blur-sm px-3 py-2 rounded-xl transition-all border border-red-300/30 disabled:opacity-50">
-            {deleting ? '...' : '🗑️ Supprimer'}
+            className="text-papier-card/80 hover:text-sceau text-sm border border-papier-card/25 hover:border-sceau/60 px-3 py-2 transition-colors disabled:opacity-50">
+            {deleting ? '...' : 'Supprimer'}
           </button>
         </div>
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-8">
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-card border border-white mb-5 p-6 print:hidden">
+        <div className="bg-papier-card border border-encre/15 mb-5 p-6 print:hidden">
           <p className="field-label">Envoyer le rapport par courriel</p>
           <div className="flex gap-2 mt-2">
             <input type="email" className="input" placeholder="courriel@exemple.com"
               value={email} onChange={e => setEmail(e.target.value)} />
             <button className="btn-primary shrink-0" onClick={handleSend} disabled={sending || !email}>
-              {sending ? 'Envoi...' : '📧 Envoyer'}
+              {sending ? 'Envoi...' : 'Envoyer'}
             </button>
           </div>
-          {sendStatus === 'sent' && <p className="text-green-600 text-sm mt-2">Rapport envoyé avec succès.</p>}
-          {sendStatus === 'error' && <p className="text-red-500 text-sm mt-2">L&apos;envoi a échoué. Vérifiez la configuration du service de courriel.</p>}
+          {sendStatus === 'sent' && <p className="text-sauge text-sm mt-2">Rapport envoyé avec succès.</p>}
+          {sendStatus === 'error' && <p className="text-sceau text-sm mt-2">L&apos;envoi a échoué. Vérifiez la configuration du service de courriel.</p>}
         </div>
 
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-card border border-white mb-5 p-6">
+        <div className="bg-papier-card border border-encre/15 mb-5 p-6">
           <Bilan data={d} />
         </div>
 

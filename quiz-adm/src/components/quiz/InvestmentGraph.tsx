@@ -53,51 +53,51 @@ export default function InvestmentGraph() {
   const diff = finalOptimized - finalCurrent
 
   return (
-    <div className="mt-8 p-5 bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl border border-slate-200">
-      <h3 className="text-lg font-bold text-brand-900 mb-1">Comparaison de placement</h3>
-      <p className="text-xs text-slate-500 mb-5">Visualisez l&apos;impact d&apos;un taux de rendement optimisé sur votre épargne</p>
+    <div className="mt-8 p-5 bg-papier-card border border-encre/15">
+      <h3 className="text-lg font-display font-semibold text-encre mb-1">Comparaison de placement</h3>
+      <p className="text-xs text-encre/50 mb-5">Visualisez l&apos;impact d&apos;un taux de rendement optimisé sur votre épargne</p>
 
       {/* Sliders */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
         <div>
-          <label className="text-xs font-semibold text-slate-600 flex justify-between">
-            <span>Montant initial</span><span className="text-brand-600">{fmt(initial)}</span>
+          <label className="text-xs font-semibold text-encre/70 font-ledger flex justify-between">
+            <span>Montant initial</span><span className="text-encre">{fmt(initial)}</span>
           </label>
           <input type="range" min={1000} max={100000} step={1000} value={initial}
             onChange={e => setInitial(+e.target.value)}
-            className="w-full mt-1 accent-brand-500" />
+            className="w-full mt-1 accent-encre" />
         </div>
         <div>
-          <label className="text-xs font-semibold text-slate-600 flex justify-between">
-            <span>Contribution mensuelle</span><span className="text-brand-600">{fmt(monthly)}</span>
+          <label className="text-xs font-semibold text-encre/70 font-ledger flex justify-between">
+            <span>Contribution mensuelle</span><span className="text-encre">{fmt(monthly)}</span>
           </label>
           <input type="range" min={0} max={2000} step={50} value={monthly}
             onChange={e => setMonthly(+e.target.value)}
-            className="w-full mt-1 accent-brand-500" />
+            className="w-full mt-1 accent-encre" />
         </div>
         <div>
-          <label className="text-xs font-semibold text-slate-600 flex justify-between">
-            <span>Taux actuel</span><span className="text-blue-600">{rateCurrent}%</span>
+          <label className="text-xs font-semibold text-encre/70 font-ledger flex justify-between">
+            <span>Taux actuel</span><span className="text-manille-dark">{rateCurrent}%</span>
           </label>
           <input type="range" min={1} max={5} step={0.5} value={rateCurrent}
             onChange={e => setRateCurrent(+e.target.value)}
-            className="w-full mt-1 accent-blue-500" />
+            className="w-full mt-1 accent-manille-dark" />
         </div>
         <div>
-          <label className="text-xs font-semibold text-slate-600 flex justify-between">
-            <span>Taux optimisé</span><span className="text-green-600">{rateOptimized}%</span>
+          <label className="text-xs font-semibold text-encre/70 font-ledger flex justify-between">
+            <span>Taux optimisé</span><span className="text-sauge">{rateOptimized}%</span>
           </label>
           <input type="range" min={6} max={20} step={0.5} value={rateOptimized}
             onChange={e => setRateOptimized(+e.target.value)}
-            className="w-full mt-1 accent-green-500" />
+            className="w-full mt-1 accent-sauge" />
         </div>
         <div className="sm:col-span-2">
-          <label className="text-xs font-semibold text-slate-600 flex justify-between">
-            <span>Nombre d&apos;années</span><span className="text-brand-600">{years} ans</span>
+          <label className="text-xs font-semibold text-encre/70 font-ledger flex justify-between">
+            <span>Nombre d&apos;années</span><span className="text-encre">{years} ans</span>
           </label>
           <input type="range" min={5} max={40} step={1} value={years}
             onChange={e => setYears(+e.target.value)}
-            className="w-full mt-1 accent-brand-500" />
+            className="w-full mt-1 accent-encre" />
         </div>
       </div>
 
@@ -108,9 +108,9 @@ export default function InvestmentGraph() {
           {yTicks.map((t, i) => (
             <g key={i}>
               <line x1={PAD.left} x2={W - PAD.right} y1={toY(t)} y2={toY(t)}
-                stroke="#e2e8f0" strokeWidth="1" strokeDasharray="4 3" />
+                stroke="#1C2B3A" strokeOpacity="0.1" strokeWidth="1" strokeDasharray="4 3" />
               <text x={PAD.left - 6} y={toY(t) + 4} textAnchor="end"
-                className="fill-slate-400" style={{ fontSize: 10 }}>
+                className="fill-encre/40" style={{ fontSize: 10 }}>
                 {Math.round(t / 1000)}k
               </text>
             </g>
@@ -120,9 +120,9 @@ export default function InvestmentGraph() {
           {xTicks.map(t => (
             <g key={t}>
               <line x1={toX(t)} x2={toX(t)} y1={PAD.top} y2={H - PAD.bottom + 4}
-                stroke="#e2e8f0" strokeWidth="1" />
+                stroke="#1C2B3A" strokeOpacity="0.1" strokeWidth="1" />
               <text x={toX(t)} y={H - PAD.bottom + 16} textAnchor="middle"
-                className="fill-slate-400" style={{ fontSize: 10 }}>
+                className="fill-encre/40" style={{ fontSize: 10 }}>
                 {t}
               </text>
             </g>
@@ -130,55 +130,48 @@ export default function InvestmentGraph() {
 
           {/* X axis label */}
           <text x={W / 2} y={H - 2} textAnchor="middle"
-            className="fill-slate-400" style={{ fontSize: 10 }}>
+            className="fill-encre/40" style={{ fontSize: 10 }}>
             Années
           </text>
 
-          {/* Current rate curve (blue) */}
-          <path d={pathD(currentPoints)} fill="none" stroke="#3b82f6" strokeWidth="2.5" strokeLinejoin="round" />
+          {/* Current rate curve */}
+          <path d={pathD(currentPoints)} fill="none" stroke="#B7A877" strokeWidth="2.5" strokeLinejoin="round" />
 
-          {/* Optimized rate curve (green) */}
-          <path d={pathD(optimizedPoints)} fill="none" stroke="#22c55e" strokeWidth="2.5" strokeLinejoin="round" />
+          {/* Optimized rate curve */}
+          <path d={pathD(optimizedPoints)} fill="none" stroke="#46604E" strokeWidth="2.5" strokeLinejoin="round" />
 
           {/* Filled area between curves */}
           <path
             d={`${pathD(optimizedPoints)} L${toX(years).toFixed(1)},${toY(finalCurrent).toFixed(1)} ${currentPoints.map((v, i) => `L${toX(years - i).toFixed(1)},${toY(currentPoints[years - i]).toFixed(1)}`).join(' ')} Z`}
-            fill="url(#diffGradient)" opacity="0.15" />
-
-          <defs>
-            <linearGradient id="diffGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#22c55e" />
-              <stop offset="100%" stopColor="#3b82f6" />
-            </linearGradient>
-          </defs>
+            fill="#46604E" opacity="0.1" />
         </svg>
       </div>
 
       {/* Legend */}
-      <div className="flex gap-4 justify-center mb-4 text-xs">
+      <div className="flex gap-4 justify-center mb-4 text-xs font-ledger">
         <div className="flex items-center gap-1.5">
-          <div className="w-6 h-0.5 bg-blue-500 rounded" />
-          <span className="text-slate-600">Taux actuel ({rateCurrent}%)</span>
+          <div className="w-6 h-0.5 bg-manille-dark" />
+          <span className="text-encre/60">Taux actuel ({rateCurrent}%)</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-6 h-0.5 bg-green-500 rounded" />
-          <span className="text-slate-600">Taux optimisé ({rateOptimized}%)</span>
+          <div className="w-6 h-0.5 bg-sauge" />
+          <span className="text-encre/60">Taux optimisé ({rateOptimized}%)</span>
         </div>
       </div>
 
       {/* Results */}
-      <div className="grid grid-cols-3 gap-3 mt-2">
-        <div className="text-center p-3 bg-blue-50 rounded-xl border border-blue-100">
-          <p className="text-xs text-blue-500 font-semibold mb-1">Valeur finale ({rateCurrent}%)</p>
-          <p className="text-sm font-bold text-blue-700">{fmt(finalCurrent)}</p>
+      <div className="grid grid-cols-3 gap-px bg-encre/15 mt-2">
+        <div className="text-center p-3 bg-papier-card">
+          <p className="text-xs text-manille-dark font-semibold mb-1 font-ledger">Valeur finale ({rateCurrent}%)</p>
+          <p className="text-sm font-bold text-encre font-ledger">{fmt(finalCurrent)}</p>
         </div>
-        <div className="text-center p-3 bg-green-50 rounded-xl border border-green-100">
-          <p className="text-xs text-green-500 font-semibold mb-1">Valeur finale ({rateOptimized}%)</p>
-          <p className="text-sm font-bold text-green-700">{fmt(finalOptimized)}</p>
+        <div className="text-center p-3 bg-papier-card">
+          <p className="text-xs text-sauge font-semibold mb-1 font-ledger">Valeur finale ({rateOptimized}%)</p>
+          <p className="text-sm font-bold text-encre font-ledger">{fmt(finalOptimized)}</p>
         </div>
-        <div className="text-center p-3 bg-emerald-50 rounded-xl border border-emerald-200">
-          <p className="text-xs text-emerald-600 font-semibold mb-1">Différence</p>
-          <p className="text-sm font-bold text-emerald-700">+ {fmt(diff)}</p>
+        <div className="text-center p-3 bg-papier-card">
+          <p className="text-xs text-sceau font-semibold mb-1 font-ledger">Différence</p>
+          <p className="text-sm font-bold text-sceau font-ledger">+ {fmt(diff)}</p>
         </div>
       </div>
     </div>

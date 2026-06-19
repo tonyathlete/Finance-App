@@ -27,17 +27,13 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen">
-      <header className="bg-gradient-hero text-white py-6 px-6 shadow-glow relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-        <div className="max-w-4xl mx-auto flex items-center justify-between relative">
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center text-xl border border-white/20">📊</div>
-            <div>
-              <h1 className="text-xl font-bold tracking-tight">Tableau de bord</h1>
-              <p className="text-blue-200 text-xs">Quiz ADM, tous les clients</p>
-            </div>
+      <header className="bg-encre text-papier-card py-6 px-6">
+        <div className="max-w-4xl mx-auto flex items-center justify-between">
+          <div>
+            <h1 className="text-xl font-display font-semibold tracking-tight">Tableau de bord</h1>
+            <p className="text-papier-card/55 text-xs font-ledger tracking-wide">QUIZ ADM — TOUS LES DOSSIERS</p>
           </div>
-          <Link href="/" className="bg-accent-500 hover:bg-accent-600 text-white font-semibold px-4 py-2.5 rounded-xl shadow-lg transition-all hover:-translate-y-0.5 text-sm">
+          <Link href="/" className="bg-sceau hover:bg-sceau/90 text-papier-card font-semibold px-4 py-2.5 shadow-stamp-sm hover:translate-x-[1px] hover:translate-y-[1px] transition-all text-sm">
             + Nouveau client
           </Link>
         </div>
@@ -54,43 +50,43 @@ export default function DashboardPage() {
         </div>
 
         {loading ? (
-          <div className="text-center text-gray-400 py-20">Chargement...</div>
+          <div className="text-center text-encre/40 py-20">Chargement...</div>
         ) : filtered.length === 0 ? (
-          <div className="text-center text-gray-400 py-20">
+          <div className="text-center text-encre/40 py-20">
             {search ? 'Aucun résultat trouvé.' : 'Aucun client pour le moment.'}
           </div>
         ) : (
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-card border border-white overflow-hidden animate-slide-up">
+          <div className="bg-papier-card border border-encre/15 overflow-hidden">
             <table className="w-full text-sm">
-              <thead className="bg-gradient-to-r from-brand-50 to-brand-100 text-brand-900">
+              <thead className="border-b border-encre/15 text-encre">
                 <tr>
-                  <th className="text-left px-4 py-3 font-semibold">Client</th>
-                  <th className="text-left px-4 py-3 font-semibold hidden sm:table-cell">Type</th>
-                  <th className="text-left px-4 py-3 font-semibold hidden md:table-cell">Statut civil</th>
-                  <th className="text-left px-4 py-3 font-semibold hidden lg:table-cell">Date</th>
+                  <th className="text-left px-4 py-3 font-ledger text-xs tracking-wide font-medium">Client</th>
+                  <th className="text-left px-4 py-3 font-ledger text-xs tracking-wide font-medium hidden sm:table-cell">Type</th>
+                  <th className="text-left px-4 py-3 font-ledger text-xs tracking-wide font-medium hidden md:table-cell">Statut civil</th>
+                  <th className="text-left px-4 py-3 font-ledger text-xs tracking-wide font-medium hidden lg:table-cell">Date</th>
                   <th className="px-4 py-3"></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-encre/10">
                 {filtered.map(s => (
-                  <tr key={s.id} className="hover:bg-gray-50 transition-colors">
+                  <tr key={s.id} className="hover:bg-encre/5 transition-colors">
                     <td className="px-4 py-3">
-                      <div className="font-medium text-gray-900">
+                      <div className="font-medium text-encre">
                         {s.data.prenom} {s.data.nom}
                       </div>
-                      <div className="text-gray-400 text-xs">{s.data.courriel}</div>
+                      <div className="text-encre/45 text-xs">{s.data.courriel}</div>
                     </td>
-                    <td className="px-4 py-3 hidden sm:table-cell text-gray-600 capitalize">
+                    <td className="px-4 py-3 hidden sm:table-cell text-encre/70 capitalize">
                       {s.data.typeClient || '—'}
                     </td>
-                    <td className="px-4 py-3 hidden md:table-cell text-gray-600">
+                    <td className="px-4 py-3 hidden md:table-cell text-encre/70">
                       {s.data.statutCivil || '—'}
                     </td>
-                    <td className="px-4 py-3 hidden lg:table-cell text-gray-400 text-xs">
+                    <td className="px-4 py-3 hidden lg:table-cell text-encre/45 text-xs font-ledger">
                       {new Date(s.created_at).toLocaleDateString('fr-CA')}
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <Link href={`/dashboard/${s.id}`} className="inline-flex items-center gap-1 bg-brand-50 text-brand-700 hover:bg-brand-100 font-semibold text-xs px-3 py-1.5 rounded-lg transition-colors">
+                      <Link href={`/dashboard/${s.id}`} className="inline-flex items-center gap-1 text-encre hover:text-sceau font-semibold text-xs px-3 py-1.5 transition-colors">
                         Voir →
                       </Link>
                     </td>
@@ -101,7 +97,7 @@ export default function DashboardPage() {
           </div>
         )}
 
-        <p className="text-xs text-gray-400 mt-4">{filtered.length} client(s) affiché(s)</p>
+        <p className="text-xs text-encre/40 mt-4 font-ledger">{filtered.length} client(s) affiché(s)</p>
       </main>
     </div>
   )

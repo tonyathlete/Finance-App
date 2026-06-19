@@ -9,9 +9,9 @@ interface Props {
 }
 
 const TONES = {
-  red: { active: 'text-red-500', big: 'text-red-600', bg: 'from-red-50 to-orange-50 border-red-100' },
-  amber: { active: 'text-amber-500', big: 'text-amber-600', bg: 'from-amber-50 to-yellow-50 border-amber-100' },
-  indigo: { active: 'text-indigo-500', big: 'text-indigo-600', bg: 'from-indigo-50 to-blue-50 border-indigo-100' },
+  red: { active: 'bg-sceau', big: 'text-sceau' },
+  amber: { active: 'bg-manille-dark', big: 'text-manille-dark' },
+  indigo: { active: 'bg-encre', big: 'text-encre' },
 }
 
 export default function StatPairs({ filled, label, caption, tone = 'red' }: Props) {
@@ -31,25 +31,23 @@ export default function StatPairs({ filled, label, caption, tone = 'red' }: Prop
   }, [])
 
   return (
-    <div ref={ref} className={`bg-gradient-to-br ${t.bg} border rounded-2xl p-5`}>
+    <div ref={ref} className="border border-encre/15 bg-papier-card p-5">
       <div className="flex items-center gap-4 flex-wrap">
-        <div className="flex gap-1 text-2xl">
+        <div className="flex gap-1 h-8 items-end">
           {Array.from({ length: 10 }).map((_, i) => (
             <span
               key={i}
-              className={`${i < filled ? t.active : 'text-slate-300'} ${visible && i < filled ? 'animate-pop-in' : ''}`}
-              style={visible && i < filled ? { animationDelay: `${i * 90}ms` } : { opacity: i < filled && !visible ? 0 : undefined }}
-            >
-              ●
-            </span>
+              className={`w-2 h-8 ${i < filled ? t.active : 'bg-encre/12'} ${visible && i < filled ? 'animate-pop-in' : ''}`}
+              style={visible && i < filled ? { animationDelay: `${i * 70}ms` } : { opacity: i < filled && !visible ? 0 : undefined }}
+            />
           ))}
         </div>
-        <p className={`text-2xl font-extrabold ${t.big} shrink-0`}>
+        <p className={`text-2xl font-display font-semibold ${t.big} shrink-0`}>
           {filled} sur 10
         </p>
       </div>
-      <p className="text-sm font-semibold text-slate-700 mt-2">{label}</p>
-      {caption && <p className="text-xs text-slate-500 mt-1 italic">{caption}</p>}
+      <p className="text-sm font-semibold text-encre/80 mt-3">{label}</p>
+      {caption && <p className="text-xs text-encre/50 mt-1 italic">{caption}</p>}
     </div>
   )
 }

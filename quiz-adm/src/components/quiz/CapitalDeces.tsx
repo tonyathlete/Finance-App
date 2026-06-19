@@ -14,13 +14,13 @@ function Champ({ label, value, onSet, placeholder = '0', suffix = '$', hint }: {
 }) {
   return (
     <div>
-      <label className="text-xs font-semibold text-slate-600">{label}</label>
-      {hint && <p className="text-[10px] text-slate-400">{hint}</p>}
+      <label className="text-xs font-semibold text-encre/70 font-ledger">{label}</label>
+      {hint && <p className="text-[10px] text-encre/40">{hint}</p>}
       <div className="relative mt-1">
         <input type="number" inputMode="numeric" value={value}
           onChange={e => onSet(e.target.value)}
           placeholder={placeholder} className="input pr-8" />
-        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">{suffix}</span>
+        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-encre/40 text-sm font-ledger">{suffix}</span>
       </div>
     </div>
   )
@@ -39,9 +39,9 @@ export default function CapitalDeces({ data, onChange }: Props) {
   const aDonnees = revenu > 0 && annees > 0
 
   return (
-    <div className="p-5 bg-gradient-to-br from-violet-50 to-purple-50 rounded-2xl border border-violet-100">
-      <h3 className="text-lg font-bold text-brand-900 mb-1">💎 De combien votre famille aurait besoin?</h3>
-      <p className="text-xs text-slate-500 mb-5">
+    <div className="p-5 bg-papier-card border border-encre/15">
+      <h3 className="text-lg font-display font-semibold text-encre mb-1">De combien votre famille aurait besoin?</h3>
+      <p className="text-xs text-encre/50 mb-5">
         Quelques chiffres et on sait exactement le montant
       </p>
 
@@ -66,46 +66,46 @@ export default function CapitalDeces({ data, onChange }: Props) {
       {aDonnees ? (
         <>
           {/* Décomposition */}
-          <div className="bg-white/80 rounded-xl border border-slate-200 p-4 space-y-2 text-sm">
+          <div className="bg-papier border border-encre/15 p-4 space-y-2 text-sm font-ledger">
             <div className="flex justify-between">
-              <span className="text-slate-600">Remplacement du revenu ({annees} ans)</span>
-              <span className="font-semibold text-slate-800 tabular-nums">{fmt(remplacementRevenu)}</span>
+              <span className="text-encre/60">Remplacement du revenu ({annees} ans)</span>
+              <span className="font-semibold text-encre tabular-nums">{fmt(remplacementRevenu)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-600">Remboursement des dettes</span>
-              <span className="font-semibold text-slate-800 tabular-nums">{fmt(dettes)}</span>
+              <span className="text-encre/60">Remboursement des dettes</span>
+              <span className="font-semibold text-encre tabular-nums">{fmt(dettes)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-600">Frais finaux (funérailles, succession…)</span>
-              <span className="font-semibold text-slate-800 tabular-nums">{fmt(FRAIS_FINAUX)}</span>
+              <span className="text-encre/60">Frais finaux (funérailles, succession…)</span>
+              <span className="font-semibold text-encre tabular-nums">{fmt(FRAIS_FINAUX)}</span>
             </div>
-            <div className="flex justify-between pt-2 border-t border-slate-200 font-bold">
-              <span className="text-slate-800">Besoin réel de votre famille</span>
-              <span className="text-brand-700 tabular-nums">{fmt(besoinTotal)}</span>
+            <div className="flex justify-between pt-2 border-t border-encre/20 font-bold">
+              <span className="text-encre">Besoin réel de votre famille</span>
+              <span className="text-encre tabular-nums">{fmt(besoinTotal)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-600">Votre couverture actuelle</span>
-              <span className={`font-semibold tabular-nums ${couverture > 0 ? 'text-slate-800' : 'text-red-600'}`}>
+              <span className="text-encre/60">Votre couverture actuelle</span>
+              <span className={`font-semibold tabular-nums ${couverture > 0 ? 'text-encre' : 'text-sceau'}`}>
                 − {fmt(couverture)}
               </span>
             </div>
           </div>
 
           {/* Verdict */}
-          <div className={`mt-4 rounded-xl p-5 text-center ${manque > 0 ? 'bg-red-100 border border-red-300' : 'bg-green-100 border border-green-300'}`}>
+          <div className={`mt-4 border p-5 text-center ${manque > 0 ? 'bg-sceau-light border-sceau/40' : 'bg-sauge-light border-sauge/40'}`}>
             {manque > 0 ? (
               <>
-                <p className="text-sm text-red-700 font-medium">Protection manquante</p>
-                <p className="text-3xl font-bold text-red-700 mt-1">− {fmt(manque)}</p>
-                <p className="text-xs text-red-600 mt-3">
+                <p className="text-xs font-ledger tracking-wide text-sceau">PROTECTION MANQUANTE</p>
+                <p className="text-3xl font-display font-semibold text-sceau mt-1">− {fmt(manque)}</p>
+                <p className="text-xs text-sceau/80 mt-3">
                   C&apos;est le montant que votre famille devrait absorber sans vous.
                   La bonne nouvelle : combler cet écart coûte souvent juste <strong>quelques dollars par jour</strong>.
                 </p>
               </>
             ) : (
               <>
-                <p className="text-sm text-green-700 font-medium">🎉 Votre famille serait bien protégée</p>
-                <p className="text-xs text-green-600 mt-2">
+                <p className="text-xs font-ledger tracking-wide text-sauge">FAMILLE BIEN PROTÉGÉE</p>
+                <p className="text-xs text-sauge/80 mt-2">
                   Prochaine étape : valider que les bénéficiaires sont à jour et que le type de contrat
                   (temporaire vs permanent) correspond toujours à votre situation.
                 </p>
@@ -114,7 +114,7 @@ export default function CapitalDeces({ data, onChange }: Props) {
           </div>
         </>
       ) : (
-        <p className="text-center text-sm text-slate-400 py-4">
+        <p className="text-center text-sm text-encre/40 py-4">
           Entrez le revenu annuel et les années à protéger pour voir le calcul.
         </p>
       )}
