@@ -2,6 +2,7 @@
 import { QuizData } from '@/lib/types'
 import DiagnosticExpress from '@/components/quiz/DiagnosticExpress'
 import SentimentEconomique from '@/components/quiz/steps/SentimentEconomique'
+import InvestmentGraph from '@/components/quiz/InvestmentGraph'
 
 interface Props { data: QuizData; onChange: (u: Partial<QuizData>) => void }
 
@@ -160,6 +161,10 @@ export default function Step0Connaissances({ data, onChange }: Props) {
               </label>
             ))}
           </div>
+        </div>
+
+        <div className="mt-5">
+          <InvestmentGraph />
         </div>
       </div>
 

@@ -1,6 +1,5 @@
 'use client'
 import { QuizData } from '@/lib/types'
-import InvestmentGraph from '@/components/quiz/InvestmentGraph'
 import RevealCard from '@/components/quiz/RevealCard'
 import CalculRetraite from '@/components/quiz/CalculRetraite'
 
@@ -208,8 +207,6 @@ export default function Step4Epargne({ data, onChange }: Props) {
       <div className="insight-box">
         Il existe des façons d&apos;épargner qui passent par des produits d&apos;assurance, avec des avantages fiscaux que les comptes de placement classiques n&apos;offrent pas. On peut regarder ça ensemble.
       </div>
-
-      <InvestmentGraph />
     </div>
   )
 }
