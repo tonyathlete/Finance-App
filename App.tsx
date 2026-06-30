@@ -57,7 +57,24 @@ const App: React.FC = () => {
   };
 
   const [step, setStep] = useState<Step>(1);
+  const [goals, setGoals] = useState<string[]>([]);
   const [budget, setBudget] = useState<BudgetData>(DEFAULT_BUDGET);
+
+  const toggleGoal = (goal: string) =>
+    setGoals((prev) => (prev.includes(goal) ? prev.filter((g) => g !== goal) : [...prev, goal]));
+
+  const GOAL_LABELS: Record<string, string> = {
+    maison_1_2: 'Acheter une maison (1-2 ans)',
+    maison_3_4: 'Acheter une maison (3-4 ans)',
+    maison_5_plus: 'Acheter une maison (5 ans +)',
+    revenu_100k_an: 'Faire 100k$ par année',
+    revenu_10k_mois: 'Faire 10k$ par mois',
+    chalet: 'Acheter un chalet',
+    voiture: 'Acheter une voiture',
+    retraite: 'Préparer ma retraite',
+    placement_100k: 'Avoir 100k$ en placement',
+    autres: 'Autres',
+  };
   const [savingsQuiz, setSavingsQuiz] = useState<SavingsQuizData>(DEFAULT_SAVINGS);
   const [lead, setLead] = useState<LeadInfo | null>(null);
   const [analysis, setAnalysis] = useState<BudgetAnalysis | null>(null);
@@ -76,7 +93,7 @@ const App: React.FC = () => {
 
     try {
       const existing = JSON.parse(localStorage.getItem('budget_leads') ?? '[]');
-      existing.push({ ...info, budget, timestamp: new Date().toISOString() });
+      existing.push({ ...info, budget, goals, timestamp: new Date().toISOString() });
       localStorage.setItem('budget_leads', JSON.stringify(existing));
     } catch (_) {}
 
@@ -94,6 +111,7 @@ const App: React.FC = () => {
           totalPlacements: fmt(result.totalPlacements),
           surplus:         fmt(result.surplus),
           healthScore:     result.healthScore,
+          goals:           goals.map((g) => GOAL_LABELS[g] ?? g).join(', ') || 'Aucun objectif sélectionné',
         },
         EMAILJS_PUBLIC_KEY,
       );
@@ -110,6 +128,7 @@ const App: React.FC = () => {
 
   const reset = () => {
     setStep(1);
+    setGoals([]);
     setBudget(DEFAULT_BUDGET);
     setSavingsQuiz(DEFAULT_SAVINGS);
     setLead(null);
@@ -135,7 +154,7 @@ const App: React.FC = () => {
       )}
 
       <main>
-        {step === 1 && <StepWelcome onStart={() => goToStep(2)} />}
+        {step === 1 && <StepWelcome onStart={() => goToStep(2)} goals={goals} onToggleGoal={toggleGoal} />}
         {step === 2 && (
           <StepSavings
             data={savingsQuiz}

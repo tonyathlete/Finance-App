@@ -2,9 +2,24 @@ import React from 'react';
 
 interface Props {
   onStart: () => void;
+  goals: string[];
+  onToggleGoal: (goal: string) => void;
 }
 
-export default function StepWelcome({ onStart }: Props) {
+const GOALS = [
+  { value: 'maison_1_2', emoji: '🏡', label: 'Acheter une maison (1-2 ans)' },
+  { value: 'maison_3_4', emoji: '🏡', label: 'Acheter une maison (3-4 ans)' },
+  { value: 'maison_5_plus', emoji: '🏡', label: 'Acheter une maison (5 ans +)' },
+  { value: 'revenu_100k_an', emoji: '💰', label: 'Faire 100k$ par année' },
+  { value: 'revenu_10k_mois', emoji: '📅', label: 'Faire 10k$ par mois' },
+  { value: 'chalet', emoji: '🏞️', label: 'Acheter un chalet' },
+  { value: 'voiture', emoji: '🚗', label: 'Acheter une voiture' },
+  { value: 'retraite', emoji: '🏖️', label: 'Préparer ma retraite' },
+  { value: 'placement_100k', emoji: '📈', label: 'Avoir 100k$ en placement' },
+  { value: 'autres', emoji: '✨', label: 'Autres' },
+];
+
+export default function StepWelcome({ onStart, goals, onToggleGoal }: Props) {
   return (
     <div className="min-h-screen flex flex-col justify-center px-6 py-16 max-w-2xl mx-auto animate-fadeIn relative overflow-hidden">
       <div className="absolute -top-24 -right-24 w-72 h-72 bg-blue-400/20 rounded-full blur-3xl animate-floatSlow" />
@@ -50,6 +65,31 @@ export default function StepWelcome({ onStart }: Props) {
             <p className="font-bold text-blue-900">Tu reçois un plan d'action concret</p>
             <p className="text-blue-500 text-sm">Avec un appel gratuit d'un conseiller si tu le veux</p>
           </div>
+        </div>
+      </div>
+
+      <div className="mb-10 relative">
+        <h2 className="font-display text-xl font-bold text-blue-900 mb-1">Quel est ton objectif?</h2>
+        <p className="text-blue-500 text-sm mb-4">Choisis ce qui te parle — on en tiendra compte dans ton plan. (optionnel)</p>
+        <div className="flex flex-wrap gap-2.5">
+          {GOALS.map((g) => {
+            const active = goals.includes(g.value);
+            return (
+              <button
+                key={g.value}
+                type="button"
+                onClick={() => onToggleGoal(g.value)}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-semibold transition-all ${
+                  active
+                    ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/30'
+                    : 'bg-white text-blue-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50'
+                }`}
+              >
+                <span className="text-base">{g.emoji}</span>
+                {g.label}
+              </button>
+            );
+          })}
         </div>
       </div>
 
