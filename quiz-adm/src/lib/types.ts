@@ -15,6 +15,11 @@ export interface Reference {
 }
 
 export interface QuizData {
+  // Objectifs du client (page d'accueil « Finance 2026 »)
+  objectifs: string[]
+  objectifAutre: string
+  objectifMaisonEcheance: '1-2 ans' | '3-4 ans' | '5 ans +' | ''
+
   // Étape 0 — Sentiment économique
   sentimentEconomieCanada: 'confiant' | 'neutre' | 'inquiet' | 'tres_inquiet' | ''
   stressAvenirFinancier: 'oui' | 'un_peu' | 'non' | ''
@@ -165,6 +170,9 @@ export interface QuizData {
 }
 
 export const defaultQuizData: QuizData = {
+  objectifs: [],
+  objectifAutre: '',
+  objectifMaisonEcheance: '',
   sentimentEconomieCanada: '',
   stressAvenirFinancier: '',
   inflationImpact: '',

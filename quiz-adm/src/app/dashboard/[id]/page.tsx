@@ -185,6 +185,21 @@ export default function ClientDetailPage({ params }: { params: { id: string } })
 
         <ReportEditContext.Provider value={{ editMode, overrides, setOverride }}>
 
+        {((d.objectifs && d.objectifs.length > 0) || d.objectifAutre) && (
+          <Section title="Objectifs du client">
+            <Row
+              label="Objectifs visés"
+              value={[
+                ...(d.objectifs || []).filter(o => o !== 'Autre'),
+                d.objectifAutre ? `Autre : ${d.objectifAutre}` : '',
+              ].filter(Boolean)}
+            />
+            {d.objectifMaisonEcheance && (
+              <Row label="Horizon d'achat (maison)" value={d.objectifMaisonEcheance} />
+            )}
+          </Section>
+        )}
+
         <Section title="Sentiment économique">
           <Row label="Vis-à-vis l'économie du Canada" value={d.sentimentEconomieCanada} />
           <Row label="Stress face à l'avenir financier" value={d.stressAvenirFinancier} />

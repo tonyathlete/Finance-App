@@ -45,6 +45,23 @@ function QuizContent() {
     }
   }, [searchParams])
 
+  // Récupère les objectifs choisis sur la page d'accueil « Finance 2026 »
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem('finance2026_objectifs')
+      if (!raw) return
+      const parsed = JSON.parse(raw) as Partial<QuizData>
+      setData(prev => ({
+        ...prev,
+        objectifs: parsed.objectifs ?? prev.objectifs,
+        objectifAutre: parsed.objectifAutre ?? prev.objectifAutre,
+        objectifMaisonEcheance: parsed.objectifMaisonEcheance ?? prev.objectifMaisonEcheance,
+      }))
+    } catch {
+      // données absentes ou illisibles — on garde les valeurs par défaut
+    }
+  }, [])
+
   const onChange = (updates: Partial<QuizData>) => setData(prev => ({ ...prev, ...updates }))
 
   const handleSubmit = async () => {
