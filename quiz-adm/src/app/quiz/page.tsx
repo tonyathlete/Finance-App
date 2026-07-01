@@ -2,7 +2,7 @@
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { QuizData, defaultQuizData } from '@/lib/types'
-import { supabase } from '@/lib/supabase'
+import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import Step0Connaissances from '@/components/quiz/steps/Step0Connaissances'
 import Step1InfoPersonnelles from '@/components/quiz/steps/Step1InfoPersonnelles'
 import Step2Autonomie from '@/components/quiz/steps/Step2Autonomie'
@@ -67,12 +67,26 @@ function QuizContent() {
   const handleSubmit = async () => {
     setSubmitting(true)
     setError('')
-    const { error: err } = await supabase.from('submissions').insert({ data })
-    if (err) {
-      setError('Une erreur est survenue. Veuillez réessayer.')
+
+    if (!isSupabaseConfigured) {
+      setError('La base de données n\'est pas configurée (variables NEXT_PUBLIC_SUPABASE_URL et NEXT_PUBLIC_SUPABASE_ANON_KEY manquantes). Ajoutez-les dans Netlify puis redéployez.')
       setSubmitting(false)
-    } else {
-      setSubmitted(true)
+      return
+    }
+
+    try {
+      const { error: err } = await supabase.from('submissions').insert({ data })
+      if (err) {
+        console.error('Supabase insert error:', err)
+        setError(`Échec de l'enregistrement : ${err.message}`)
+        setSubmitting(false)
+      } else {
+        setSubmitted(true)
+      }
+    } catch (e) {
+      console.error('Submit exception:', e)
+      setError(`Erreur réseau : ${e instanceof Error ? e.message : 'inconnue'}`)
+      setSubmitting(false)
     }
   }
 
@@ -170,26 +184,31 @@ function QuizContent() {
 
       {/* Navigation */}
       <footer className="px-6 py-4 sticky bottom-0">
-        <div className="max-w-2xl mx-auto card !p-4 flex justify-between items-center gap-4">
-          <button
-            className="btn-secondary"
-            onClick={() => setStep(s => Math.max(0, s - 1))}
-            disabled={step === 0}
-          >
-            ← Précédent
-          </button>
-
-          {error && <p className="text-sceau text-sm">{error}</p>}
-
-          {step < STEPS.length - 1 ? (
-            <button className="btn-primary" onClick={() => setStep(s => s + 1)}>
-              Suivant →
-            </button>
-          ) : (
-            <button className="btn-primary" onClick={handleSubmit} disabled={submitting}>
-              {submitting ? 'Envoi...' : 'Soumettre'}
-            </button>
+        <div className="max-w-2xl mx-auto space-y-3">
+          {error && (
+            <div className="card !p-3 border border-sceau/40 bg-sceau-light">
+              <p className="text-sceau text-sm font-medium">{error}</p>
+            </div>
           )}
+          <div className="card !p-4 flex justify-between items-center gap-4">
+            <button
+              className="btn-secondary"
+              onClick={() => setStep(s => Math.max(0, s - 1))}
+              disabled={step === 0}
+            >
+              ← Précédent
+            </button>
+
+            {step < STEPS.length - 1 ? (
+              <button className="btn-primary" onClick={() => setStep(s => s + 1)}>
+                Suivant →
+              </button>
+            ) : (
+              <button className="btn-primary" onClick={handleSubmit} disabled={submitting}>
+                {submitting ? 'Envoi...' : 'Soumettre'}
+              </button>
+            )}
+          </div>
         </div>
       </footer>
     </div>
