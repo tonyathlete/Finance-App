@@ -106,6 +106,7 @@ const AddClientModal: React.FC<{ open: boolean; onClose: () => void; onAdd: (c: 
       isSelfEmployed: selfEmp,
       createdAt: nowISO(),
       incomes: [], budget: [], goals: [], insurance: [], checkIns: [], followUps: [], advisorNotes: [],
+      debts: [], assets: [],
     });
     setFirstName(''); setLastName(''); setEmail(''); setPhone(''); setSituation(''); setSelfEmp(false);
     onClose();

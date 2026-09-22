@@ -74,6 +74,39 @@ export interface InsurancePolicy {
   // NB: on ne stocke JAMAIS le numéro de police complet ni de bénéficiaires nommés.
 }
 
+// --- Dettes (assistant de remboursement) -----------------------------------
+
+export interface Debt {
+  id: string;
+  label: string;
+  balance: number;         // solde actuel
+  apr: number;             // taux d'intérêt annuel (%)
+  minPayment: number;      // paiement minimum mensuel
+  createdAt: string;
+}
+
+// --- Valeur nette (actifs / passifs) ---------------------------------------
+
+export type AssetKind = 'liquide' | 'placement' | 'immobilier' | 'autre';
+
+export interface AssetItem {
+  id: string;
+  label: string;
+  kind: AssetKind;
+  amount: number;
+}
+
+// --- Profil de retraite (pour le calculateur) ------------------------------
+
+export interface RetirementProfile {
+  currentAge: number;
+  retirementAge: number;
+  currentSavings: number;
+  monthlyContribution: number;
+  expectedReturn: number;  // rendement annuel attendu (%)
+  desiredMonthlyIncome: number; // revenu mensuel souhaité à la retraite
+}
+
 // --- Check-in hebdomadaire -------------------------------------------------
 
 export interface CheckIn {
@@ -129,6 +162,9 @@ export interface Client {
   checkIns: CheckIn[];
   followUps: FollowUp[];
   advisorNotes: AdvisorNote[];
+  debts: Debt[];
+  assets: AssetItem[];
+  retirement?: RetirementProfile;
 }
 
 // --- Identité du conseiller (obligations AMF : identification) ---------------

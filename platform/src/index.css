@@ -18,3 +18,25 @@
 ::-webkit-scrollbar-track { background: #f5f3ec; }
 ::-webkit-scrollbar-thumb { background: #c9c2ad; border-radius: 6px; }
 ::-webkit-scrollbar-thumb:hover { background: #b0a888; }
+
+/* Impression / export PDF : on masque la navigation et les actions */
+@media print {
+  aside,
+  .no-print {
+    display: none !important;
+  }
+  main {
+    margin-left: 0 !important;
+    padding-top: 0 !important;
+  }
+  body {
+    background: #fff !important;
+  }
+  .shadow-card,
+  .shadow-lift {
+    box-shadow: none !important;
+  }
+  .print-avoid-break {
+    break-inside: avoid;
+  }
+}

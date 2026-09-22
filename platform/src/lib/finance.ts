@@ -74,6 +74,16 @@ export const projectGoal = (g: Goal): GoalProjection => {
   };
 };
 
+// --- Valeur nette ----------------------------------------------------------
+export const totalAssets = (client: Client): number =>
+  (client.assets ?? []).reduce((s, a) => s + (a.amount || 0), 0);
+
+export const totalLiabilities = (client: Client): number =>
+  (client.debts ?? []).reduce((s, d) => s + (d.balance || 0), 0);
+
+export const netWorth = (client: Client): number =>
+  totalAssets(client) - totalLiabilities(client);
+
 // Fonds d'urgence recommandé (3 à 6 mois de dépenses essentielles)
 export const emergencyFundTarget = (client: Client): { low: number; high: number } => {
   const ess = essentialExpenses(client.budget);

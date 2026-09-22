@@ -6,7 +6,7 @@ import { IncomeExpenseBar } from '@/components/Charts';
 import { AlertsPanel } from '@/components/Insights';
 import { AdvisorIdentity, Disclaimer } from '@/components/Compliance';
 import { goalTypeIcon, goalTypeLabel, moodEmoji } from '@/lib/labels';
-import { money, monthsUntil, formatDateShort } from '@/lib/utils';
+import { money, monthsUntil, formatDateShort, mondayOf } from '@/lib/utils';
 import {
   totalIncome,
   totalExpenses,
@@ -36,11 +36,30 @@ export const ClientDashboard: React.FC = () => {
         subtitle="Voici votre portrait financier du mois."
         icon="fa-hand-holding-heart"
         action={
-          <Button variant="gold" icon="fa-calendar-check" onClick={() => navigate('/client/checkin')}>
-            Check-in de la semaine
-          </Button>
+          <div className="flex gap-2 no-print">
+            <Button variant="outline" icon="fa-file-arrow-down" onClick={() => window.print()} className="!bg-white/10 !border-white/20 !text-paper-50 hover:!bg-white/20">
+              PDF
+            </Button>
+            <Button variant="gold" icon="fa-calendar-check" onClick={() => navigate('/client/checkin')}>
+              Check-in
+            </Button>
+          </div>
         }
       />
+
+      {/* Rappel de check-in */}
+      {(!lastCheckIn || lastCheckIn.weekOf !== mondayOf()) && (
+        <Card className="p-4 bg-gold-50 border-gold-200 no-print">
+          <div className="flex items-center gap-3 flex-wrap">
+            <i className="fas fa-bell text-gold-500" />
+            <p className="text-sm text-forest-800 flex-1">
+              <span className="font-semibold">C'est le moment de votre check-in hebdomadaire.</span>{' '}
+              Un petit bilan de 2 minutes garde vos objectifs sur la bonne voie.
+            </p>
+            <Button size="sm" variant="gold" onClick={() => navigate('/client/checkin')}>Faire mon check-in</Button>
+          </div>
+        </Card>
+      )}
 
       {/* Alertes */}
       <AlertsPanel client={c} />

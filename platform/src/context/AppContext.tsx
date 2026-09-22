@@ -17,7 +17,14 @@ function loadState(): AppState {
     if (raw) {
       const parsed = JSON.parse(raw) as AppState;
       // Fusion douce pour tolérer les évolutions de schéma
-      return { ...seedState, ...parsed, advisor: { ...seedState.advisor, ...parsed.advisor } };
+      const merged = { ...seedState, ...parsed, advisor: { ...seedState.advisor, ...parsed.advisor } };
+      // Garantir la présence des nouveaux tableaux sur d'anciens clients
+      merged.clients = (merged.clients || []).map((c) => ({
+        ...c,
+        debts: c.debts ?? [],
+        assets: c.assets ?? [],
+      }));
+      return merged;
     }
   } catch {
     /* ignore */

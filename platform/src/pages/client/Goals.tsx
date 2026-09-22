@@ -25,10 +25,19 @@ const GOAL_TYPES: GoalType[] = ['fonds_urgence', 'voyage', 'retraite', 'dette', 
 export const Goals: React.FC = () => {
   const { currentClient, updateClient } = useApp();
   const [modal, setModal] = useState(false);
+  const [editing, setEditing] = useState<Goal | null>(null);
 
   if (!currentClient) return null;
   const c = currentClient;
   const mutate = (fn: (c: Client) => Client) => updateClient(c.id, fn);
+
+  const saveGoal = (g: Goal) =>
+    mutate((cl) => ({
+      ...cl,
+      goals: cl.goals.some((x) => x.id === g.id)
+        ? cl.goals.map((x) => (x.id === g.id ? g : x))
+        : [...cl.goals, g],
+    }));
 
   const addContribution = (goalId: string, amount: number) =>
     mutate((cl) => ({
@@ -58,7 +67,7 @@ export const Goals: React.FC = () => {
         title="Mes objectifs"
         subtitle="Chaque objectif a un plan et un montant à mettre de côté chaque mois."
         icon="fa-bullseye"
-        action={<Button variant="gold" icon="fa-plus" onClick={() => setModal(true)}>Nouvel objectif</Button>}
+        action={<Button variant="gold" icon="fa-plus" onClick={() => { setEditing(null); setModal(true); }}>Nouvel objectif</Button>}
       />
 
       {c.goals.length ? (
@@ -70,6 +79,7 @@ export const Goals: React.FC = () => {
               onContribute={(amt) => addContribution(g.id, amt)}
               onToggleMs={(msId) => toggleMilestone(g.id, msId)}
               onRemove={() => removeGoal(g.id)}
+              onEdit={() => { setEditing(g); setModal(true); }}
             />
           ))}
         </div>
@@ -79,7 +89,7 @@ export const Goals: React.FC = () => {
             icon="fa-bullseye"
             title="Aucun objectif pour l'instant"
             hint="Un premier objectif clair (ex. un fonds d'urgence) change tout."
-            action={<Button icon="fa-plus" onClick={() => setModal(true)}>Créer un objectif</Button>}
+            action={<Button icon="fa-plus" onClick={() => { setEditing(null); setModal(true); }}>Créer un objectif</Button>}
           />
         </Card>
       )}
@@ -89,7 +99,8 @@ export const Goals: React.FC = () => {
       <GoalModal
         open={modal}
         onClose={() => setModal(false)}
-        onAdd={(g) => mutate((cl) => ({ ...cl, goals: [...cl.goals, g] }))}
+        initial={editing}
+        onSave={saveGoal}
       />
     </div>
   );
@@ -100,7 +111,8 @@ const GoalCard: React.FC<{
   onContribute: (amt: number) => void;
   onToggleMs: (id: string) => void;
   onRemove: () => void;
-}> = ({ goal, onContribute, onToggleMs, onRemove }) => {
+  onEdit: () => void;
+}> = ({ goal, onContribute, onToggleMs, onRemove, onEdit }) => {
   const [contrib, setContrib] = useState('');
   const p = goalProgress(goal);
   const proj = projectGoal(goal);
@@ -117,9 +129,14 @@ const GoalCard: React.FC<{
             <p className="font-medium text-forest-900 mt-1">{goal.title}</p>
           </div>
         </div>
-        <button onClick={onRemove} className="text-forest-300 hover:text-rose-500">
-          <i className="fas fa-trash-can" />
-        </button>
+        <div className="flex items-center gap-2">
+          <button onClick={onEdit} className="text-forest-300 hover:text-forest-600" title="Modifier">
+            <i className="fas fa-pen" />
+          </button>
+          <button onClick={onRemove} className="text-forest-300 hover:text-rose-500" title="Supprimer">
+            <i className="fas fa-trash-can" />
+          </button>
+        </div>
       </div>
 
       <div className="mt-4">
@@ -197,10 +214,16 @@ const GoalCard: React.FC<{
   );
 };
 
-const GoalModal: React.FC<{ open: boolean; onClose: () => void; onAdd: (g: Goal) => void }> = ({
+const toDateInput = (iso: string) => {
+  const d = new Date(iso);
+  return isNaN(d.getTime()) ? '' : d.toISOString().slice(0, 10);
+};
+
+const GoalModal: React.FC<{ open: boolean; onClose: () => void; initial: Goal | null; onSave: (g: Goal) => void }> = ({
   open,
   onClose,
-  onAdd,
+  initial,
+  onSave,
 }) => {
   const [type, setType] = useState<GoalType>('fonds_urgence');
   const [title, setTitle] = useState('');
@@ -210,10 +233,22 @@ const GoalModal: React.FC<{ open: boolean; onClose: () => void; onAdd: (g: Goal)
   const [date, setDate] = useState('');
   const [note, setNote] = useState('');
 
+  React.useEffect(() => {
+    if (open) {
+      setType(initial?.type ?? 'fonds_urgence');
+      setTitle(initial?.title ?? '');
+      setTarget(initial ? String(initial.targetAmount) : '');
+      setCurrent(initial ? String(initial.currentAmount) : '');
+      setMonthly(initial ? String(initial.monthlyContribution) : '');
+      setDate(initial ? toDateInput(initial.targetDate) : '');
+      setNote(initial?.note ?? '');
+    }
+  }, [open, initial]);
+
   const submit = () => {
     if (!title.trim() || !target) return;
-    onAdd({
-      id: uid('go'),
+    onSave({
+      id: initial?.id ?? uid('go'),
       type,
       title: title.trim(),
       targetAmount: Number(target),
@@ -221,10 +256,9 @@ const GoalModal: React.FC<{ open: boolean; onClose: () => void; onAdd: (g: Goal)
       monthlyContribution: Number(monthly) || 0,
       targetDate: date ? new Date(date).toISOString() : new Date(Date.now() + 365 * 864e5).toISOString(),
       note: note.trim(),
-      milestones: [],
-      createdAt: nowISO(),
+      milestones: initial?.milestones ?? [],
+      createdAt: initial?.createdAt ?? nowISO(),
     });
-    setType('fonds_urgence'); setTitle(''); setTarget(''); setCurrent(''); setMonthly(''); setDate(''); setNote('');
     onClose();
   };
 
@@ -232,11 +266,11 @@ const GoalModal: React.FC<{ open: boolean; onClose: () => void; onAdd: (g: Goal)
     <Modal
       open={open}
       onClose={onClose}
-      title="Nouvel objectif"
+      title={initial ? "Modifier l'objectif" : 'Nouvel objectif'}
       footer={
         <>
           <Button variant="outline" onClick={onClose}>Annuler</Button>
-          <Button onClick={submit}>Créer</Button>
+          <Button onClick={submit}>{initial ? 'Enregistrer' : 'Créer'}</Button>
         </>
       }
     >

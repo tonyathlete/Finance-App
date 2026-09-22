@@ -10,7 +10,9 @@ import { AlertsPanel, RulePanel } from '@/components/Insights';
 import { money, uid, nowISO, formatDate, formatDateShort, daysUntil } from '@/lib/utils';
 import {
   totalIncome, totalExpenses, monthlyBalance, savingsRate, expensesByCategory, goalProgress,
+  totalAssets, totalLiabilities, netWorth,
 } from '@/lib/finance';
+import { simulatePayoff, totalDebtBalance } from '@/lib/debt';
 import { goalTypeIcon, goalTypeLabel, insuranceTypeLabel, moodEmoji, followUpStatusLabel } from '@/lib/labels';
 
 type Tab = 'apercu' | 'budget' | 'objectifs' | 'assurances' | 'checkins' | 'suivis' | 'notes';
@@ -135,6 +137,44 @@ const Overview: React.FC<{ client: Client }> = ({ client: c }) => {
           )}
         </Card>
       </div>
+
+      {/* Patrimoine & dettes */}
+      <div className="grid lg:grid-cols-2 gap-6">
+        <Card className="p-6">
+          <SectionTitle icon="fa-gem" title="Patrimoine" />
+          <div className="grid grid-cols-3 gap-3 text-center">
+            <div>
+              <p className="text-xs text-forest-400">Actifs</p>
+              <p className="font-semibold text-emerald-600">{money(totalAssets(c))}</p>
+            </div>
+            <div>
+              <p className="text-xs text-forest-400">Dettes</p>
+              <p className="font-semibold text-rose-600">{money(totalLiabilities(c))}</p>
+            </div>
+            <div>
+              <p className="text-xs text-forest-400">Valeur nette</p>
+              <p className={`font-semibold ${netWorth(c) >= 0 ? 'text-forest-700' : 'text-rose-600'}`}>{money(netWorth(c))}</p>
+            </div>
+          </div>
+        </Card>
+        <Card className="p-6">
+          <SectionTitle icon="fa-hand-holding-dollar" title="Dettes" />
+          {(c.debts ?? []).length ? (
+            <>
+              <p className="text-sm text-forest-500">
+                Dette totale : <span className="font-semibold text-forest-900">{money(totalDebtBalance(c.debts ?? []))}</span>
+              </p>
+              <p className="text-sm text-forest-500 mt-1">
+                Plan avalanche (+200 $/mois) : libre en{' '}
+                <span className="font-semibold text-forest-900">{simulatePayoff(c.debts ?? [], 'avalanche', 200, true).months} mois</span>
+              </p>
+            </>
+          ) : (
+            <p className="text-sm text-forest-400">Aucune dette enregistrée.</p>
+          )}
+        </Card>
+      </div>
+
       <RulePanel client={c} />
     </div>
   );

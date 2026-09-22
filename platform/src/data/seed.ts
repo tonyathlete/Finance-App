@@ -151,6 +151,24 @@ const client1: Client = {
       text: 'Sophie est très motivée. Priorité claire : dette carte de crédit avant d’accélérer le voyage. Bon discipline de budget.',
     },
   ],
+  debts: [
+    { id: 'de_1', label: 'Carte de crédit', balance: 2700, apr: 19.99, minPayment: 80, createdAt: iso(2026, 1, 20) },
+    { id: 'de_2', label: 'Marge de crédit', balance: 4200, apr: 9.45, minPayment: 100, createdAt: iso(2026, 1, 20) },
+    { id: 'de_3', label: 'Prêt auto', balance: 8600, apr: 6.9, minPayment: 265, createdAt: iso(2026, 1, 20) },
+  ],
+  assets: [
+    { id: 'ac_1', label: 'Compte chèque', kind: 'liquide', amount: 1800 },
+    { id: 'ac_2', label: "Compte d'épargne (fonds urgence)", kind: 'liquide', amount: 3200 },
+    { id: 'ac_3', label: 'CELI (placements)', kind: 'placement', amount: 6500 },
+  ],
+  retirement: {
+    currentAge: 34,
+    retirementAge: 62,
+    currentSavings: 6500,
+    monthlyContribution: 200,
+    expectedReturn: 5,
+    desiredMonthlyIncome: 3000,
+  },
 };
 
 const client2: Client = {
@@ -219,6 +237,23 @@ const client2: Client = {
     },
   ],
   advisorNotes: [],
+  debts: [
+    { id: 'de_4', label: 'Prêt auto (2e véhicule)', balance: 12500, apr: 5.9, minPayment: 320, createdAt: iso(2026, 3, 5) },
+  ],
+  assets: [
+    { id: 'ac_4', label: 'Compte chèque conjoint', kind: 'liquide', amount: 5200 },
+    { id: 'ac_5', label: 'REER', kind: 'placement', amount: 48000 },
+    { id: 'ac_6', label: 'CELI', kind: 'placement', amount: 14000 },
+    { id: 'ac_7', label: 'Valeur nette maison (équité)', kind: 'immobilier', amount: 145000 },
+  ],
+  retirement: {
+    currentAge: 48,
+    retirementAge: 60,
+    currentSavings: 62000,
+    monthlyContribution: 800,
+    expectedReturn: 5.5,
+    desiredMonthlyIncome: 4500,
+  },
 };
 
 export const seedState: AppState = {
