@@ -3,8 +3,10 @@ import { useApp } from '@/context/AppContext';
 import { useRouter, segments } from '@/lib/router';
 import { Layout } from '@/components/Layout';
 import { Login } from '@/pages/Login';
+import { AuthLogin } from '@/pages/AuthLogin';
 import { Legal } from '@/pages/Legal';
 import { Onboarding } from '@/pages/client/Onboarding';
+import { BrandMark } from '@/components/Brand';
 
 // Client
 import { ClientDashboard } from '@/pages/client/ClientDashboard';
@@ -25,7 +27,7 @@ import { FollowUps } from '@/pages/advisor/FollowUps';
 import { Cabinet } from '@/pages/advisor/Cabinet';
 
 const App: React.FC = () => {
-  const { state, currentClient } = useApp();
+  const { state, currentClient, mode, ready, authEmail } = useApp();
   const { path } = useRouter();
   const seg = segments(path);
 
@@ -34,7 +36,13 @@ const App: React.FC = () => {
     return <Legal onBack={() => (window.location.hash = state.role ? (state.role === 'advisor' ? '/conseiller' : '/client') : '/')} />;
   }
 
-  // Pas connecté → écran de connexion
+  // Chargement (mode Supabase : récupération de la session / de l'espace)
+  if (!ready) return <LoadingScreen />;
+
+  // Mode Supabase : authentification requise
+  if (mode === 'supabase' && !authEmail) return <AuthLogin />;
+
+  // Mode démo : sélection de l'espace
   if (!state.role) return <Login />;
 
   // Espace conseiller
@@ -74,5 +82,12 @@ const App: React.FC = () => {
   else page = <ClientDashboard />;
   return <Layout>{page}</Layout>;
 };
+
+const LoadingScreen: React.FC = () => (
+  <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-paper-50">
+    <BrandMark size={48} />
+    <p className="text-forest-500 text-sm animate-pulse">Chargement de votre espace…</p>
+  </div>
+);
 
 export default App;
