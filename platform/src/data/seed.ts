@@ -261,7 +261,7 @@ export const seedState: AppState = {
     fullName: 'Anthony Goulet',
     title: 'Conseiller en sécurité financière',
     firm: 'Cabinet (à compléter)',
-    amfNumber: 'À compléter',
+    amfNumber: '269559',
     email: 'anthonygoulet96@gmail.com',
     phone: '(000) 000-0000',
   },

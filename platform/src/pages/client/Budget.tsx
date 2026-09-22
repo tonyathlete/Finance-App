@@ -77,7 +77,7 @@ export const Budget: React.FC = () => {
         icon="fa-wallet"
       />
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 stagger">
         <Stat label="Revenus" value={money(income)} icon="fa-arrow-down" tone="emerald" />
         <Stat label="Dépenses" value={money(expense)} icon="fa-arrow-up" tone="gold" />
         <Stat label="Solde" value={money(balance)} icon="fa-scale-balanced" tone={balance >= 0 ? 'forest' : 'rose'} />

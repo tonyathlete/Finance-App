@@ -138,7 +138,7 @@ export const ProgressBar: React.FC<{
 
 export const Stat: React.FC<{
   label: string;
-  value: string;
+  value: ReactNode;
   icon?: string;
   tone?: 'forest' | 'gold' | 'rose' | 'emerald';
   hint?: string;
@@ -150,7 +150,7 @@ export const Stat: React.FC<{
     emerald: 'text-emerald-600 bg-emerald-50',
   } as const;
   return (
-    <Card className="p-5">
+    <Card className="p-5 card-hover">
       <div className="flex items-center justify-between">
         <p className="text-xs font-semibold uppercase tracking-wide text-forest-400">{label}</p>
         {icon && (
@@ -159,7 +159,7 @@ export const Stat: React.FC<{
           </span>
         )}
       </div>
-      <p className="mt-2 text-2xl font-bold text-forest-900 font-display">{value}</p>
+      <p className="mt-2 text-2xl font-bold text-forest-900 font-display tabular-nums">{value}</p>
       {hint && <p className="mt-1 text-xs text-forest-400">{hint}</p>}
     </Card>
   );

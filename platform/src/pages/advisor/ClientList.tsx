@@ -32,12 +32,12 @@ export const ClientList: React.FC = () => {
       </div>
 
       {filtered.length ? (
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="grid sm:grid-cols-2 gap-4 stagger">
           {filtered.map((c) => {
             const bal = monthlyBalance(c);
             const pending = c.followUps.filter((f) => f.status !== 'complete').length;
             return (
-              <Card key={c.id} className="p-5 hover:shadow-lift transition">
+              <Card key={c.id} className="p-5 card-hover hover:shadow-lift">
                 <button className="w-full text-left" onClick={() => navigate(`/conseiller/client/${c.id}`)}>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">

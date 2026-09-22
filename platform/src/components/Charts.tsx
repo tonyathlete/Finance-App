@@ -34,7 +34,7 @@ export const DonutChart: React.FC<{ data: Slice[]; size?: number; center?: React
   let offset = 0;
 
   return (
-    <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
+    <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size, animation: 'scaleIn 0.5s cubic-bezier(0.16,1,0.3,1)' }}>
       <svg width={size} height={size} className="-rotate-90">
         <circle cx={radius} cy={radius} r={r} fill="none" stroke="#ece8dc" strokeWidth={stroke} />
         {data.map((d, i) => {
@@ -52,6 +52,7 @@ export const DonutChart: React.FC<{ data: Slice[]; size?: number; center?: React
               strokeDasharray={`${len} ${circ - len}`}
               strokeDashoffset={-offset}
               strokeLinecap="butt"
+              style={{ transition: 'stroke-dasharray 0.6s ease' }}
             />
           );
           offset += len;

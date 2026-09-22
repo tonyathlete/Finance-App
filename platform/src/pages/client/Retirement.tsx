@@ -47,7 +47,7 @@ export const Retirement: React.FC = () => {
         icon="fa-umbrella-beach"
       />
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 stagger">
         <Stat label="Capital à la retraite" value={money(proj.futureValue)} icon="fa-piggy-bank" tone="forest" hint={`dans ${proj.years} ans`} />
         <Stat label="Revenu mensuel estimé" value={money(proj.sustainableMonthlyIncome)} icon="fa-money-bill-trend-up" tone="gold" hint="Règle du 4 %" />
         <Stat label="Revenu souhaité" value={money(profile.desiredMonthlyIncome)} icon="fa-bullseye" />

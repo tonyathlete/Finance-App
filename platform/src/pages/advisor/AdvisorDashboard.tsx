@@ -2,6 +2,7 @@ import React from 'react';
 import { useApp } from '@/context/AppContext';
 import { useRouter } from '@/lib/router';
 import { Card, Stat, SectionTitle, Badge, Button, EmptyState, PageHeader } from '@/components/ui';
+import { AnimatedNumber } from '@/components/AnimatedNumber';
 import { money, formatDate, formatDateShort, daysUntil } from '@/lib/utils';
 import { monthlyBalance, savingsRate } from '@/lib/finance';
 import { moodEmoji, followUpStatusLabel } from '@/lib/labels';
@@ -39,11 +40,11 @@ export const AdvisorDashboard: React.FC = () => {
         action={<Button variant="gold" icon="fa-user-plus" onClick={() => navigate('/conseiller/clients')}>Gérer les clients</Button>}
       />
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Stat label="Clients actifs" value={String(totalClients)} icon="fa-users" />
-        <Stat label="Objectifs en cours" value={String(totalGoals)} icon="fa-bullseye" tone="gold" />
-        <Stat label="Relances à faire" value={String(upcoming.length)} icon="fa-bell" tone="gold" />
-        <Stat label="Budgets déficitaires" value={String(atRisk)} icon="fa-triangle-exclamation" tone={atRisk ? 'rose' : 'forest'} />
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 stagger">
+        <Stat label="Clients actifs" value={<AnimatedNumber value={totalClients} />} icon="fa-users" />
+        <Stat label="Objectifs en cours" value={<AnimatedNumber value={totalGoals} />} icon="fa-bullseye" tone="gold" />
+        <Stat label="Relances à faire" value={<AnimatedNumber value={upcoming.length} />} icon="fa-bell" tone="gold" />
+        <Stat label="Budgets déficitaires" value={<AnimatedNumber value={atRisk} />} icon="fa-triangle-exclamation" tone={atRisk ? 'rose' : 'forest'} />
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">
@@ -127,7 +128,7 @@ export const AdvisorDashboard: React.FC = () => {
           {clients.map((c) => {
             const bal = monthlyBalance(c);
             return (
-              <Card key={c.id} className="p-5 cursor-pointer hover:shadow-lift transition" as="div">
+              <Card key={c.id} className="p-5 cursor-pointer card-hover hover:shadow-lift" as="div">
                 <button className="text-left w-full" onClick={() => navigate(`/conseiller/client/${c.id}`)}>
                   <div className="flex items-center gap-3">
                     <span className="w-10 h-10 rounded-full bg-forest-100 text-forest-700 flex items-center justify-center font-semibold">

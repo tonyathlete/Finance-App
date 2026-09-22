@@ -4,6 +4,7 @@ import { useRouter } from '@/lib/router';
 import { Card, Stat, Button, ProgressBar, Badge, SectionTitle, EmptyState, PageHeader } from '@/components/ui';
 import { IncomeExpenseBar } from '@/components/Charts';
 import { AlertsPanel } from '@/components/Insights';
+import { AnimatedNumber } from '@/components/AnimatedNumber';
 import { AdvisorIdentity, Disclaimer } from '@/components/Compliance';
 import { goalTypeIcon, goalTypeLabel, moodEmoji } from '@/lib/labels';
 import { money, monthsUntil, formatDateShort, mondayOf } from '@/lib/utils';
@@ -65,19 +66,19 @@ export const ClientDashboard: React.FC = () => {
       <AlertsPanel client={c} />
 
       {/* Stats clés */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Stat label="Revenus / mois" value={money(income)} icon="fa-arrow-down" tone="emerald" />
-        <Stat label="Dépenses / mois" value={money(expense)} icon="fa-arrow-up" tone="gold" />
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 stagger">
+        <Stat label="Revenus / mois" value={<AnimatedNumber value={income} format={money} />} icon="fa-arrow-down" tone="emerald" />
+        <Stat label="Dépenses / mois" value={<AnimatedNumber value={expense} format={money} />} icon="fa-arrow-up" tone="gold" />
         <Stat
           label="Solde mensuel"
-          value={money(balance)}
+          value={<AnimatedNumber value={balance} format={money} />}
           icon={balance >= 0 ? 'fa-piggy-bank' : 'fa-triangle-exclamation'}
           tone={balance >= 0 ? 'forest' : 'rose'}
           hint={balance >= 0 ? 'Disponible pour vos objectifs' : 'Dépenses supérieures aux revenus'}
         />
         <Stat
           label="Taux d'épargne"
-          value={`${Math.round(rate)} %`}
+          value={<AnimatedNumber value={rate} format={(n) => `${Math.round(n)} %`} />}
           icon="fa-seedling"
           tone={rate >= 10 ? 'forest' : 'rose'}
           hint="Cible générale : 10 % et +"
@@ -146,7 +147,7 @@ export const ClientDashboard: React.FC = () => {
           action={<Button size="sm" variant="ghost" icon="fa-arrow-right" onClick={() => navigate('/client/objectifs')}>Tout voir</Button>}
         />
         {topGoals.length ? (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 stagger">
             {topGoals.map((g) => {
               const p = goalProgress(g);
               return (

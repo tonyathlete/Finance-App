@@ -58,7 +58,7 @@ export const NetWorth: React.FC = () => {
         action={<Button variant="gold" icon="fa-plus" onClick={() => { setEditing(null); setModal(true); }}>Ajouter un actif</Button>}
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 stagger">
         <Stat label="Actifs" value={money(aTotal)} icon="fa-arrow-trend-up" tone="emerald" />
         <Stat label="Passifs (dettes)" value={money(lTotal)} icon="fa-arrow-trend-down" tone="rose" />
         <Stat label="Valeur nette" value={money(nw)} icon="fa-gem" tone={nw >= 0 ? 'forest' : 'rose'} />

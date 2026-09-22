@@ -75,7 +75,7 @@ export const Debts: React.FC = () => {
         </Card>
       ) : (
         <>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 stagger">
             <Stat label="Dette totale" value={money(totalBal)} icon="fa-file-invoice-dollar" tone="rose" />
             <Stat label="Paiements min. / mois" value={money(minTotal)} icon="fa-calendar" />
             <Stat label="Libre de dettes dans" value={`${plan.months} mois`} icon="fa-flag-checkered" tone="forest" hint={payoffDate.toLocaleDateString('fr-CA', { month: 'long', year: 'numeric' })} />
