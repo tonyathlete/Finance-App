@@ -1,6 +1,7 @@
 import React, { useState, type ReactNode } from 'react';
 import { useApp } from '@/context/AppContext';
 import { useRouter } from '@/lib/router';
+import { BrandMark } from './Brand';
 
 interface NavItem {
   label: string;
@@ -92,8 +93,8 @@ export const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
       {/* Mobile top bar */}
       <div className="lg:hidden fixed top-0 inset-x-0 z-30 bg-forest-800 text-white flex items-center justify-between px-4 h-14">
         <div className="flex items-center gap-2">
-          <i className="fas fa-leaf text-gold-400" />
-          <span className="font-display font-semibold">Plateforme</span>
+          <BrandMark size={28} />
+          <span className="font-display font-semibold">Boussole<span className="text-gold-400">·</span></span>
         </div>
         <button onClick={() => setMobileOpen((o) => !o)} className="p-2">
           <i className={`fas ${mobileOpen ? 'fa-times' : 'fa-bars'}`} />
@@ -133,8 +134,14 @@ export const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
       )}
 
       {/* Contenu */}
-      <main className="flex-1 lg:ml-64 pt-14 lg:pt-0">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 lg:py-10">{children}</div>
+      <main className="flex-1 lg:ml-64 pt-14 lg:pt-0 flex flex-col">
+        <div key={path} className="max-w-5xl mx-auto w-full px-4 sm:px-6 py-6 lg:py-10 animate-fadeIn flex-1">
+          {children}
+        </div>
+        <footer className="max-w-5xl mx-auto w-full px-4 sm:px-6 py-6 mt-4 border-t border-paper-200 flex items-center justify-between text-xs text-forest-400 no-print">
+          <span>© {new Date().getFullYear()} Boussole · Outil éducatif — ne constitue pas un conseil financier.</span>
+          <button onClick={() => navigate('/mentions')} className="underline hover:text-forest-700">Mentions légales</button>
+        </footer>
       </main>
     </div>
   );
@@ -142,11 +149,9 @@ export const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
 
 const Brand: React.FC = () => (
   <div className="px-5 py-6 flex items-center gap-3">
-    <div className="w-10 h-10 rounded-xl bg-gold-400 text-forest-900 flex items-center justify-center">
-      <i className="fas fa-leaf" />
-    </div>
+    <BrandMark size={40} />
     <div>
-      <p className="font-display font-semibold text-white leading-tight">Plateforme</p>
+      <p className="font-display font-semibold text-white leading-tight">Boussole<span className="text-gold-400">·</span></p>
       <p className="text-xs text-forest-100/60">Accompagnement financier</p>
     </div>
   </div>

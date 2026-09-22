@@ -3,6 +3,8 @@ import { useApp } from '@/context/AppContext';
 import { useRouter, segments } from '@/lib/router';
 import { Layout } from '@/components/Layout';
 import { Login } from '@/pages/Login';
+import { Legal } from '@/pages/Legal';
+import { Onboarding } from '@/pages/client/Onboarding';
 
 // Client
 import { ClientDashboard } from '@/pages/client/ClientDashboard';
@@ -27,6 +29,11 @@ const App: React.FC = () => {
   const { path } = useRouter();
   const seg = segments(path);
 
+  // Page publique : mentions légales (accessible sans connexion)
+  if (seg[0] === 'mentions') {
+    return <Legal onBack={() => (window.location.hash = state.role ? (state.role === 'advisor' ? '/conseiller' : '/client') : '/')} />;
+  }
+
   // Pas connecté → écran de connexion
   if (!state.role) return <Login />;
 
@@ -44,6 +51,16 @@ const App: React.FC = () => {
 
   // Espace client
   if (!currentClient) return <Login />;
+
+  // Parcours de démarrage (plein écran, hors Layout)
+  const isNewClient =
+    currentClient.incomes.length === 0 &&
+    currentClient.budget.length === 0 &&
+    currentClient.goals.length === 0;
+  if (seg[1] === 'demarrage' || (seg.length < 2 && isNewClient)) {
+    return <Onboarding />;
+  }
+
   let page: React.ReactNode;
   if (seg[0] !== 'client') page = <ClientDashboard />;
   else if (seg[1] === 'budget') page = <Budget />;
