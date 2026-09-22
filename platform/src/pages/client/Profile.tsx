@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '@/context/AppContext';
 import type { Client } from '@/types';
-import { Card, Button, SectionTitle, Field, Input, Badge } from '@/components/ui';
+import { Card, Button, SectionTitle, Field, Input, Badge, PageHeader } from '@/components/ui';
 import { PrivacyNote, AdvisorIdentity } from '@/components/Compliance';
 import { formatDate, nowISO } from '@/lib/utils';
 
@@ -30,10 +30,12 @@ export const Profile: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="font-display text-3xl font-semibold text-forest-900">Mon profil</h1>
-        <p className="text-forest-500 mt-1">Vos informations de base — le minimum nécessaire.</p>
-      </div>
+      <PageHeader
+        eyebrow="Espace client"
+        title="Mon profil"
+        subtitle="Vos informations de base — le minimum nécessaire."
+        icon="fa-user"
+      />
 
       <div className="grid lg:grid-cols-3 gap-6">
         <Card className="p-6 lg:col-span-2">

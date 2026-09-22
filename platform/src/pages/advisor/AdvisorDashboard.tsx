@@ -1,7 +1,7 @@
 import React from 'react';
 import { useApp } from '@/context/AppContext';
 import { useRouter } from '@/lib/router';
-import { Card, Stat, SectionTitle, Badge, Button, EmptyState } from '@/components/ui';
+import { Card, Stat, SectionTitle, Badge, Button, EmptyState, PageHeader } from '@/components/ui';
 import { money, formatDate, formatDateShort, daysUntil } from '@/lib/utils';
 import { monthlyBalance, savingsRate } from '@/lib/finance';
 import { moodEmoji, followUpStatusLabel } from '@/lib/labels';
@@ -31,11 +31,13 @@ export const AdvisorDashboard: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      <div>
-        <p className="text-forest-400 text-sm">Espace conseiller</p>
-        <h1 className="font-display text-3xl font-semibold text-forest-900">Tableau de bord</h1>
-        <p className="text-forest-500 mt-1">Vue d'ensemble de vos clients et de vos suivis.</p>
-      </div>
+      <PageHeader
+        eyebrow="Espace conseiller"
+        title={`Bonjour, ${state.advisor.fullName.split(' ')[0]}`}
+        subtitle="Vue d'ensemble de vos clients et de vos suivis."
+        icon="fa-chart-line"
+        action={<Button variant="gold" icon="fa-user-plus" onClick={() => navigate('/conseiller/clients')}>Gérer les clients</Button>}
+      />
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Stat label="Clients actifs" value={String(totalClients)} icon="fa-users" />

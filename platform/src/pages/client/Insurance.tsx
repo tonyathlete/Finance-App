@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '@/context/AppContext';
 import type { InsurancePolicy, InsuranceType, Client } from '@/types';
-import { Card, Button, SectionTitle, Modal, Field, Input, Select, Textarea, Badge, EmptyState, Stat } from '@/components/ui';
+import { Card, Button, SectionTitle, Modal, Field, Input, Select, Textarea, Badge, EmptyState, Stat, PageHeader } from '@/components/ui';
 import { insuranceTypeIcon, insuranceTypeLabel } from '@/lib/labels';
 import { money, uid, formatDate, daysUntil } from '@/lib/utils';
 
@@ -24,13 +24,13 @@ export const Insurance: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-start justify-between gap-4 flex-wrap">
-        <div>
-          <h1 className="font-display text-3xl font-semibold text-forest-900">Mes assurances</h1>
-          <p className="text-forest-500 mt-1">Un récapitulatif clair de vos protections.</p>
-        </div>
-        <Button icon="fa-plus" onClick={() => setModal(true)}>Ajouter</Button>
-      </div>
+      <PageHeader
+        eyebrow="Espace client"
+        title="Mes assurances"
+        subtitle="Un récapitulatif clair de vos protections."
+        icon="fa-shield-halved"
+        action={<Button variant="gold" icon="fa-plus" onClick={() => setModal(true)}>Ajouter</Button>}
+      />
 
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         <Stat label="Protections" value={String(c.insurance.length)} icon="fa-shield-halved" />

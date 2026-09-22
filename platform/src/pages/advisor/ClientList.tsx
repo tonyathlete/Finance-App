@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '@/context/AppContext';
 import { useRouter } from '@/lib/router';
 import type { Client } from '@/types';
-import { Card, Button, Input, Badge, Modal, Field, EmptyState } from '@/components/ui';
+import { Card, Button, Input, Badge, Modal, Field, EmptyState, PageHeader } from '@/components/ui';
 import { money, uid, nowISO } from '@/lib/utils';
 import { monthlyBalance, savingsRate } from '@/lib/finance';
 
@@ -18,13 +18,13 @@ export const ClientList: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-start justify-between gap-4 flex-wrap">
-        <div>
-          <h1 className="font-display text-3xl font-semibold text-forest-900">Clients</h1>
-          <p className="text-forest-500 mt-1">{state.clients.length} client(s) au total.</p>
-        </div>
-        <Button icon="fa-user-plus" onClick={() => setModal(true)}>Nouveau client</Button>
-      </div>
+      <PageHeader
+        eyebrow="Espace conseiller"
+        title="Clients"
+        subtitle={`${state.clients.length} client(s) au total.`}
+        icon="fa-users"
+        action={<Button variant="gold" icon="fa-user-plus" onClick={() => setModal(true)}>Nouveau client</Button>}
+      />
 
       <div className="relative">
         <i className="fas fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-forest-300" />

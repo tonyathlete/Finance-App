@@ -1,8 +1,9 @@
 import React from 'react';
 import { useApp } from '@/context/AppContext';
 import { useRouter } from '@/lib/router';
-import { Card, Stat, Button, ProgressBar, Badge, SectionTitle, EmptyState } from '@/components/ui';
+import { Card, Stat, Button, ProgressBar, Badge, SectionTitle, EmptyState, PageHeader } from '@/components/ui';
 import { IncomeExpenseBar } from '@/components/Charts';
+import { AlertsPanel } from '@/components/Insights';
 import { AdvisorIdentity, Disclaimer } from '@/components/Compliance';
 import { goalTypeIcon, goalTypeLabel, moodEmoji } from '@/lib/labels';
 import { money, monthsUntil, formatDateShort } from '@/lib/utils';
@@ -29,13 +30,20 @@ export const ClientDashboard: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      <div>
-        <p className="text-forest-400 text-sm">Bonjour,</p>
-        <h1 className="font-display text-3xl font-semibold text-forest-900">
-          {c.firstName} 👋
-        </h1>
-        <p className="text-forest-500 mt-1">Voici votre portrait financier du mois.</p>
-      </div>
+      <PageHeader
+        eyebrow="Espace client"
+        title={`Bonjour, ${c.firstName} 👋`}
+        subtitle="Voici votre portrait financier du mois."
+        icon="fa-hand-holding-heart"
+        action={
+          <Button variant="gold" icon="fa-calendar-check" onClick={() => navigate('/client/checkin')}>
+            Check-in de la semaine
+          </Button>
+        }
+      />
+
+      {/* Alertes */}
+      <AlertsPanel client={c} />
 
       {/* Stats clés */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">

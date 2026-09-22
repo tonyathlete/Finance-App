@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '@/context/AppContext';
-import { Card, Button, SectionTitle, Field, Input } from '@/components/ui';
+import { Card, Button, SectionTitle, Field, Input, PageHeader } from '@/components/ui';
 import { Disclaimer } from '@/components/Compliance';
 
 export const Cabinet: React.FC = () => {
@@ -17,12 +17,12 @@ export const Cabinet: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-3xl font-semibold text-forest-900">Mon cabinet</h1>
-        <p className="text-forest-500 mt-1">
-          Vos informations professionnelles — affichées aux clients (identification AMF).
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Espace conseiller"
+        title="Mon cabinet"
+        subtitle="Vos informations professionnelles — affichées aux clients (identification AMF)."
+        icon="fa-briefcase"
+      />
 
       <Card className="p-6">
         <SectionTitle icon="fa-id-card" title="Identité professionnelle" />

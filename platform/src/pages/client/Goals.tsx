@@ -13,6 +13,7 @@ import {
   ProgressBar,
   Badge,
   EmptyState,
+  PageHeader,
 } from '@/components/ui';
 import { Disclaimer } from '@/components/Compliance';
 import { money, uid, nowISO, formatDate } from '@/lib/utils';
@@ -52,15 +53,13 @@ export const Goals: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-start justify-between gap-4 flex-wrap">
-        <div>
-          <h1 className="font-display text-3xl font-semibold text-forest-900">Mes objectifs</h1>
-          <p className="text-forest-500 mt-1">
-            Chaque objectif a un plan et un montant à mettre de côté chaque mois.
-          </p>
-        </div>
-        <Button icon="fa-plus" onClick={() => setModal(true)}>Nouvel objectif</Button>
-      </div>
+      <PageHeader
+        eyebrow="Espace client"
+        title="Mes objectifs"
+        subtitle="Chaque objectif a un plan et un montant à mettre de côté chaque mois."
+        icon="fa-bullseye"
+        action={<Button variant="gold" icon="fa-plus" onClick={() => setModal(true)}>Nouvel objectif</Button>}
+      />
 
       {c.goals.length ? (
         <div className="grid md:grid-cols-2 gap-6">

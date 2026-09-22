@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '@/context/AppContext';
 import { useRouter } from '@/lib/router';
 import type { Client, FollowUp, FollowUpStatus } from '@/types';
-import { Card, Button, Badge, SectionTitle, EmptyState } from '@/components/ui';
+import { Card, Badge, EmptyState, PageHeader } from '@/components/ui';
 import { formatDate, daysUntil } from '@/lib/utils';
 import { followUpStatusLabel } from '@/lib/labels';
 
@@ -40,10 +40,12 @@ export const FollowUps: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-3xl font-semibold text-forest-900">Suivis & relances</h1>
-        <p className="text-forest-500 mt-1">Toutes vos relances clients au même endroit.</p>
-      </div>
+      <PageHeader
+        eyebrow="Espace conseiller"
+        title="Suivis & relances"
+        subtitle="Toutes vos relances clients au même endroit."
+        icon="fa-bell"
+      />
 
       <div className="flex gap-2 flex-wrap">
         {filters.map((f) => (

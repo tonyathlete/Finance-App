@@ -6,6 +6,7 @@ import {
   Card, Stat, Button, SectionTitle, Badge, Field, Input, Textarea, Select, EmptyState, ProgressBar,
 } from '@/components/ui';
 import { IncomeExpenseBar, DonutChart, ChartLegend } from '@/components/Charts';
+import { AlertsPanel, RulePanel } from '@/components/Insights';
 import { money, uid, nowISO, formatDate, formatDateShort, daysUntil } from '@/lib/utils';
 import {
   totalIncome, totalExpenses, monthlyBalance, savingsRate, expensesByCategory, goalProgress,
@@ -106,6 +107,7 @@ const Overview: React.FC<{ client: Client }> = ({ client: c }) => {
   const pending = c.followUps.filter((f) => f.status !== 'complete');
   return (
     <div className="space-y-6">
+      <AlertsPanel client={c} title="Points d'attention" />
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Stat label="Revenus" value={money(totalIncome(c.incomes))} icon="fa-arrow-down" tone="emerald" />
         <Stat label="Dépenses" value={money(totalExpenses(c.budget))} icon="fa-arrow-up" tone="gold" />
@@ -133,6 +135,7 @@ const Overview: React.FC<{ client: Client }> = ({ client: c }) => {
           )}
         </Card>
       </div>
+      <RulePanel client={c} />
     </div>
   );
 };

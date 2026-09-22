@@ -1,6 +1,6 @@
 // Calculs budgétaires et d'objectifs
 import type { Client, Goal, IncomeItem, BudgetItem } from '@/types';
-import { monthsUntil, clamp } from './utils';
+import { monthsUntil, clamp, daysUntil } from './utils';
 
 export const totalIncome = (incomes: IncomeItem[]): number =>
   incomes.reduce((s, i) => s + (i.amount || 0), 0);
@@ -78,4 +78,96 @@ export const projectGoal = (g: Goal): GoalProjection => {
 export const emergencyFundTarget = (client: Client): { low: number; high: number } => {
   const ess = essentialExpenses(client.budget);
   return { low: ess * 3, high: ess * 6 };
+};
+
+// --- Règle 50/30/20 --------------------------------------------------------
+// Besoins (essentiel) 50 % · Envies (discrétionnaire) 30 % · Épargne/dettes 20 %
+export interface Rule503020 {
+  income: number;
+  needs: number;
+  wants: number;
+  savings: number; // capacité d'épargne = solde restant
+  needsPct: number;
+  wantsPct: number;
+  savingsPct: number;
+}
+
+export const fiftyThirtyTwenty = (client: Client): Rule503020 => {
+  const income = totalIncome(client.incomes) || 0;
+  const needs = essentialExpenses(client.budget);
+  const wants = discretionaryExpenses(client.budget);
+  const savings = Math.max(0, income - needs - wants);
+  const p = (n: number) => (income > 0 ? (n / income) * 100 : 0);
+  return {
+    income,
+    needs,
+    wants,
+    savings,
+    needsPct: p(needs),
+    wantsPct: p(wants),
+    savingsPct: p(savings),
+  };
+};
+
+// --- Alertes intelligentes -------------------------------------------------
+export type AlertTone = 'rose' | 'amber' | 'forest';
+export interface Alert {
+  id: string;
+  tone: AlertTone;
+  icon: string;
+  title: string;
+  detail: string;
+}
+
+export const getAlerts = (client: Client): Alert[] => {
+  const alerts: Alert[] = [];
+  const bal = monthlyBalance(client);
+  const rate = savingsRate(client);
+
+  if (bal < 0) {
+    alerts.push({
+      id: 'deficit',
+      tone: 'rose',
+      icon: 'fa-triangle-exclamation',
+      title: 'Budget déficitaire',
+      detail: `Les dépenses dépassent les revenus de ${Math.abs(Math.round(bal))} $ par mois.`,
+    });
+  } else if (rate < 10 && totalIncome(client.incomes) > 0) {
+    alerts.push({
+      id: 'lowsavings',
+      tone: 'amber',
+      icon: 'fa-piggy-bank',
+      title: "Taux d'épargne faible",
+      detail: `Taux actuel : ${Math.round(rate)} %. Cible générale : 10 % et plus.`,
+    });
+  }
+
+  // Renouvellements d'assurance dans les 60 jours
+  for (const p of client.insurance) {
+    if (!p.renewalDate) continue;
+    const d = daysUntil(p.renewalDate);
+    if (d >= 0 && d <= 60) {
+      alerts.push({
+        id: `renew_${p.id}`,
+        tone: 'amber',
+        icon: 'fa-calendar-day',
+        title: 'Renouvellement à venir',
+        detail: `Une protection (${p.insurer}) se renouvelle dans ${d} jour(s).`,
+      });
+    }
+  }
+
+  // Objectifs hors trajectoire
+  const offTrack = client.goals.filter((g) => !projectGoal(g).onTrack && g.targetAmount > 0);
+  if (offTrack.length) {
+    alerts.push({
+      id: 'goals_offtrack',
+      tone: 'amber',
+      icon: 'fa-bullseye',
+      title: `${offTrack.length} objectif(s) à ajuster`,
+      detail: 'Le rythme d’épargne actuel ne permet pas d’atteindre la cible à temps.',
+    });
+  }
+
+  return alerts;
 };

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '@/context/AppContext';
 import type { CheckIn as CheckInType, CheckInMood, Client } from '@/types';
-import { Card, Button, SectionTitle, Field, Input, Textarea, EmptyState, Badge } from '@/components/ui';
+import { Card, Button, SectionTitle, Field, Input, Textarea, EmptyState, Badge, PageHeader } from '@/components/ui';
 import { AdvisorIdentity } from '@/components/Compliance';
 import { uid, nowISO, mondayOf, formatDate, money } from '@/lib/utils';
 import { moodEmoji, moodLabel } from '@/lib/labels';
@@ -43,12 +43,12 @@ export const CheckIn: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="font-display text-3xl font-semibold text-forest-900">Check-in de la semaine</h1>
-        <p className="text-forest-500 mt-1">
-          Un petit bilan hebdomadaire. Votre conseiller le voit et vous accompagne.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Espace client"
+        title="Check-in de la semaine"
+        subtitle="Un petit bilan hebdomadaire. Votre conseiller le voit et vous accompagne."
+        icon="fa-calendar-check"
+      />
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Formulaire */}

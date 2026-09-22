@@ -17,6 +17,37 @@ export const Card: React.FC<{
   </Tag>
 );
 
+// En-tête de page avec dégradé forêt (héro)
+export const PageHeader: React.FC<{
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  icon?: string;
+  action?: ReactNode;
+}> = ({ eyebrow, title, subtitle, icon, action }) => (
+  <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-forest-700 via-forest-800 to-forest-900 text-paper-50 p-6 sm:p-8 shadow-card">
+    <div className="absolute -right-8 -top-10 w-44 h-44 rounded-full bg-gold-400/10 blur-2xl" />
+    <div className="absolute right-16 bottom-0 w-24 h-24 rounded-full bg-forest-400/10 blur-xl" />
+    <div className="relative flex items-start justify-between gap-4 flex-wrap">
+      <div className="flex items-start gap-4">
+        {icon && (
+          <span className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur flex items-center justify-center text-gold-300 flex-shrink-0">
+            <i className={`fas ${icon} text-lg`} />
+          </span>
+        )}
+        <div>
+          {eyebrow && (
+            <p className="text-xs font-semibold uppercase tracking-widest text-gold-300/90">{eyebrow}</p>
+          )}
+          <h1 className="font-display text-2xl sm:text-3xl font-semibold leading-tight">{title}</h1>
+          {subtitle && <p className="text-forest-100/80 mt-1 max-w-xl">{subtitle}</p>}
+        </div>
+      </div>
+      {action && <div className="flex-shrink-0">{action}</div>}
+    </div>
+  </div>
+);
+
 export const SectionTitle: React.FC<{
   icon?: string;
   title: string;
