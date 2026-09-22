@@ -1,0 +1,236 @@
+import type { AppState, Client } from '@/types';
+import { mondayOf } from '@/lib/utils';
+
+const iso = (y: number, m: number, d: number) => new Date(y, m - 1, d).toISOString();
+
+// Deux semaines de check-in de démo
+const lastMonday = mondayOf();
+const prevMonday = mondayOf(new Date(Date.now() - 7 * 864e5));
+
+const client1: Client = {
+  id: 'cl_demo_1',
+  firstName: 'Sophie',
+  lastName: 'Tremblay',
+  email: 'sophie.tremblay@example.com',
+  phone: '(514) 555-0142',
+  situation: 'Travailleuse autonome (graphiste), 1 enfant',
+  isSelfEmployed: true,
+  consentGivenAt: iso(2026, 1, 15),
+  createdAt: iso(2026, 1, 15),
+  incomes: [
+    { id: 'in_1', label: 'Contrats clients (moyenne)', amount: 4200, variable: true },
+    { id: 'in_2', label: 'Revenu locatif (chambre)', amount: 650, variable: false },
+  ],
+  budget: [
+    { id: 'bd_1', label: 'Loyer', category: 'Logement', amount: 1450, essential: true },
+    { id: 'bd_2', label: 'Épicerie', category: 'Alimentation', amount: 600, essential: true },
+    { id: 'bd_3', label: 'Auto (essence, assurance)', category: 'Transport', amount: 420, essential: true },
+    { id: 'bd_4', label: 'Électricité / internet', category: 'Services', amount: 210, essential: true },
+    { id: 'bd_5', label: 'Garderie', category: 'Famille', amount: 380, essential: true },
+    { id: 'bd_6', label: 'Restos / sorties', category: 'Loisirs', amount: 340, essential: false },
+    { id: 'bd_7', label: 'Abonnements (streaming, gym)', category: 'Loisirs', amount: 95, essential: false },
+    { id: 'bd_8', label: 'Magasinage', category: 'Discrétionnaire', amount: 200, essential: false },
+  ],
+  goals: [
+    {
+      id: 'go_1',
+      type: 'fonds_urgence',
+      title: "Fonds d'urgence (3 mois)",
+      targetAmount: 9000,
+      currentAmount: 3200,
+      monthlyContribution: 400,
+      targetDate: iso(2026, 12, 31),
+      note: 'Coussin de sécurité, essentiel comme travailleuse autonome.',
+      milestones: [
+        { id: 'ms_1', label: '1er 3 000 $ atteint', done: true },
+        { id: 'ms_2', label: 'Compte à intérêt élevé ouvert', done: true },
+        { id: 'ms_3', label: 'Atteindre 6 000 $', done: false },
+      ],
+      createdAt: iso(2026, 1, 20),
+    },
+    {
+      id: 'go_2',
+      type: 'voyage',
+      title: 'Voyage en famille (Gaspésie + Europe)',
+      targetAmount: 6000,
+      currentAmount: 1500,
+      monthlyContribution: 250,
+      targetDate: iso(2027, 6, 1),
+      note: 'Été 2027.',
+      milestones: [{ id: 'ms_4', label: 'Choisir les dates', done: false }],
+      createdAt: iso(2026, 2, 1),
+    },
+    {
+      id: 'go_3',
+      type: 'dette',
+      title: 'Rembourser carte de crédit',
+      targetAmount: 4800,
+      currentAmount: 2100,
+      monthlyContribution: 350,
+      targetDate: iso(2026, 11, 1),
+      note: 'Taux 19,99 % — priorité.',
+      milestones: [],
+      createdAt: iso(2026, 1, 20),
+    },
+  ],
+  insurance: [
+    {
+      id: 'as_1',
+      type: 'vie',
+      insurer: 'Assureur A',
+      coverageAmount: 250000,
+      monthlyPremium: 42,
+      renewalDate: iso(2027, 3, 1),
+      note: 'Temporaire 20 ans.',
+    },
+    {
+      id: 'as_2',
+      type: 'invalidite',
+      insurer: 'Assureur B',
+      coverageAmount: 2500,
+      monthlyPremium: 68,
+      note: 'Prestation mensuelle. Important pour travailleuse autonome.',
+    },
+    {
+      id: 'as_3',
+      type: 'auto',
+      insurer: 'Assureur C',
+      monthlyPremium: 110,
+      renewalDate: iso(2026, 10, 15),
+      note: '',
+    },
+  ],
+  checkIns: [
+    {
+      id: 'ci_1',
+      weekOf: prevMonday,
+      mood: 'bien',
+      incomeThisWeek: 1100,
+      savedThisWeek: 200,
+      wins: 'Facturé deux clients à temps, pas de dépenses impulsives.',
+      blockers: 'Un client tarde à payer.',
+      focusNextWeek: 'Relancer le client en retard, mettre 250 $ de côté.',
+      goalProgressNote: 'Fonds d’urgence +200 $.',
+      createdAt: prevMonday,
+    },
+    {
+      id: 'ci_2',
+      weekOf: lastMonday,
+      mood: 'moyen',
+      incomeThisWeek: 800,
+      savedThisWeek: 100,
+      wins: 'Budget respecté sur l’épicerie.',
+      blockers: 'Semaine plus tranquille côté contrats.',
+      focusNextWeek: 'Prospecter 3 nouveaux clients.',
+      goalProgressNote: 'Paiement carte de crédit effectué (350 $).',
+      createdAt: lastMonday,
+    },
+  ],
+  followUps: [
+    {
+      id: 'fu_1',
+      title: 'Appel de suivi hebdomadaire',
+      dueDate: iso(2026, 9, 26),
+      status: 'planifie',
+      note: 'Revoir la relance du client en retard.',
+      createdAt: iso(2026, 9, 20),
+    },
+    {
+      id: 'fu_2',
+      title: 'Revoir stratégie carte de crédit',
+      dueDate: iso(2026, 10, 3),
+      status: 'a_faire',
+      note: 'Envisager consolidation / paiement accéléré.',
+      createdAt: iso(2026, 9, 20),
+    },
+  ],
+  advisorNotes: [
+    {
+      id: 'an_1',
+      date: iso(2026, 9, 15),
+      text: 'Sophie est très motivée. Priorité claire : dette carte de crédit avant d’accélérer le voyage. Bon discipline de budget.',
+    },
+  ],
+};
+
+const client2: Client = {
+  id: 'cl_demo_2',
+  firstName: 'Marc',
+  lastName: 'Bergeron',
+  email: 'marc.bergeron@example.com',
+  phone: '(418) 555-0199',
+  situation: 'Salarié, couple, planifie la retraite',
+  isSelfEmployed: false,
+  consentGivenAt: iso(2026, 3, 2),
+  createdAt: iso(2026, 3, 2),
+  incomes: [{ id: 'in_3', label: 'Salaire net', amount: 5100, variable: false }],
+  budget: [
+    { id: 'bd_9', label: 'Hypothèque', category: 'Logement', amount: 1800, essential: true },
+    { id: 'bd_10', label: 'Épicerie', category: 'Alimentation', amount: 750, essential: true },
+    { id: 'bd_11', label: 'Deux autos', category: 'Transport', amount: 620, essential: true },
+    { id: 'bd_12', label: 'Services (élec, tel, net)', category: 'Services', amount: 300, essential: true },
+    { id: 'bd_13', label: 'Loisirs / sorties', category: 'Loisirs', amount: 400, essential: false },
+    { id: 'bd_14', label: 'Voyages / extras', category: 'Discrétionnaire', amount: 300, essential: false },
+  ],
+  goals: [
+    {
+      id: 'go_4',
+      type: 'retraite',
+      title: 'Épargne retraite (REER + CELI)',
+      targetAmount: 150000,
+      currentAmount: 62000,
+      monthlyContribution: 800,
+      targetDate: iso(2035, 1, 1),
+      note: 'Objectif intermédiaire vers la retraite à 60 ans.',
+      milestones: [
+        { id: 'ms_5', label: 'Maximiser CELI annuel', done: false },
+        { id: 'ms_6', label: 'Cotisation REER automatisée', done: true },
+      ],
+      createdAt: iso(2026, 3, 5),
+    },
+  ],
+  insurance: [
+    {
+      id: 'as_4',
+      type: 'vie',
+      insurer: 'Assureur A',
+      coverageAmount: 500000,
+      monthlyPremium: 78,
+      renewalDate: iso(2028, 5, 1),
+      note: 'Permanente.',
+    },
+    {
+      id: 'as_5',
+      type: 'hypothecaire',
+      insurer: 'Assureur D',
+      monthlyPremium: 35,
+      note: 'À revoir : possiblement remplaçable par assurance vie individuelle.',
+    },
+  ],
+  checkIns: [],
+  followUps: [
+    {
+      id: 'fu_3',
+      title: 'Bilan trimestriel retraite',
+      dueDate: iso(2026, 10, 10),
+      status: 'a_faire',
+      note: 'Vérifier rendement et cotisations REER/CELI.',
+      createdAt: iso(2026, 9, 18),
+    },
+  ],
+  advisorNotes: [],
+};
+
+export const seedState: AppState = {
+  advisor: {
+    fullName: 'Anthony Goulet',
+    title: 'Conseiller en sécurité financière',
+    firm: 'Cabinet (à compléter)',
+    amfNumber: 'À compléter',
+    email: 'anthonygoulet96@gmail.com',
+    phone: '(000) 000-0000',
+  },
+  clients: [client1, client2],
+  currentUserId: null,
+  role: null,
+};

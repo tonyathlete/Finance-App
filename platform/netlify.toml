@@ -1,0 +1,9 @@
+[build]
+  base = "platform"
+  command = "npm install && npm run build"
+  publish = "platform/dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
