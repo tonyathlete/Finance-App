@@ -7,16 +7,11 @@ interface Props {
 }
 
 const GOALS = [
-  { value: 'maison_1_2', emoji: '🏡', label: 'Acheter une maison (1-2 ans)' },
-  { value: 'maison_3_4', emoji: '🏡', label: 'Acheter une maison (3-4 ans)' },
-  { value: 'maison_5_plus', emoji: '🏡', label: 'Acheter une maison (5 ans +)' },
-  { value: 'revenu_100k_an', emoji: '💰', label: 'Faire 100k$ par année' },
-  { value: 'revenu_10k_mois', emoji: '📅', label: 'Faire 10k$ par mois' },
-  { value: 'chalet', emoji: '🏞️', label: 'Acheter un chalet' },
-  { value: 'voiture', emoji: '🚗', label: 'Acheter une voiture' },
+  { value: 'maison', emoji: '🏡', label: 'Acheter une maison' },
+  { value: 'budget', emoji: '📊', label: 'Améliorer mon budget' },
   { value: 'retraite', emoji: '🏖️', label: 'Préparer ma retraite' },
-  { value: 'placement_100k', emoji: '📈', label: 'Avoir 100k$ en placement' },
-  { value: 'autres', emoji: '✨', label: 'Autres' },
+  { value: 'assurances', emoji: '🛡️', label: 'Vérifier mes assurances' },
+  { value: 'placements', emoji: '📈', label: 'Optimiser mes placements' },
 ];
 
 export default function StepWelcome({ onStart, goals, onToggleGoal }: Props) {
