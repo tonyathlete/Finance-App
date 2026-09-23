@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SavingsQuizData, SavingsAnswer } from '../types';
-import ProgressBar from './ProgressBar';
 
 interface Props {
   data: SavingsQuizData;
@@ -123,102 +122,116 @@ const QUIZ_ITEMS: QuizItem[] = [
   },
 ];
 
+export const SAVINGS_ITEMS_COUNT = QUIZ_ITEMS.length;
+
 const fmt = (v: number) =>
   new Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD', maximumFractionDigits: 0 }).format(v);
 
-function calcPotential(data: SavingsQuizData): { monthly: number; yearly: number } {
-  let monthly = 0;
+/** Économies annuelles potentielles détectées (réponses "non" ou "je sais pas"). */
+export function computePotential(data: SavingsQuizData): { monthly: number; yearly: number } {
   let yearly = 0;
   for (const item of QUIZ_ITEMS) {
     if (data[item.id] === 'no' || data[item.id] === 'unknown') {
-      if (item.unit === 'month') yearly += item.savingMin * 12;
-      else yearly += item.savingMin;
-      if (item.unit === 'month') monthly += item.savingMin;
-      else monthly += Math.round(item.savingMin / 12);
+      yearly += item.unit === 'month' ? item.savingMin * 12 : item.savingMin;
     }
   }
-  return { monthly, yearly };
+  return { monthly: Math.round(yearly / 12), yearly };
 }
 
 export default function StepSavings({ data, onChange, onNext, onBack }: Props) {
-  const answered = Object.values(data).filter(v => v !== null).length;
-  const { yearly } = calcPotential(data);
+  const [index, setIndex] = useState(0);
+  const item = QUIZ_ITEMS[index];
+  const answer = data[item.id];
+  const showTip = answer === 'no' || answer === 'unknown';
+  const { yearly } = computePotential(data);
 
-  const set = (id: keyof SavingsQuizData, val: SavingsAnswer) =>
-    onChange({ ...data, [id]: val });
+  const set = (val: SavingsAnswer) => onChange({ ...data, [item.id]: val });
+
+  const goNext = () => {
+    if (index < QUIZ_ITEMS.length - 1) setIndex((i) => i + 1);
+    else onNext();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const goBack = () => {
+    if (index > 0) setIndex((i) => i - 1);
+    else onBack();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const pct = Math.round(((index + 1) / QUIZ_ITEMS.length) * 100);
 
   return (
-    <div className="animate-fadeIn max-w-xl mx-auto px-4 py-10 pb-32">
-      <ProgressBar step={1} total={6} />
-
+    <div className="animate-fadeIn max-w-xl mx-auto px-4 py-10 pb-40">
+      {/* Progress */}
       <div className="mb-6">
-        <p className="text-blue-400 text-sm font-medium mb-1">Avant de voir ton analyse</p>
-        <h2 className="font-display text-2xl font-bold text-blue-900 mb-1">10 questions pour trouver des économies cachées</h2>
-        <p className="text-blue-500 text-sm">Réponds honnêtement — on calcule ton potentiel d'économies en temps réel.</p>
+        <div className="flex justify-between items-center mb-2">
+          <p className="text-sm font-bold text-blue-800">Astuce {index + 1} sur {QUIZ_ITEMS.length}</p>
+          <p className="text-xs text-blue-400 font-medium">{pct}%</p>
+        </div>
+        <div className="h-1.5 bg-blue-100 rounded-full overflow-hidden">
+          <div className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-500 ease-out" style={{ width: `${pct}%` }} />
+        </div>
       </div>
 
-      <div className="space-y-4">
-        {QUIZ_ITEMS.map((item) => {
-          const answer = data[item.id];
-          const showTip = answer === 'no' || answer === 'unknown';
-          return (
-            <div key={item.id} className="bg-white border border-blue-100 rounded-xl p-4 card-elevated transition-shadow">
-              <p className="text-sm font-semibold text-blue-900 mb-3">
-                {item.icon} {item.question}
-              </p>
-              <div className="flex gap-2 mb-3">
-                {(['yes', 'no', 'unknown'] as SavingsAnswer[]).map((opt) => {
-                  const labels: Record<string, string> = { yes: 'Oui', no: 'Non', unknown: 'Je sais pas' };
-                  const active = answer === opt;
-                  const colors = opt === 'yes'
-                    ? active ? 'bg-green-500 text-white border-green-500' : 'bg-white text-green-700 border-green-200 hover:border-green-400'
-                    : opt === 'no'
-                    ? active ? 'bg-red-500 text-white border-red-500' : 'bg-white text-red-600 border-red-200 hover:border-red-400'
-                    : active ? 'bg-blue-400 text-white border-blue-400' : 'bg-white text-blue-500 border-blue-200 hover:border-blue-400';
-                  return (
-                    <button
-                      key={opt}
-                      type="button"
-                      onClick={() => set(item.id, active ? null : opt)}
-                      className={`flex-1 py-2 text-xs font-semibold rounded-lg border transition-all ${colors}`}
-                    >
-                      {labels[opt as string]}
-                    </button>
-                  );
-                })}
-              </div>
-              {showTip && (
-                <div className="bg-amber-50 border border-amber-100 rounded-lg p-3 animate-fadeIn">
-                  <p className="text-xs text-amber-800 mb-2">{item.tip}</p>
-                  <p className="text-xs font-bold text-green-700">
-                    💡 {item.stat}
-                  </p>
-                </div>
-              )}
-              {answer === 'yes' && (
-                <p className="text-xs text-green-600 font-medium">✅ Super, tu es déjà sur la bonne voie!</p>
-              )}
-            </div>
-          );
-        })}
+      {/* Slide */}
+      <div key={item.id} className="bg-white border border-blue-100 rounded-2xl p-6 card-elevated animate-scaleUp">
+        <div className="text-5xl mb-4">{item.icon}</div>
+        <p className="font-display text-lg font-bold text-blue-900 mb-5 leading-snug">
+          {item.question}
+        </p>
+
+        <div className="flex gap-2 mb-4">
+          {(['yes', 'no', 'unknown'] as SavingsAnswer[]).map((opt) => {
+            const labels: Record<string, string> = { yes: 'Oui', no: 'Non', unknown: 'Je sais pas' };
+            const active = answer === opt;
+            const colors = opt === 'yes'
+              ? active ? 'bg-green-500 text-white border-green-500' : 'bg-white text-green-700 border-green-200 hover:border-green-400'
+              : opt === 'no'
+              ? active ? 'bg-red-500 text-white border-red-500' : 'bg-white text-red-600 border-red-200 hover:border-red-400'
+              : active ? 'bg-blue-400 text-white border-blue-400' : 'bg-white text-blue-500 border-blue-200 hover:border-blue-400';
+            return (
+              <button
+                key={opt}
+                type="button"
+                onClick={() => set(active ? null : opt)}
+                className={`flex-1 py-3 text-sm font-semibold rounded-xl border transition-all ${colors}`}
+              >
+                {labels[opt as string]}
+              </button>
+            );
+          })}
+        </div>
+
+        {showTip && (
+          <div className="bg-amber-50 border border-amber-100 rounded-xl p-4 animate-fadeIn">
+            <p className="text-sm text-amber-800 mb-2">{item.tip}</p>
+            <p className="text-sm font-bold text-green-700">💡 {item.stat}</p>
+          </div>
+        )}
+        {answer === 'yes' && (
+          <div className="bg-green-50 border border-green-100 rounded-xl p-4 animate-fadeIn">
+            <p className="text-sm text-green-700 font-medium">✅ Super, tu es déjà sur la bonne voie!</p>
+          </div>
+        )}
       </div>
 
-      {/* Sticky bottom bar — always visible */}
+      {/* Sticky bottom bar */}
       <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-green-200 shadow-lg">
         <div className="max-w-xl mx-auto px-4 py-3">
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="text-xs text-green-600 font-semibold uppercase tracking-wide">Économies potentielles détectées</p>
+              <p className="text-[11px] text-green-600 font-semibold uppercase tracking-wide">Économies potentielles</p>
               <p className="text-2xl font-black text-green-800 transition-all duration-500">
                 {fmt(yearly)}<span className="text-sm font-semibold text-green-600"> /an</span>
               </p>
             </div>
             <div className="flex gap-2">
-              <button onClick={onBack} className="py-2 px-4 rounded-xl border border-blue-300 text-blue-700 font-semibold hover:bg-blue-50 transition text-sm">
+              <button onClick={goBack} className="py-3 px-4 rounded-xl border border-blue-300 text-blue-700 font-semibold hover:bg-blue-50 transition text-sm">
                 ← Retour
               </button>
-              <button onClick={onNext} className="py-2 px-4 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition text-sm">
-                {answered === 0 ? 'Passer →' : 'Continuer →'}
+              <button onClick={goNext} className="py-3 px-5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition text-sm">
+                {index < QUIZ_ITEMS.length - 1 ? (answer ? 'Continuer →' : 'Passer →') : 'Voir mon potentiel →'}
               </button>
             </div>
           </div>

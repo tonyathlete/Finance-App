@@ -1,21 +1,17 @@
 import React, { useState } from 'react';
 import { LeadInfo } from '../types';
-import ProgressBar from './ProgressBar';
 
 interface Props {
   onSubmit: (lead: LeadInfo) => void;
   onBack: () => void;
   loading: boolean;
+  potentialYearly: number;
 }
 
-const TEASER_ITEMS = [
-  { icon: '📊', label: 'Score financier',           value: '?? / 100'         },
-  { icon: '🏠', label: 'Logement vs moyenne QC',    value: 'X% revenus'       },
-  { icon: '💡', label: 'Recommandations perso',     value: '3 insights'       },
-  { icon: '🎯', label: 'Défis & économies calculés',value: 'Jusqu\'à X$/an'   },
-];
+const fmt = (v: number) =>
+  new Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD', maximumFractionDigits: 0 }).format(v);
 
-export default function StepLeadCapture({ onSubmit, onBack, loading }: Props) {
+export default function StepLeadCapture({ onSubmit, onBack, loading, potentialYearly }: Props) {
   const [form, setForm] = useState<LeadInfo>({ firstName: '', lastName: '', email: '', phone: '' });
   const [errors, setErrors] = useState<Partial<LeadInfo>>({});
 
@@ -52,32 +48,40 @@ export default function StepLeadCapture({ onSubmit, onBack, loading }: Props) {
   );
 
   return (
-    <div className="animate-fadeIn max-w-xl mx-auto px-4 py-8">
-      <ProgressBar step={6} total={6} />
-
-      {/* Lock banner */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-5 text-white text-center mb-5 shadow-lg">
-        <div className="text-4xl mb-2">🔐</div>
-        <h2 className="text-xl font-black mb-1">Ton analyse est prête — mais verrouillée!</h2>
-        <p className="text-blue-100 text-sm">Entre tes coordonnées pour tout débloquer gratuitement.</p>
-
-        {/* Teaser grid */}
-        <div className="grid grid-cols-2 gap-2 mt-4">
-          {TEASER_ITEMS.map((item, i) => (
-            <div key={i} className="bg-white/10 rounded-xl px-3 py-2 flex items-center gap-2 text-left">
-              <span className="text-lg">{item.icon}</span>
-              <div>
-                <p className="text-xs font-semibold text-white leading-tight">{item.label}</p>
-                <p className="text-xs text-blue-200 blur-sm select-none font-bold">{item.value}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+    <div className="animate-fadeIn max-w-xl mx-auto px-4 py-10">
+      {/* Curiosity hook */}
+      <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-6 text-white text-center mb-5 shadow-xl">
+        <div className="text-4xl mb-3">🚀</div>
+        <h2 className="font-display text-2xl font-black mb-3 leading-tight">
+          Et ça, c'est juste avec quelques astuces de base.
+        </h2>
+        {potentialYearly > 0 && (
+          <div className="bg-white/10 rounded-xl px-4 py-3 mb-3 inline-block">
+            <p className="text-blue-100 text-xs uppercase tracking-wide font-semibold">Déjà détecté</p>
+            <p className="text-3xl font-black">{fmt(potentialYearly)}<span className="text-base font-semibold text-blue-200"> /an</span></p>
+          </div>
+        )}
+        <p className="text-blue-100 text-base leading-relaxed">
+          Imagine à quel point tu pourrais épargner <strong className="text-white">encore plus</strong> avec
+          un vrai conseiller qui regarde ta situation au complet.
+        </p>
       </div>
 
-      {/* Form */}
+      {/* The offer */}
       <div className="bg-white rounded-2xl border border-blue-100 card-elevated p-6 mb-4">
-        <p className="text-sm font-black text-blue-900 mb-4">✍️ Tes informations</p>
+        <div className="flex items-start gap-3 mb-5">
+          <div className="text-3xl">📞</div>
+          <div>
+            <p className="font-display font-bold text-blue-900 text-lg leading-snug">
+              Laisse-moi tes coordonnées et je t'appelle personnellement.
+            </p>
+            <p className="text-blue-500 text-sm mt-1">
+              Dans les prochaines <strong className="text-blue-700">24 heures</strong> · une courte discussion
+              de <strong className="text-blue-700">10 minutes</strong> · sans engagement.
+            </p>
+          </div>
+        </div>
+
         <form onSubmit={handleSubmit} noValidate className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             {field('firstName', 'Prénom', 'text', 'Jean')}
@@ -91,35 +95,17 @@ export default function StepLeadCapture({ onSubmit, onBack, loading }: Props) {
             disabled={loading}
             className="w-full py-4 mt-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-black text-lg shadow-lg shadow-blue-200 disabled:opacity-50 transition hover:scale-105 active:scale-95"
           >
-            {loading ? '⏳ Génération en cours...' : '🔓 Révéler mon analyse →'}
+            {loading ? '⏳ Un instant...' : '📞 Oui, appelle-moi →'}
           </button>
 
           <p className="text-xs text-center text-blue-500">
-            🔒 Confidentiel · Aucun spam · Conseiller disponible sous 24h
+            🔒 Confidentiel · Aucun spam · Tu peux dire non à tout moment
           </p>
         </form>
       </div>
 
-      {/* What you get — below form */}
-      <div className="bg-blue-50 rounded-2xl border border-blue-100 px-4 py-4 mb-4">
-        <p className="text-xs font-black text-blue-700 uppercase tracking-wide mb-3">🎁 Ce que tu reçois gratuitement</p>
-        <ul className="space-y-2">
-          {[
-            ['📊', 'Score financier détaillé avec explication'],
-            ['💡', 'Recommandations personnalisées selon ton profil'],
-            ['🎯', '3 défis concrets avec économies calculées'],
-            ['📞', 'Consultation gratuite avec un conseiller (30 min)'],
-          ].map(([icon, text], i) => (
-            <li key={i} className="flex items-center gap-2 text-xs text-blue-800">
-              <span className="w-5 h-5 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs flex-shrink-0">✓</span>
-              <span><strong>{icon}</strong> {text}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-
       <button onClick={onBack} className="w-full py-2 text-blue-500 text-sm font-medium hover:underline">
-        ← Modifier mes réponses
+        ← Revoir les astuces
       </button>
     </div>
   );
