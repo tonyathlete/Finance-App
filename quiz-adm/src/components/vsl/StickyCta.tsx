@@ -20,7 +20,7 @@ export default function StickyCta({ label }: { label: string }) {
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-50 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] bg-slate-950/90 backdrop-blur border-t border-white/10 transition-transform duration-300 md:hidden ${
+      className={`fixed inset-x-0 bottom-0 z-50 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] bg-forest-950/90 backdrop-blur border-t border-white/10 transition-transform duration-300 md:hidden ${
         show ? 'translate-y-0' : 'translate-y-full'
       }`}
     >

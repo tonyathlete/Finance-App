@@ -17,9 +17,9 @@ function calendlyEmbedUrl(url: string, utmSource: string) {
   if (!url) return ''
   const u = new URL(url)
   u.searchParams.set('hide_gdpr_banner', '1')
-  u.searchParams.set('background_color', '0f172a')
+  u.searchParams.set('background_color', '0a2219')
   u.searchParams.set('text_color', 'f8fafc')
-  u.searchParams.set('primary_color', 'fbbf24')
+  u.searchParams.set('primary_color', 'd4ad55')
   if (utmSource) u.searchParams.set('utm_source', utmSource)
   return u.toString()
 }
@@ -54,7 +54,7 @@ function Cta({ className = '' }: { className?: string }) {
 function SectionTitle({ kicker, children }: { kicker: string; children: React.ReactNode }) {
   return (
     <div className="mb-8 text-center">
-      <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-amber-400">{kicker}</p>
+      <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-gold-400">{kicker}</p>
       <h2 className="text-2xl font-extrabold leading-tight text-white sm:text-3xl">{children}</h2>
     </div>
   )
@@ -65,12 +65,13 @@ export default function VslPage() {
   const directUrl = calendlyDirectUrl(c.calendlyUrl, c.utmSource)
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 antialiased selection:bg-amber-400 selection:text-slate-950">
-      {/* Halo décoratif */}
+    <div className="relative min-h-screen overflow-x-hidden bg-forest-950 text-white antialiased selection:bg-gold-400 selection:text-forest-950">
+      {/* Halo + hexagones décoratifs (rappel de l'image de marque) */}
       <div
         aria-hidden
-        className="pointer-events-none fixed inset-x-0 top-0 h-[600px] bg-[radial-gradient(ellipse_at_top,rgba(59,108,255,0.25),transparent_60%)]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[700px] bg-[radial-gradient(ellipse_at_top,rgba(31,106,77,0.55),transparent_65%)]"
       />
+      <HexPattern />
 
       <main className="relative mx-auto max-w-3xl px-4 pb-32 sm:px-6">
         {/* ── HERO ─────────────────────────────────────────── */}
@@ -83,7 +84,7 @@ export default function VslPage() {
         </header>
 
         <section className="pt-8 text-center">
-          <span className="inline-block rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-1.5 text-xs font-semibold text-amber-300">
+          <span className="inline-block rounded-full border border-gold-400/30 bg-gold-400/10 px-4 py-1.5 text-xs font-semibold text-gold-300">
             {c.surtitre}
           </span>
           <h1 className="mx-auto mt-5 max-w-2xl text-3xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-5xl">
@@ -134,7 +135,7 @@ export default function VslPage() {
           <ol className="grid gap-4 sm:grid-cols-3">
             {c.etapes.map((e, i) => (
               <li key={e.titre} className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-400 text-sm font-extrabold text-slate-950">
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gold-400 text-sm font-extrabold text-forest-950">
                   {i + 1}
                 </span>
                 <h3 className="mt-4 font-bold text-white">{e.titre}</h3>
@@ -151,7 +152,7 @@ export default function VslPage() {
             <div className="flex flex-col items-center gap-5 text-center sm:flex-row sm:items-start sm:text-left">
               <Avatar size="lg" />
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-400">Qui suis-je</p>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-gold-400">Qui suis-je</p>
                 <h2 className="mt-1 text-2xl font-extrabold text-white">{c.nom}</h2>
                 <p className="text-sm text-white/50">{c.titre}</p>
                 <div className="mt-4 space-y-3 text-white/75">
@@ -188,7 +189,7 @@ export default function VslPage() {
                     key={o.nom}
                     href={o.url}
                     {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                    className="group flex gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition hover:-translate-y-0.5 hover:border-amber-400/40 hover:bg-white/[0.06]"
+                    className="group flex gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition hover:-translate-y-0.5 hover:border-gold-400/40 hover:bg-white/[0.06]"
                   >
                     <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/5 text-2xl">
                       {o.emoji}
@@ -196,7 +197,7 @@ export default function VslPage() {
                     <span>
                       <span className="flex items-center gap-1.5 font-bold text-white">
                         {o.nom}
-                        <span className="text-amber-400 transition-transform group-hover:translate-x-1">→</span>
+                        <span className="text-gold-400 transition-transform group-hover:translate-x-1">→</span>
                       </span>
                       <span className="mt-1 block text-sm text-white/60">{o.description}</span>
                     </span>
@@ -237,7 +238,7 @@ export default function VslPage() {
                 >
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold text-white">
                     {f.q}
-                    <span className="text-amber-400 transition-transform group-open:rotate-45">+</span>
+                    <span className="text-gold-400 transition-transform group-open:rotate-45">+</span>
                   </summary>
                   <p className="mt-3 text-sm text-white/65">{f.r}</p>
                 </details>
@@ -252,7 +253,7 @@ export default function VslPage() {
           <p className="-mt-4 mb-6 text-center text-sm text-white/60">{c.ctaSousTexte}</p>
           {embedUrl ? (
             <>
-              <div className="overflow-hidden rounded-2xl border border-white/10 bg-slate-900">
+              <div className="overflow-hidden rounded-2xl border border-white/10 bg-forest-900">
                 <iframe
                   src={embedUrl}
                   title="Réserver un appel"
@@ -262,14 +263,14 @@ export default function VslPage() {
               </div>
               <p className="mt-4 text-center text-sm text-white/50">
                 Le calendrier ne s&apos;affiche pas?{' '}
-                <a href={directUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-amber-400 underline">
+                <a href={directUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-gold-400 underline">
                   Ouvre-le ici
                 </a>
               </p>
             </>
           ) : (
             <div className="rounded-2xl border border-dashed border-white/20 bg-white/5 p-10 text-center text-sm text-white/70">
-              📅 Ajoute ton lien Calendly dans <code className="text-amber-300">src/lib/vsl-config.ts</code>
+              📅 Ajoute ton lien Calendly dans <code className="text-gold-300">src/lib/vsl-config.ts</code>
             </div>
           )}
         </section>
@@ -279,6 +280,13 @@ export default function VslPage() {
           <p>
             © {new Date().getFullYear()} {c.nom} · {c.titre}
           </p>
+          {(c.certificatAmf || c.cabinet) && (
+            <p className="mt-1">
+              {c.cabinet}
+              {c.cabinet && c.certificatAmf && ' · '}
+              {c.certificatAmf && `No de certificat AMF : ${c.certificatAmf}`}
+            </p>
+          )}
           {c.instagram && (
             <a href={c.instagram} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block hover:text-white/70">
               Instagram
@@ -298,14 +306,37 @@ function Avatar({ size }: { size: 'sm' | 'lg' }) {
   if (c.photoUrl) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
-      <img src={c.photoUrl} alt={c.nom} className={`${dims} shrink-0 rounded-full object-cover ring-2 ring-amber-400/60`} />
+      <img src={c.photoUrl} alt={c.nom} className={`${dims} shrink-0 rounded-full object-cover ring-2 ring-gold-400/60`} />
     )
   }
   return (
     <span
-      className={`${dims} flex shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-300 to-amber-500 font-extrabold text-slate-950 ring-2 ring-amber-400/30`}
+      className={`${dims} flex shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-gold-300 to-gold-500 font-extrabold text-forest-950 ring-2 ring-gold-400/30`}
     >
       {initials(c.nom)}
     </span>
+  )
+}
+
+function HexPattern() {
+  // Hexagones pointus, contour or, qui s'estompent vers le bas
+  return (
+    <svg
+      aria-hidden
+      className="pointer-events-none absolute inset-x-0 top-0 h-[520px] w-full opacity-[0.12] [mask-image:linear-gradient(to_bottom,black,transparent)]"
+    >
+      <defs>
+        <pattern id="hex" width="56" height="97" patternUnits="userSpaceOnUse" patternTransform="scale(1.1)">
+          <path
+            d="M28 0 L56 16.2 L56 48.5 L28 64.7 L0 48.5 L0 16.2 Z M28 64.7 L28 97"
+            fill="none"
+            stroke="#d4ad55"
+            strokeWidth="1"
+          />
+          <path d="M0 48.5 L0 97 M56 48.5 L56 97" fill="none" stroke="#d4ad55" strokeWidth="1" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#hex)" />
+    </svg>
   )
 }

@@ -10,7 +10,9 @@ export const vslConfig = {
   // ── Qui tu es ──────────────────────────────────────────────
   nom: 'Anthony Goulet',
   titre: 'Conseiller en sécurité financière',
-  photoUrl: '', // ex: 'https://…/anthony.jpg'  (vide = initiales)
+  photoUrl: '/anthony.jpg', // image dans quiz-adm/public/ ou lien https://…  (vide = initiales)
+  cabinet: 'Services financiers Christine Bourassa',
+  certificatAmf: '269559',
   instagram: '', // ex: 'https://instagram.com/tonprofil'
 
   // ── Liens principaux ───────────────────────────────────────
@@ -65,7 +67,11 @@ export const vslConfig = {
     "Mon approche est simple : comprendre tes chiffres avant de recommander quoi que ce soit.",
   ],
   // Petites pastilles sous ta bio (laisse vide [] pour masquer)
-  credentials: ['Conseiller en sécurité financière', 'Entrepreneurs incorporés', 'Québec'],
+  credentials: [
+    'Certificat AMF 269559',
+    'Services financiers Christine Bourassa',
+    'Rimouski · Rendez-vous virtuels partout au Québec',
+  ],
 
   // ── Outils que tu as bâtis ─────────────────────────────────
   // url peut être un lien externe (https://…) ou une page de ce site ('/…')
@@ -104,7 +110,7 @@ export const vslConfig = {
     },
     {
       q: "Ça se passe comment?",
-      r: "En visioconférence (ou au téléphone si tu préfères). Tu reçois le lien automatiquement après ta réservation.",
+      r: "En visioconférence, partout au Québec (ou en personne à Rimouski si tu préfères). Tu reçois le lien automatiquement après ta réservation.",
     },
   ],
 
