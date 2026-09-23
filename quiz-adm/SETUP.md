@@ -44,3 +44,4 @@ Ouvrir [http://localhost:3000](http://localhost:3000)
 | `/` | Quiz (9 étapes) |
 | `/dashboard` | Liste de tous les clients |
 | `/dashboard/[id]` | Détail d'un client |
+| `/rdv` | Page VSL pour la bio Instagram (vidéo + Calendly). Contenu modifiable dans `src/lib/vsl-config.ts` |
