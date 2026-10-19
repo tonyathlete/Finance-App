@@ -1,0 +1,48 @@
+---
+import { site, contact, legal } from '../config';
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <h4>{site.name}</h4>
+        <p>
+          {legal.title}<br />
+          Inscrit auprès de l'Autorité des marchés financiers, no {legal.amfNumber}
+          {legal.firm && <><br />Rattaché au cabinet {legal.firm}</>}
+        </p>
+        <p><a href={legal.amfRegistryUrl} target="_blank" rel="noopener">Vérifier mon inscription au registre de l'AMF ↗</a></p>
+      </div>
+      <div>
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="/#services">Services</a></li>
+          <li><a href="/#a-propos">À propos</a></li>
+          <li><a href="/#reseau">Réseau</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/#rendez-vous">Prendre rendez-vous</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href={contact.phoneHref}>{contact.phone}</a></li>
+          <li><a href={`mailto:${contact.email}`}>{contact.email}</a></li>
+          {contact.instagram && <li><a href={contact.instagram} target="_blank" rel="noopener">Instagram</a></li>}
+        </ul>
+      </div>
+    </div>
+    <div class="footer__legal">
+      <p>
+        Le contenu de ce site est fourni à titre informatif seulement et ne constitue pas un conseil financier,
+        fiscal ou juridique personnalisé. Chaque situation est unique : une analyse de besoins est nécessaire avant
+        toute recommandation. Certains liens peuvent être des liens partenaires pour lesquels une rémunération peut
+        être reçue.
+      </p>
+      <p>
+        © {year} {site.name} · <a href="/mentions-legales">Mentions légales et confidentialité</a>
+      </p>
+    </div>
+  </div>
+</footer>

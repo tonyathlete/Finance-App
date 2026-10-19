@@ -1,0 +1,23 @@
+---
+import { cta } from '../config';
+---
+<div class="sticky-cta" id="sticky-cta">
+  <a href="/#rendez-vous" class="btn btn--gold">{cta.label}</a>
+</div>
+<script>
+  // Visible après le hero, cachée quand la section rendez-vous est à l'écran
+  const bar = document.getElementById('sticky-cta');
+  const booking = document.getElementById('rendez-vous');
+  let bookingVisible = false;
+  if (booking && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => {
+      bookingVisible = e.isIntersecting;
+      update();
+    }).observe(booking);
+  }
+  function update() {
+    bar?.classList.toggle('is-visible', window.scrollY > 500 && !bookingVisible);
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+</script>

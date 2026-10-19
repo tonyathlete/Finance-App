@@ -1,0 +1,22 @@
+---
+import { site } from '../config';
+const links = [
+  { href: '/#services', label: 'Services' },
+  { href: '/#a-propos', label: 'À propos' },
+  { href: '/#reseau', label: 'Réseau' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/#faq', label: 'FAQ' },
+];
+---
+<header class="header">
+  <div class="container header__inner">
+    <a href="/" class="logo" aria-label={`${site.name}, accueil`}>
+      <span class="logo__mark">AG</span>
+      <span class="logo__name">{site.name}</span>
+    </a>
+    <nav class="nav" aria-label="Navigation principale">
+      {links.map((l) => <a href={l.href}>{l.label}</a>)}
+    </nav>
+    <a href="/#rendez-vous" class="btn btn--gold btn--sm"><span class="label-long">Réserver un appel</span><span class="label-short">Réserver mon appel</span></a>
+  </div>
+</header>

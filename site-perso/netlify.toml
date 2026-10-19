@@ -1,0 +1,17 @@
+# Sur Netlify : nouveau site, "Base directory" = site-perso
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Le .com redirige vers le .ca (domaine principal)
+[[redirects]]
+  from = "https://anthonygoulet.com/*"
+  to = "https://anthonygoulet.ca/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.anthonygoulet.com/*"
+  to = "https://anthonygoulet.ca/:splat"
+  status = 301
+  force = true

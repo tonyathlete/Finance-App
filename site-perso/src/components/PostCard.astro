@@ -1,0 +1,11 @@
+---
+import { formatDate } from '../lib';
+interface Props { post: { id: string; data: { title: string; description: string; date: Date } } }
+const { post } = Astro.props;
+---
+<a href={`/blog/${post.id}`} class="card post-card">
+  <span class="post-card__date">{formatDate(post.data.date)}</span>
+  <h3>{post.data.title}</h3>
+  <p>{post.data.description}</p>
+  <span class="post-card__more">Lire l'article →</span>
+</a>

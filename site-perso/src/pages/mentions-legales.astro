@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import { site, contact, legal, partners } from '../config';
+---
+<Base title="Mentions légales et confidentialité | Anthony Goulet">
+  <section class="article-hero">
+    <div class="container narrow"><h1>Mentions légales et confidentialité</h1></div>
+  </section>
+  <div class="prose">
+    <h2>Identification</h2>
+    <p>
+      {site.name}, {legal.title.toLowerCase()}, inscrit auprès de l'Autorité des marchés financiers (AMF) sous le
+      numéro {legal.amfNumber}{legal.firm && <>, rattaché au cabinet {legal.firm}</>}.
+      Tu peux vérifier mon inscription dans le <a href={legal.amfRegistryUrl} target="_blank" rel="noopener">registre de l'AMF</a>.
+    </p>
+
+    <h2>Nature de l'information</h2>
+    <p>
+      Le contenu de ce site, incluant les articles de blog, est fourni à titre informatif et éducatif seulement. Il ne
+      constitue pas un conseil financier, fiscal, juridique ou en assurance adapté à ta situation. Toute recommandation
+      est faite à la suite d'une analyse de besoins.
+    </p>
+
+    <h2>Rémunération et partenariats</h2>
+    <p>
+      Je suis principalement rémunéré par commission, versée par les compagnies d'assurance lorsqu'un produit est mis en
+      place. {partners.disclosure} Sur demande, je t'indique la nature de la rémunération associée à une référence.
+    </p>
+
+    <h2 id="confidentialite">Politique de confidentialité</h2>
+    <p>
+      Les renseignements personnels que tu transmets (formulaire de contact, prise de rendez-vous) servent uniquement à
+      te recontacter et à préparer notre rencontre. Ils ne sont jamais vendus.
+    </p>
+    <ul>
+      <li><strong>Renseignements recueillis :</strong> nom, courriel, téléphone et le contenu de ton message ou de ta réservation.</li>
+      <li><strong>Outils utilisés :</strong> Calendly (prise de rendez-vous) et Netlify (hébergement et formulaire). Ces services peuvent conserver les données à l'extérieur du Québec.</li>
+      <li><strong>Conservation :</strong> le temps nécessaire pour répondre à ta demande et respecter mes obligations professionnelles.</li>
+      <li><strong>Tes droits :</strong> tu peux demander l'accès, la rectification ou la suppression de tes renseignements en tout temps.</li>
+    </ul>
+    <p>
+      <strong>Responsable de la protection des renseignements personnels :</strong> {site.name},
+      <a href={`mailto:${contact.email}`}>{contact.email}</a>, {contact.phone}.
+    </p>
+  </div>
+</Base>

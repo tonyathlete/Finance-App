@@ -1,0 +1,22 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostCard from '../../components/PostCard.astro';
+import CtaButton from '../../components/CtaButton.astro';
+import { getPosts } from '../../lib';
+const posts = await getPosts();
+---
+<Base title="Blog | Anthony Goulet" description="Finances personnelles et d'entreprise expliquées simplement pour les travailleurs autonomes et les entrepreneurs.">
+  <section class="article-hero">
+    <div class="container narrow center">
+      <span class="eyebrow">Blog</span>
+      <h1>Les finances, expliquées simplement</h1>
+      <p class="lead">Assurance, épargne, fiscalité et actualité, pour ceux qui travaillent à leur compte.</p>
+    </div>
+  </section>
+  <section class="section" style="padding-top: 20px;">
+    <div class="container">
+      <div class="posts">{posts.map((post) => <PostCard post={post} />)}</div>
+      <div class="center" style="margin-top: 60px;"><CtaButton /></div>
+    </div>
+  </section>
+</Base>

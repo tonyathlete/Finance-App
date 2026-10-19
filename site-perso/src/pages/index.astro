@@ -1,0 +1,296 @@
+---
+import Base from '../layouts/Base.astro';
+import CtaButton from '../components/CtaButton.astro';
+import Icon from '../components/Icon.astro';
+import PostCard from '../components/PostCard.astro';
+import { getPosts } from '../lib';
+import {
+  hero, stats, problems, services, steps, why, about, testimonials,
+  partners, quiz, faq, booking, contact, legal,
+} from '../config';
+
+const latestPosts = (await getPosts()).slice(0, 3);
+const isVideoFile = hero.videoUrl.endsWith('.mp4');
+---
+<Base>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero__grid">
+      <div>
+        <span class="eyebrow">{hero.eyebrow}</span>
+        <h1>{hero.title}<span class="hero__title-accent">{hero.titleAccent}</span></h1>
+        <p class="hero__subtitle">{hero.subtitle}</p>
+        <CtaButton />
+        <div class="stats">
+          {stats.map((s) => (
+            <div>
+              <div class="stat__value">{s.value}</div>
+              <div class="stat__label">{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class:list={['hero__media', hero.videoUrl && 'hero__media--video']}>
+        {hero.videoUrl ? (
+          isVideoFile ? (
+            <video src={hero.videoUrl} controls playsinline poster={hero.photo || undefined} />
+          ) : (
+            <iframe src={hero.videoUrl} title="Vidéo de présentation" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" />
+          )
+        ) : hero.photo ? (
+          <img src={hero.photo} alt="Anthony Goulet, conseiller en sécurité financière" />
+        ) : (
+          <div class="hero__placeholder"><div><span>AG</span>Photo ou vidéo de présentation à venir</div></div>
+        )}
+        {!hero.videoUrl && (
+          <div class="hero__badge">
+            <strong>Anthony Goulet</strong>
+            {legal.title} · AMF {legal.amfNumber}
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLÈMES -->
+  <section class="section">
+    <div class="container">
+      <div class="narrow center">
+        <span class="eyebrow">Ta réalité</span>
+        <h2>{problems.title}</h2>
+      </div>
+      <div class="grid-3">
+        {problems.items.map((p) => (
+          <div class="card problem-card">
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section section--cream2" id="services">
+    <div class="container">
+      <div class="narrow center">
+        <span class="eyebrow">Services</span>
+        <h2>{services.title}</h2>
+      </div>
+      <div class="grid-3">
+        {services.items.map((s) => (
+          <div class="card">
+            <div class="card__icon"><Icon name={s.icon} /></div>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ÉTAPES -->
+  <section class="section">
+    <div class="container">
+      <div class="narrow center">
+        <span class="eyebrow">Simple et sans pression</span>
+        <h2>{steps.title}</h2>
+      </div>
+      <div class="grid-3">
+        {steps.items.map((s, i) => (
+          <div class="card">
+            <div class="card__num">0{i + 1}</div>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </div>
+        ))}
+      </div>
+      <div class="center" style="margin-top: 48px;"><CtaButton /></div>
+    </div>
+  </section>
+
+  <!-- POURQUOI MOI -->
+  <section class="section section--dark">
+    <div class="container">
+      <div class="narrow center">
+        <span class="eyebrow">La différence</span>
+        <h2>{why.title}</h2>
+      </div>
+      <div class="grid-3">
+        {why.items.map((w) => (
+          <div class="card">
+            <div class="card__icon" style="background: rgba(201,162,74,0.12);"><Icon name="check" /></div>
+            <h3>{w.title}</h3>
+            <p>{w.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- À PROPOS -->
+  <section class="section" id="a-propos">
+    <div class="container about">
+      <div class="about__photo">
+        {hero.photo ? (
+          <img src={hero.photo} alt="Anthony Goulet" loading="lazy" />
+        ) : (
+          <div class="hero__placeholder"><div><span>AG</span>Photo à venir</div></div>
+        )}
+      </div>
+      <div>
+        <span class="eyebrow">Mon histoire</span>
+        <h2>{about.title}</h2>
+        {about.paragraphs.map((p) => <p class="lead">{p}</p>)}
+        <p class="about__signature">{about.signature}</p>
+        <CtaButton note={false} />
+      </div>
+    </div>
+  </section>
+
+  <!-- TÉMOIGNAGES (caché si la liste est vide) -->
+  {testimonials.length > 0 && (
+    <section class="section section--cream2">
+      <div class="container">
+        <div class="narrow center">
+          <span class="eyebrow">Ils en parlent</span>
+          <h2>Ce que mes clients disent</h2>
+        </div>
+        <div class="grid-3">
+          {testimonials.map((t) => (
+            <div class="card">
+              <p class="quote">« {t.quote} »</p>
+              <p class="quote__who">{t.name} <span style="font-weight:400;opacity:.7">· {t.role}</span></p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- RÉSEAU / PARTENAIRES -->
+  <section class="section section--dark" id="reseau">
+    <div class="container">
+      <div class="narrow center">
+        <span class="eyebrow">Partenaires</span>
+        <h2>{partners.title}</h2>
+        <p class="lead">{partners.intro}</p>
+      </div>
+      <div class="featured-partner">
+        <div class="card__icon" style="background: rgba(201,162,74,0.15);"><Icon name="shield" /></div>
+        <div>
+          <span class="featured-partner__tag">Partenaire principal</span>
+          <h3>{partners.featured.name}</h3>
+          <p>{partners.featured.text}</p>
+        </div>
+        {partners.featured.url && (
+          <a href={partners.featured.url} class="btn btn--ghost btn--sm" target="_blank" rel="noopener sponsored">Découvrir</a>
+        )}
+      </div>
+      <div class="chips">
+        {partners.resources.map((r) => <span class="chip">{r}</span>)}
+      </div>
+      <p style="margin-top: 26px;">Besoin d'une référence? <a href="#rendez-vous" class="gold">Parle-m'en lors de ton appel découverte →</a></p>
+      <p class="disclosure">{partners.disclosure}</p>
+    </div>
+  </section>
+
+  <!-- QUIZ BONUS -->
+  {quiz.enabled && quiz.url && (
+    <section class="section" style="padding-bottom: 0;">
+      <div class="container">
+        <div class="quiz-band">
+          <div>
+            <h3>{quiz.title}</h3>
+            <p>{quiz.text}</p>
+          </div>
+          <a href={quiz.url} class="btn btn--ghost">{quiz.button}</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- BLOG -->
+  {latestPosts.length > 0 && (
+    <section class="section">
+      <div class="container">
+        <div class="narrow center">
+          <span class="eyebrow">Blog</span>
+          <h2>Les finances, expliquées simplement</h2>
+          <p class="lead">Un nouvel article chaque semaine pour les travailleurs autonomes et les entrepreneurs.</p>
+        </div>
+        <div class="posts">
+          {latestPosts.map((post) => <PostCard post={post} />)}
+        </div>
+        <div class="center" style="margin-top: 36px;">
+          <a href="/blog" class="btn btn--ghost">Voir tous les articles</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- FAQ -->
+  <section class="section section--cream2" id="faq">
+    <div class="container narrow">
+      <div class="center">
+        <span class="eyebrow">FAQ</span>
+        <h2>{faq.title}</h2>
+      </div>
+      <div class="faq">
+        {faq.items.map((f) => (
+          <details>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- RENDEZ-VOUS + CONTACT -->
+  <section class="section section--darker" id="rendez-vous">
+    <div class="container booking">
+      <div>
+        <span class="eyebrow">Prochaine étape</span>
+        <h2>{booking.title}</h2>
+        <p class="lead">{booking.text}</p>
+        <ul class="contact-list">
+          <li><a href={contact.phoneHref}><Icon name="phone" />{contact.phone}</a></li>
+          <li><a href={`mailto:${contact.email}`}><Icon name="mail" />{contact.email}</a></li>
+          {contact.instagram && <li><a href={contact.instagram} target="_blank" rel="noopener"><Icon name="instagram" />Instagram</a></li>}
+        </ul>
+
+        <form class="form" name="contact" method="POST" action="/merci" data-netlify="true" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="contact" />
+          <p class="hidden"><label>Ne pas remplir <input name="bot-field" /></label></p>
+          <p style="margin:0;font-weight:600;">Tu préfères m'écrire?</p>
+          <label>Prénom et nom <input name="nom" required autocomplete="name" /></label>
+          <label>Courriel <input type="email" name="courriel" required autocomplete="email" /></label>
+          <label>Téléphone <input type="tel" name="telephone" autocomplete="tel" /></label>
+          <label>Ton message <textarea name="message" required></textarea></label>
+          <label class="consent">
+            <input type="checkbox" name="consentement" required />
+            J'accepte qu'Anthony Goulet utilise ces renseignements pour me recontacter. Voir la <a href="/mentions-legales#confidentialite">politique de confidentialité</a>.
+          </label>
+          <button type="submit" class="btn btn--ghost">Envoyer</button>
+        </form>
+      </div>
+
+      <div class="calendly-box">
+        {contact.calendlyUrl ? (
+          <>
+            <div class="calendly-inline-widget" data-url={`${contact.calendlyUrl}?hide_gdpr_banner=1&primary_color=1b4a33`}></div>
+            <script is:inline src="https://assets.calendly.com/assets/external/widget.js" async></script>
+          </>
+        ) : (
+          <div class="calendly-missing">
+            <h3>Calendrier bientôt disponible</h3>
+            <p>En attendant, appelle-moi ou écris-moi directement.</p>
+            <a href={contact.phoneHref} class="btn btn--gold">Appeler {contact.phone}</a>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+</Base>
