@@ -37,7 +37,7 @@ export const cta = {
 export const hero = {
   eyebrow: 'Pour travailleurs autonomes, athlètes et futurs entrepreneurs',
   title: 'Tu bâtis à ton compte.',
-  titleAccent: 'Ta sécurité financière aussi.',
+  titleAccent: 'Protège ce que tu bâtis.',
   subtitle:
     "Assurance, épargne et stratégie à long terme, avec un seul conseiller qui compare pour toi les produits de plusieurs assureurs. Et que tu peux joindre directement quand t'en as besoin.",
   // Vidéo de présentation : lien YouTube ou Vimeo (ex. https://www.youtube.com/embed/XXXX) ou fichier /videos/intro.mp4
@@ -47,10 +47,10 @@ export const hero = {
   photo: '',
 };
 
+// Gros chiffres dans le haut de la page (2 ou 3 maximum)
 export const stats = [
-  { value: '50+', label: 'clients accompagnés' },
-  { value: '5+ ans', label: 'en finances' },
-  { value: 'Plusieurs', label: 'assureurs comparés' },
+  { value: '50+', label: 'Clients\naccompagnés' },
+  { value: '5+', label: 'Ans en\nfinances' },
 ];
 
 export const problems = {
@@ -128,8 +128,30 @@ export const why = {
   ],
 };
 
+// Carte de réservation dans le haut de la page
+export const bookCard = {
+  title: 'Appel découverte',
+  subtitle: 'Gratuit et sans engagement. Remplis ceci et choisis ton moment.',
+  needs: [
+    'Protéger mon revenu (assurance)',
+    'Épargne, REER, CELI',
+    'Je me lance à mon compte',
+    'Faire le point sur ma situation',
+    'Autre',
+  ],
+  button: 'Choisir mon moment',
+  perks: ['Gratuit', 'Sans engagement', 'Plusieurs assureurs comparés'],
+};
+
 export const about = {
+  eyebrow: 'Qui je suis',
   title: 'De la scène de bodybuilding à tes finances',
+  // Petits faits sous le texte (comme une fiche)
+  facts: [
+    { icon: 'shield', label: 'Titre', value: 'Conseiller en sécurité financière' },
+    { icon: 'network', label: 'Clientèle', value: 'Travailleurs autonomes et athlètes' },
+    { icon: 'check', label: 'Premier appel', value: 'Gratuit' },
+  ],
   paragraphs: [
     "Pendant des années, ma vie tournait autour du bodybuilding. Discipline, constance, plan à long terme : j'ai appris ce que ça prend pour atteindre un objectif ambitieux.",
     "Mais à la fin de la journée, tout était centré sur moi. J'ai réalisé que ce qui m'allume vraiment, c'est de travailler avec les autres, pour les autres.",

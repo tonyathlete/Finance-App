@@ -5,50 +5,96 @@ import Icon from '../components/Icon.astro';
 import PostCard from '../components/PostCard.astro';
 import { getPosts } from '../lib';
 import {
-  hero, stats, problems, services, steps, why, about, testimonials,
-  partners, quiz, faq, booking, contact, legal,
+  hero, stats, bookCard, problems, services, steps, why, about, testimonials,
+  partners, quiz, faq, booking, contact, cta,
 } from '../config';
 
 const latestPosts = (await getPosts()).slice(0, 3);
 const isVideoFile = hero.videoUrl.endsWith('.mp4');
 ---
 <Base>
-  <!-- HERO -->
+  <!-- HERO : photo plein écran, titre + chiffres à gauche, carte de réservation à droite -->
   <section class="hero">
+    {hero.photo ? (
+      <div class="hero__bg"><img src={hero.photo} alt="" /></div>
+    ) : (
+      <div class="hero__watermark" aria-hidden="true">AG</div>
+    )}
     <div class="container hero__grid">
       <div>
         <span class="eyebrow">{hero.eyebrow}</span>
-        <h1>{hero.title}<span class="hero__title-accent">{hero.titleAccent}</span></h1>
+        <h1>{hero.title}<span class="hero__accent">{hero.titleAccent}</span></h1>
         <p class="hero__subtitle">{hero.subtitle}</p>
-        <CtaButton />
-        <div class="stats">
+        <div class="hero__mobile-cta"><a href="#reserver" class="btn btn--gold btn--block">Réserver mon appel ↓</a></div>
+        <div class="hero-stats">
           {stats.map((s) => (
-            <div>
-              <div class="stat__value">{s.value}</div>
-              <div class="stat__label">{s.label}</div>
+            <div class="hero-stat">
+              <div class="hero-stat__value">{s.value}</div>
+              <div class="hero-stat__label" set:html={s.label.replace('\n', '<br />')} />
             </div>
           ))}
         </div>
       </div>
 
-      <div class:list={['hero__media', hero.videoUrl && 'hero__media--video']}>
-        {hero.videoUrl ? (
-          isVideoFile ? (
-            <video src={hero.videoUrl} controls playsinline poster={hero.photo || undefined} />
-          ) : (
-            <iframe src={hero.videoUrl} title="Vidéo de présentation" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" />
-          )
-        ) : hero.photo ? (
-          <img src={hero.photo} alt="Anthony Goulet, conseiller en sécurité financière" />
-        ) : (
-          <div class="hero__placeholder"><div><span>AG</span>Photo ou vidéo de présentation à venir</div></div>
-        )}
-        {!hero.videoUrl && (
-          <div class="hero__badge">
-            <strong>Anthony Goulet</strong>
-            {legal.title} · AMF {legal.amfNumber}
+      <div class="book-card" id="reserver">
+        <h2>{bookCard.title}</h2>
+        <p class="book-card__sub">{bookCard.subtitle}</p>
+        <form class="form" name="reservation" method="POST" action="/merci" data-netlify="true" netlify-honeypot="bot-field" id="book-form">
+          <input type="hidden" name="form-name" value="reservation" />
+          <p class="hidden"><label>Ne pas remplir <input name="bot-field" /></label></p>
+          <div class="row">
+            <input id="bf-prenom" name="prenom" placeholder="Prénom*" required autocomplete="given-name" aria-label="Prénom" />
+            <input id="bf-nom" name="nom" placeholder="Nom*" required autocomplete="family-name" aria-label="Nom" />
           </div>
-        )}
+          <input id="bf-courriel" type="email" name="courriel" placeholder="Courriel*" required autocomplete="email" aria-label="Courriel" />
+          <input id="bf-tel" type="tel" name="telephone" placeholder="Téléphone" autocomplete="tel" aria-label="Téléphone" />
+          <select id="bf-besoin" name="besoin" required aria-label="Ce qui t'amène">
+            <option value="" disabled selected>Ce qui t'amène*</option>
+            {bookCard.needs.map((n) => <option>{n}</option>)}
+          </select>
+          <p class="fine">
+            En continuant, tu acceptes d'être contacté au sujet de ta demande.
+            <a href="/mentions-legales#confidentialite">Confidentialité</a>
+          </p>
+          <button type="submit" class="btn btn--gold btn--block">{bookCard.button} →</button>
+        </form>
+        <ul class="perks">{bookCard.perks.map((p) => <li>{p}</li>)}</ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRÉSENTATION : vidéo/photo + histoire + faits + barre CTA -->
+  <section class="section streaks" id="a-propos">
+    <div class="container">
+      <div class="feature">
+        <div>
+          <span class="eyebrow">{about.eyebrow}</span>
+          <h2>{about.title}</h2>
+          <hr class="rule" />
+          {about.paragraphs.map((p) => <p>{p}</p>)}
+          <div class="facts">
+            {about.facts.map((f) => (
+              <div class="fact">
+                <div class="fact__label"><Icon name={f.icon} size={16} />{f.label}</div>
+                <div class="fact__value">{f.value}</div>
+              </div>
+            ))}
+          </div>
+          <a href="#reserver" class="btn btn--gold btn--block">{cta.label}</a>
+        </div>
+        <div class:list={['feature__media', hero.videoUrl && 'feature__media--video']}>
+          {hero.videoUrl ? (
+            isVideoFile ? (
+              <video src={hero.videoUrl} controls playsinline poster={hero.photo || undefined} />
+            ) : (
+              <iframe src={hero.videoUrl} title="Vidéo de présentation" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy" />
+            )
+          ) : hero.photo ? (
+            <img src={hero.photo} alt="Anthony Goulet" loading="lazy" />
+          ) : (
+            <div class="placeholder"><div><span>AG</span>Vidéo de présentation à venir</div></div>
+          )}
+        </div>
       </div>
     </div>
   </section>
@@ -59,6 +105,7 @@ const isVideoFile = hero.videoUrl.endsWith('.mp4');
       <div class="narrow center">
         <span class="eyebrow">Ta réalité</span>
         <h2>{problems.title}</h2>
+        <hr class="rule" />
       </div>
       <div class="grid-3">
         {problems.items.map((p) => (
@@ -72,11 +119,12 @@ const isVideoFile = hero.videoUrl.endsWith('.mp4');
   </section>
 
   <!-- SERVICES -->
-  <section class="section section--cream2" id="services">
+  <section class="section section--alt" id="services">
     <div class="container">
       <div class="narrow center">
         <span class="eyebrow">Services</span>
         <h2>{services.title}</h2>
+        <hr class="rule" />
       </div>
       <div class="grid-3">
         {services.items.map((s) => (
@@ -96,6 +144,7 @@ const isVideoFile = hero.videoUrl.endsWith('.mp4');
       <div class="narrow center">
         <span class="eyebrow">Simple et sans pression</span>
         <h2>{steps.title}</h2>
+        <hr class="rule" />
       </div>
       <div class="grid-3">
         {steps.items.map((s, i) => (
@@ -111,16 +160,17 @@ const isVideoFile = hero.videoUrl.endsWith('.mp4');
   </section>
 
   <!-- POURQUOI MOI -->
-  <section class="section section--dark">
+  <section class="section section--alt streaks">
     <div class="container">
       <div class="narrow center">
         <span class="eyebrow">La différence</span>
         <h2>{why.title}</h2>
+        <hr class="rule" />
       </div>
       <div class="grid-3">
         {why.items.map((w) => (
           <div class="card">
-            <div class="card__icon" style="background: rgba(201,162,74,0.12);"><Icon name="check" /></div>
+            <div class="card__icon"><Icon name="check" /></div>
             <h3>{w.title}</h3>
             <p>{w.text}</p>
           </div>
@@ -129,33 +179,14 @@ const isVideoFile = hero.videoUrl.endsWith('.mp4');
     </div>
   </section>
 
-  <!-- À PROPOS -->
-  <section class="section" id="a-propos">
-    <div class="container about">
-      <div class="about__photo">
-        {hero.photo ? (
-          <img src={hero.photo} alt="Anthony Goulet" loading="lazy" />
-        ) : (
-          <div class="hero__placeholder"><div><span>AG</span>Photo à venir</div></div>
-        )}
-      </div>
-      <div>
-        <span class="eyebrow">Mon histoire</span>
-        <h2>{about.title}</h2>
-        {about.paragraphs.map((p) => <p class="lead">{p}</p>)}
-        <p class="about__signature">{about.signature}</p>
-        <CtaButton note={false} />
-      </div>
-    </div>
-  </section>
-
   <!-- TÉMOIGNAGES (caché si la liste est vide) -->
   {testimonials.length > 0 && (
-    <section class="section section--cream2">
+    <section class="section">
       <div class="container">
         <div class="narrow center">
           <span class="eyebrow">Ils en parlent</span>
           <h2>Ce que mes clients disent</h2>
+          <hr class="rule" />
         </div>
         <div class="grid-3">
           {testimonials.map((t) => (
@@ -170,15 +201,16 @@ const isVideoFile = hero.videoUrl.endsWith('.mp4');
   )}
 
   <!-- RÉSEAU / PARTENAIRES -->
-  <section class="section section--dark" id="reseau">
+  <section class="section" id="reseau">
     <div class="container">
       <div class="narrow center">
         <span class="eyebrow">Partenaires</span>
         <h2>{partners.title}</h2>
+        <hr class="rule" />
         <p class="lead">{partners.intro}</p>
       </div>
       <div class="featured-partner">
-        <div class="card__icon" style="background: rgba(201,162,74,0.15);"><Icon name="shield" /></div>
+        <div class="card__icon" style="margin:0;"><Icon name="shield" /></div>
         <div>
           <span class="featured-partner__tag">Partenaire principal</span>
           <h3>{partners.featured.name}</h3>
@@ -191,14 +223,14 @@ const isVideoFile = hero.videoUrl.endsWith('.mp4');
       <div class="chips">
         {partners.resources.map((r) => <span class="chip">{r}</span>)}
       </div>
-      <p style="margin-top: 26px;">Besoin d'une référence? <a href="#rendez-vous" class="gold">Parle-m'en lors de ton appel découverte →</a></p>
+      <p style="margin-top: 26px;">Besoin d'une référence? <a href="#reserver" class="gold">Parle-m'en lors de ton appel découverte →</a></p>
       <p class="disclosure">{partners.disclosure}</p>
     </div>
   </section>
 
   <!-- QUIZ BONUS -->
   {quiz.enabled && quiz.url && (
-    <section class="section" style="padding-bottom: 0;">
+    <section class="section" style="padding-top: 0;">
       <div class="container">
         <div class="quiz-band">
           <div>
@@ -213,17 +245,18 @@ const isVideoFile = hero.videoUrl.endsWith('.mp4');
 
   <!-- BLOG -->
   {latestPosts.length > 0 && (
-    <section class="section">
+    <section class="section section--alt">
       <div class="container">
         <div class="narrow center">
           <span class="eyebrow">Blog</span>
           <h2>Les finances, expliquées simplement</h2>
+          <hr class="rule" />
           <p class="lead">Un nouvel article chaque semaine pour les travailleurs autonomes et les entrepreneurs.</p>
         </div>
         <div class="posts">
           {latestPosts.map((post) => <PostCard post={post} />)}
         </div>
-        <div class="center" style="margin-top: 36px;">
+        <div class="center" style="margin-top: 40px;">
           <a href="/blog" class="btn btn--ghost">Voir tous les articles</a>
         </div>
       </div>
@@ -231,11 +264,12 @@ const isVideoFile = hero.videoUrl.endsWith('.mp4');
   )}
 
   <!-- FAQ -->
-  <section class="section section--cream2" id="faq">
+  <section class="section" id="faq">
     <div class="container narrow">
       <div class="center">
         <span class="eyebrow">FAQ</span>
         <h2>{faq.title}</h2>
+        <hr class="rule" />
       </div>
       <div class="faq">
         {faq.items.map((f) => (
@@ -249,11 +283,12 @@ const isVideoFile = hero.videoUrl.endsWith('.mp4');
   </section>
 
   <!-- RENDEZ-VOUS + CONTACT -->
-  <section class="section section--darker" id="rendez-vous">
+  <section class="section section--alt streaks" id="rendez-vous">
     <div class="container booking">
       <div>
         <span class="eyebrow">Prochaine étape</span>
         <h2>{booking.title}</h2>
+        <hr class="rule" />
         <p class="lead">{booking.text}</p>
         <ul class="contact-list">
           <li><a href={contact.phoneHref}><Icon name="phone" />{contact.phone}</a></li>
@@ -261,16 +296,16 @@ const isVideoFile = hero.videoUrl.endsWith('.mp4');
           {contact.instagram && <li><a href={contact.instagram} target="_blank" rel="noopener"><Icon name="instagram" />Instagram</a></li>}
         </ul>
 
-        <form class="form" name="contact" method="POST" action="/merci" data-netlify="true" netlify-honeypot="bot-field">
+        <form class="form contact-form" name="contact" method="POST" action="/merci" data-netlify="true" netlify-honeypot="bot-field">
           <input type="hidden" name="form-name" value="contact" />
           <p class="hidden"><label>Ne pas remplir <input name="bot-field" /></label></p>
-          <p style="margin:0;font-weight:600;">Tu préfères m'écrire?</p>
-          <label>Prénom et nom <input name="nom" required autocomplete="name" /></label>
-          <label>Courriel <input type="email" name="courriel" required autocomplete="email" /></label>
-          <label>Téléphone <input type="tel" name="telephone" autocomplete="tel" /></label>
-          <label>Ton message <textarea name="message" required></textarea></label>
+          <p style="margin:0;font-family:var(--font-display);font-weight:600;">Tu préfères m'écrire?</p>
+          <label>Prénom et nom <input id="cf-nom" name="nom" required autocomplete="name" /></label>
+          <label>Courriel <input id="cf-courriel" type="email" name="courriel" required autocomplete="email" /></label>
+          <label>Téléphone <input id="cf-tel" type="tel" name="telephone" autocomplete="tel" /></label>
+          <label>Ton message <textarea id="cf-message" name="message" required></textarea></label>
           <label class="consent">
-            <input type="checkbox" name="consentement" required />
+            <input id="cf-consent" type="checkbox" name="consentement" required />
             J'accepte qu'Anthony Goulet utilise ces renseignements pour me recontacter. Voir la <a href="/mentions-legales#confidentialite">politique de confidentialité</a>.
           </label>
           <button type="submit" class="btn btn--ghost">Envoyer</button>
@@ -279,10 +314,7 @@ const isVideoFile = hero.videoUrl.endsWith('.mp4');
 
       <div class="calendly-box">
         {contact.calendlyUrl ? (
-          <>
-            <div class="calendly-inline-widget" data-url={`${contact.calendlyUrl}?hide_gdpr_banner=1&primary_color=1b4a33`}></div>
-            <script is:inline src="https://assets.calendly.com/assets/external/widget.js" async></script>
-          </>
+          <div id="calendly-embed" data-url={`${contact.calendlyUrl}?hide_gdpr_banner=1&primary_color=c6a14b`}></div>
         ) : (
           <div class="calendly-missing">
             <h3>Calendrier bientôt disponible</h3>
@@ -294,3 +326,38 @@ const isVideoFile = hero.videoUrl.endsWith('.mp4');
     </div>
   </section>
 </Base>
+
+<script is:inline src="https://assets.calendly.com/assets/external/widget.js" async></script>
+<script>
+  // Carte du haut : on enregistre la demande (Netlify Forms), puis on ouvre Calendly
+  // avec le nom et le courriel déjà remplis.
+  const form = document.getElementById('book-form') as HTMLFormElement | null;
+  const embed = document.getElementById('calendly-embed');
+
+  function initCalendly(prefill: Record<string, string> = {}) {
+    const C = (window as any).Calendly;
+    if (!embed || !C) return false;
+    embed.innerHTML = '';
+    C.initInlineWidget({ url: embed.dataset.url, parentElement: embed, prefill });
+    return true;
+  }
+
+  // Charge le calendrier dès que le script Calendly est prêt
+  if (embed) {
+    const wait = setInterval(() => { if (initCalendly()) clearInterval(wait); }, 300);
+    setTimeout(() => clearInterval(wait), 15000);
+  }
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(data as any).toString(),
+    }).catch(() => {});
+    const name = `${data.get('prenom') ?? ''} ${data.get('nom') ?? ''}`.trim();
+    initCalendly({ name, email: String(data.get('courriel') ?? '') });
+    document.getElementById('rendez-vous')?.scrollIntoView({ behavior: 'smooth' });
+  });
+</script>
