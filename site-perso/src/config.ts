@@ -57,8 +57,8 @@ export const about = {
     "Pendant des années, ma vie tournait autour du bodybuilding. Discipline, constance, plan à long terme : j'ai appris ce que ça prend pour atteindre un objectif ambitieux. Mais tout était centré sur moi.",
     "J'ai réalisé que ce qui m'allume vraiment, c'est de travailler avec les autres, pour les autres. Aujourd'hui, je mets la même discipline au service des travailleurs autonomes et des entrepreneurs : je compare plusieurs assureurs pour toi, et tu as accès à moi directement, en tout temps.",
   ],
-  // Photo de toi (idéalement fond foncé ou détourée) : '/images/anthony.png'
-  photo: '',
+  // Photo de toi : fichier dans public/images/
+  photo: '/images/anthony.jpg',
   // Vidéo de présentation (optionnel) : lien YouTube/Vimeo « embed » ou '/videos/intro.mp4'
   videoUrl: '',
   stats: [
