@@ -18,6 +18,8 @@ export const contact = {
   phoneHref: 'tel:+14508214395',
   email: 'en.goulet@commercialchristinebourassa.com',
   instagram: '', // ex. https://instagram.com/tonhandle
+  facebook: '',
+  tiktok: '',
 };
 
 export const legal = {
@@ -34,62 +36,67 @@ export const cta = {
   note: 'Gratuit · Sans engagement',
 };
 
+// HAUT DE PAGE : grande phrase centrée sur une photo plein écran + 3 boutons « chemins »
 export const hero = {
   eyebrow: 'Pour travailleurs autonomes, athlètes et futurs entrepreneurs',
-  title: 'Tu bâtis à ton compte.',
-  titleAccent: 'Protège ce que tu bâtis.',
-  subtitle:
-    "Assurance, épargne et stratégie à long terme, avec un seul conseiller qui compare pour toi les produits de plusieurs assureurs. Et que tu peux joindre directement quand t'en as besoin.",
-  // Vidéo de présentation : lien YouTube ou Vimeo (ex. https://www.youtube.com/embed/XXXX) ou fichier /videos/intro.mp4
-  // Laisse vide pour afficher la photo à la place.
-  videoUrl: '',
-  // Photo : déposer le fichier dans public/images/ puis indiquer le chemin, ex. '/images/anthony.jpg'
+  title: 'Protège ce que tu bâtis',
+  // Photo plein écran : déposer le fichier dans public/images/ puis indiquer le chemin, ex. '/images/hero.jpg'
   photo: '',
+  // Chaque bouton mène à la réservation avec le besoin déjà choisi
+  paths: [
+    { label: 'Protéger mon revenu', need: 'Protéger mon revenu (assurance)' },
+    { label: 'Faire croître mon épargne', need: 'Épargne, REER, CELI' },
+    { label: 'Je me lance à mon compte', need: 'Je me lance à mon compte' },
+  ],
 };
 
-// Gros chiffres dans le haut de la page (2 ou 3 maximum)
-export const stats = [
-  { value: '50+', label: 'Clients\naccompagnés' },
-  { value: '5+', label: 'Ans en\nfinances' },
-];
-
-export const problems = {
-  title: 'Être à ton compte, c’est la liberté. Mais personne ne te protège par défaut.',
-  items: [
-    {
-      title: 'Pas d’assurance collective',
-      text: "Pas d'employeur, pas de régime d'assurance. Si tu te blesses ou que tu tombes malade, ton revenu peut s'arrêter du jour au lendemain.",
-    },
-    {
-      title: 'Un revenu qui varie',
-      text: 'Des gros mois, des mois tranquilles. Difficile de savoir combien mettre de côté pour l’impôt, la retraite et les imprévus.',
-    },
-    {
-      title: 'Trop d’options, pas de plan',
-      text: 'REER, CELI, assurance, placements… Chaque institution te propose ses produits. Dur de savoir ce qui fait vraiment du sens pour toi.',
-    },
+// SECTION FONCÉE « À PROPOS » avec photo détourée et badge nom
+export const about = {
+  title: 'Parce que ta réussite mérite un vrai plan',
+  paragraphs: [
+    "Pendant des années, ma vie tournait autour du bodybuilding. Discipline, constance, plan à long terme : j'ai appris ce que ça prend pour atteindre un objectif ambitieux. Mais tout était centré sur moi.",
+    "J'ai réalisé que ce qui m'allume vraiment, c'est de travailler avec les autres, pour les autres. Aujourd'hui, je mets la même discipline au service des travailleurs autonomes et des entrepreneurs : je compare plusieurs assureurs pour toi, et tu as accès à moi directement, en tout temps.",
   ],
+  // Photo de toi (idéalement fond foncé ou détourée) : '/images/anthony.png'
+  photo: '',
+  // Vidéo de présentation (optionnel) : lien YouTube/Vimeo « embed » ou '/videos/intro.mp4'
+  videoUrl: '',
+  stats: [
+    { value: '50+', label: 'clients accompagnés' },
+    { value: '5+ ans', label: 'en finances' },
+    { value: '1', label: 'conseiller, plusieurs assureurs' },
+  ],
+  button: 'En savoir plus sur moi',
 };
 
 export const services = {
-  title: 'Ce que je fais pour toi',
+  title: 'Mes services',
   items: [
     {
-      icon: 'shield',
-      title: 'Assurance de personnes',
-      text: 'Assurance vie, invalidité, maladies graves. Je magasine auprès de plusieurs assureurs pour trouver une couverture adaptée à ta réalité de travailleur autonome.',
+      tag: 'Assurance',
+      title: 'Protéger ton revenu et tes proches',
+      text: 'Assurance vie, invalidité, maladies graves. Je magasine auprès de plusieurs assureurs pour une couverture adaptée à ta réalité.',
     },
     {
-      icon: 'growth',
-      title: 'Épargne et stratégie à long terme',
-      text: 'REER, CELI, épargne-retraite : on bâtit une stratégie qui suit ton revenu, même quand il varie.',
+      tag: 'Épargne',
+      title: 'Faire travailler ton argent',
+      text: 'REER, CELI, épargne-retraite : une stratégie à long terme qui suit ton revenu, même quand il varie.',
     },
     {
-      icon: 'network',
-      title: 'Un réseau de professionnels',
+      tag: 'Réseau',
+      title: 'Les bons pros au bon moment',
       text: 'Fiscaliste, courtier hypothécaire, financement d’entreprise… Je te réfère aux bonnes personnes quand ton projet en a besoin.',
     },
   ],
+};
+
+// BLOC SÉPARÉ « question + bouton » (comme « Combien vaut ma propriété? »)
+export const check = {
+  title: 'Es-tu vraiment protégé?',
+  text: "Pas d'employeur, pas d'assurance collective, un revenu qui varie : à ton compte, personne ne te protège par défaut. On fait le point ensemble, gratuitement.",
+  button: 'Obtenir mon analyse gratuite',
+  // Image à droite : '/images/analyse.jpg' (laisser vide pour un motif)
+  image: '',
 };
 
 export const steps = {
@@ -110,58 +117,9 @@ export const steps = {
   ],
 };
 
-export const why = {
-  title: 'Pourquoi travailler avec moi',
-  items: [
-    {
-      title: 'Accès direct, en tout temps',
-      text: "Pas de centre d'appels. Tu as mon numéro, tu m'écris, je te réponds.",
-    },
-    {
-      title: 'Je ne suis pas attaché à une seule compagnie',
-      text: 'Je compare plusieurs assureurs. Tu ne te sens jamais pris à une place : je deviens le point central entre toi et les différentes compagnies.',
-    },
-    {
-      title: 'Je comprends ta réalité',
-      text: 'Revenu variable, horaire chargé, objectifs ambitieux : je viens du monde de la performance et je travaille avec des gens comme toi.',
-    },
-  ],
-};
-
-// Carte de réservation dans le haut de la page
-export const bookCard = {
-  title: 'Appel découverte',
-  subtitle: 'Gratuit et sans engagement. Remplis ceci et choisis ton moment.',
-  needs: [
-    'Protéger mon revenu (assurance)',
-    'Épargne, REER, CELI',
-    'Je me lance à mon compte',
-    'Faire le point sur ma situation',
-    'Autre',
-  ],
-  button: 'Choisir mon moment',
-  perks: ['Gratuit', 'Sans engagement', 'Plusieurs assureurs comparés'],
-};
-
-export const about = {
-  eyebrow: 'Qui je suis',
-  title: 'De la scène de bodybuilding à tes finances',
-  // Petits faits sous le texte (comme une fiche)
-  facts: [
-    { icon: 'shield', label: 'Titre', value: 'Conseiller en sécurité financière' },
-    { icon: 'network', label: 'Clientèle', value: 'Travailleurs autonomes et athlètes' },
-    { icon: 'check', label: 'Premier appel', value: 'Gratuit' },
-  ],
-  paragraphs: [
-    "Pendant des années, ma vie tournait autour du bodybuilding. Discipline, constance, plan à long terme : j'ai appris ce que ça prend pour atteindre un objectif ambitieux.",
-    "Mais à la fin de la journée, tout était centré sur moi. J'ai réalisé que ce qui m'allume vraiment, c'est de travailler avec les autres, pour les autres.",
-    "Les finances, c'est primordial pour tout le monde, et encore plus quand t'es travailleur autonome ou entrepreneur. C'est pour ça que j'ai fait le switch : mettre la même discipline au service de tes objectifs.",
-  ],
-  signature: 'Anthony',
-};
-
 // Témoignages : laisser la liste vide [] pour cacher la section.
-export const testimonials: { quote: string; name: string; role: string }[] = [];
+// Ex. { quote: "Anthony a pris le temps...", name: 'Francine' }
+export const testimonials: { quote: string; name: string }[] = [];
 
 export const partners = {
   title: 'Mon réseau',
@@ -222,7 +180,17 @@ export const faq = {
   ],
 };
 
+// RÉSERVATION : étape 1 = formulaire, étape 2 = calendrier Calendly déjà rempli
 export const booking = {
   title: 'Réserve ton appel découverte',
-  text: 'Choisis le moment qui te convient. On jase de ta situation et de tes objectifs, sans pression.',
+  text: 'Gratuit et sans engagement. Dis-moi en deux secondes qui tu es, puis choisis le moment qui te convient.',
+  needs: [
+    'Protéger mon revenu (assurance)',
+    'Épargne, REER, CELI',
+    'Je me lance à mon compte',
+    'Faire le point sur ma situation',
+    'Autre',
+  ],
+  button: 'Choisir mon moment',
+  perks: ['Gratuit', 'Sans engagement', 'Plusieurs assureurs comparés'],
 };

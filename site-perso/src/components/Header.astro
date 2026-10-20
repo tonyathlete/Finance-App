@@ -1,22 +1,39 @@
 ---
-import { site } from '../config';
+import Icon from './Icon.astro';
+import { site, contact, legal } from '../config';
 const links = [
-  { href: '/#services', label: 'Services' },
   { href: '/#a-propos', label: 'À propos' },
+  { href: '/#services', label: 'Services' },
   { href: '/#reseau', label: 'Réseau' },
   { href: '/blog', label: 'Blog' },
   { href: '/#faq', label: 'FAQ' },
 ];
+const socials = [
+  { href: contact.facebook, icon: 'facebook', label: 'Facebook' },
+  { href: contact.instagram, icon: 'instagram', label: 'Instagram' },
+  { href: contact.tiktok, icon: 'tiktok', label: 'TikTok' },
+].filter((s) => s.href);
 ---
 <header class="header">
+  <div class="topbar">
+    <div class="container topbar__inner">
+      {socials.map((s) => (
+        <a href={s.href} target="_blank" rel="noopener" aria-label={s.label}><Icon name={s.icon} size={17} /></a>
+      ))}
+      <a href={contact.phoneHref} class="topbar__phone">{contact.phone}</a>
+    </div>
+  </div>
   <div class="container header__inner">
     <a href="/" class="logo" aria-label={`${site.name}, accueil`}>
       <span class="logo__mark">AG</span>
-      <span class="logo__name">{site.name}</span>
+      <span class="logo__text">
+        <span class="logo__name">{site.name}</span>
+        <span class="logo__role">{legal.title}</span>
+      </span>
     </a>
     <nav class="nav" aria-label="Navigation principale">
       {links.map((l) => <a href={l.href}>{l.label}</a>)}
     </nav>
-    <a href="/#reserver" class="btn btn--gold btn--sm"><span class="label-long">Réserver un appel</span><span class="label-short">Réserver mon appel</span></a>
+    <a href="/#reserver" class="btn btn--gold btn--sm">Réserver un appel</a>
   </div>
 </header>

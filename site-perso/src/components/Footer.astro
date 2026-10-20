@@ -1,36 +1,50 @@
 ---
+import Icon from './Icon.astro';
 import { site, contact, legal } from '../config';
 const year = new Date().getFullYear();
+const socials = [
+  { href: contact.facebook, icon: 'facebook', label: 'Facebook' },
+  { href: contact.instagram, icon: 'instagram', label: 'Instagram' },
+  { href: contact.tiktok, icon: 'tiktok', label: 'TikTok' },
+].filter((s) => s.href);
 ---
 <footer class="footer">
   <div class="container">
     <div class="footer__grid">
       <div>
-        <h4>{site.name}</h4>
-        <p>
-          {legal.title}<br />
-          Inscrit auprès de l'Autorité des marchés financiers, no {legal.amfNumber}
-          {legal.firm && <><br />Rattaché au cabinet {legal.firm}</>}
-        </p>
-        <p><a href={legal.amfRegistryUrl} target="_blank" rel="noopener">Vérifier mon inscription au registre de l'AMF ↗</a></p>
-      </div>
-      <div>
-        <h4>Navigation</h4>
+        <h4><a href="/#services">Services</a></h4>
         <ul>
-          <li><a href="/#services">Services</a></li>
-          <li><a href="/#a-propos">À propos</a></li>
-          <li><a href="/#reseau">Réseau</a></li>
-          <li><a href="/blog">Blog</a></li>
-          <li><a href="/#rendez-vous">Prendre rendez-vous</a></li>
+          <li><a href="/#services">Assurance</a></li>
+          <li><a href="/#services">Épargne et stratégie</a></li>
+          <li><a href="/#reseau">Mon réseau</a></li>
+        </ul>
+        <h4><a href="/#a-propos">À propos</a></h4>
+        <ul>
+          <li><a href="/#a-propos">Mon histoire</a></li>
+          <li><a href="/#faq">Questions fréquentes</a></li>
         </ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h4><a href="/blog">Blog</a></h4>
         <ul>
-          <li><a href={contact.phoneHref}>{contact.phone}</a></li>
-          <li><a href={`mailto:${contact.email}`}>{contact.email}</a></li>
-          {contact.instagram && <li><a href={contact.instagram} target="_blank" rel="noopener">Instagram</a></li>}
+          <li><a href="/blog">Tous les articles</a></li>
         </ul>
+        <h4><a href="/#reserver">Me joindre</a></h4>
+        <ul>
+          <li><a href="/#reserver">Réserver un appel découverte</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer__brand-name">{site.name}</div>
+        <div class="footer__brand-role">
+          {legal.title} · Inscrit à l'AMF, no {legal.amfNumber}
+          {legal.firm && <><br />Cabinet : {legal.firm}</>}
+        </div>
+        <div class="footer__contact">
+          <a href={`mailto:${contact.email}`}><Icon name="mail" size={18} />{contact.email}</a>
+          <a href={contact.phoneHref}><Icon name="phone" size={18} />{contact.phone}</a>
+          <a href={legal.amfRegistryUrl} target="_blank" rel="noopener"><Icon name="shield" size={18} />Vérifier mon inscription à l'AMF ↗</a>
+        </div>
       </div>
     </div>
     <div class="footer__legal">
@@ -40,9 +54,13 @@ const year = new Date().getFullYear();
         toute recommandation. Certains liens peuvent être des liens partenaires pour lesquels une rémunération peut
         être reçue.
       </p>
-      <p>
-        © {year} {site.name} · <a href="/mentions-legales">Mentions légales et confidentialité</a>
-      </p>
+      <div class="footer__bottom">
+        <span>© {year} {site.name}</span>
+        <a href="/mentions-legales">Mentions légales et politique de confidentialité</a>
+        <span style="display:flex;gap:16px;">
+          {socials.map((s) => <a href={s.href} target="_blank" rel="noopener" aria-label={s.label}><Icon name={s.icon} size={18} /></a>)}
+        </span>
+      </div>
     </div>
   </div>
 </footer>
