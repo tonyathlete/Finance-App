@@ -16,7 +16,7 @@ export const contact = {
   calendlyUrl: 'https://calendly.com/anthonygoulet/rencontre-service-financier-60min',
   phone: '450-821-4395',
   phoneHref: 'tel:+14508214395',
-  email: 'en.goulet@commercialchristinebourassa.com',
+  email: 'a.goulet@christinebourassa.com',
   instagram: '', // ex. https://instagram.com/tonhandle
   facebook: '',
   tiktok: '',
