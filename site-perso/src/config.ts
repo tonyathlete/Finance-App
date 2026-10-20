@@ -12,8 +12,8 @@ export const site = {
 };
 
 export const contact = {
-  // TODO: coller ton lien Calendly ici (ex. https://calendly.com/anthonygoulet/appel-decouverte)
-  calendlyUrl: '',
+  // Lien Calendly de la rencontre découverte
+  calendlyUrl: 'https://calendly.com/anthonygoulet/rencontre-service-financier-60min',
   phone: '450-821-4395',
   phoneHref: 'tel:+14508214395',
   email: 'en.goulet@commercialchristinebourassa.com',

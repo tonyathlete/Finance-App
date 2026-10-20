@@ -264,7 +264,13 @@ const isVideoFile = about.videoUrl.endsWith('.mp4');
 
         <div class="booking-card calendly-step hidden" id="step-2">
           {contact.calendlyUrl ? (
-            <div id="calendly-embed" data-url={`${contact.calendlyUrl}?hide_gdpr_banner=1&primary_color=0b1a12`}></div>
+            <div id="calendly-embed" data-url={`${contact.calendlyUrl}?hide_gdpr_banner=1&primary_color=0b1a12`}>
+              <div class="calendly-missing">
+                <h3>Choisis ton moment</h3>
+                <p>Ouvre mon calendrier pour réserver ta rencontre.</p>
+                <a href={contact.calendlyUrl} id="calendly-link" class="btn" target="_blank" rel="noopener">Ouvrir le calendrier ↗</a>
+              </div>
+            </div>
           ) : (
             <div class="calendly-missing">
               <h3>Merci! Ta demande est envoyée.</h3>
@@ -296,6 +302,13 @@ const isVideoFile = about.videoUrl.endsWith('.mp4');
   function showCalendar(prefill: Record<string, string> = {}) {
     step1?.classList.add('hidden');
     step2?.classList.remove('hidden');
+    // Lien de secours (si le calendrier intégré ne charge pas) avec nom et courriel déjà remplis
+    const link = document.getElementById('calendly-link') as HTMLAnchorElement | null;
+    if (link && embed?.dataset.url) {
+      const u = new URL(embed.dataset.url);
+      Object.entries(prefill).forEach(([k, v]) => v && u.searchParams.set(k, v));
+      link.href = u.toString();
+    }
     const C = (window as any).Calendly;
     if (embed && C) {
       embed.innerHTML = '';
