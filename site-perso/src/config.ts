@@ -22,6 +22,15 @@ export const contact = {
   tiktok: '',
 };
 
+// GoHighLevel
+// - Les demandes du formulaire de réservation sont envoyées à GHL par la fonction netlify/functions/lead.mjs.
+//   L'URL du webhook se met dans Netlify (variable GHL_WEBHOOK_URL), pas ici.
+// - Chat : coller l'identifiant du widget (data-widget-id dans le code d'intégration GHL).
+export const ghl = {
+  sendLeads: true,
+  chatWidgetId: '',
+};
+
 export const legal = {
   title: 'Conseiller en sécurité financière',
   amfNumber: '269559',

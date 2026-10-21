@@ -405,3 +405,6 @@ p { margin: 0 0 1em; }
 @media (max-width: 480px) { .cta-block .btn, .split__text .btn { width: 100%; padding: 0 16px; font-size: 0.74rem; letter-spacing: 0.1em; } .cta-block { align-items: stretch; } }
 .header .label-short { display: none; }
 @media (max-width: 480px) { .header .label-long { display: none; } .header .label-short { display: inline; } }
+
+/* Laisse la place à la bulle de chat GoHighLevel (en bas à droite) sur mobile */
+.has-chat .sticky-cta { padding-right: 92px; }

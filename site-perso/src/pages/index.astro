@@ -5,7 +5,7 @@ import Icon from '../components/Icon.astro';
 import PostCard from '../components/PostCard.astro';
 import { getPosts } from '../lib';
 import {
-  hero, about, services, check, steps, testimonials, partners, quiz, faq, booking, contact, legal, cta,
+  hero, about, services, check, steps, testimonials, partners, quiz, faq, booking, contact, legal, cta, ghl,
 } from '../config';
 
 const latestPosts = (await getPosts()).slice(0, 3);
@@ -234,7 +234,7 @@ const isVideoFile = about.videoUrl.endsWith('.mp4');
       <div>
         <div class="booking-card" id="step-1">
           <div class="booking-card__step">Étape 1 de 2 · Tes coordonnées</div>
-          <form class="form" name="reservation" method="POST" action="/merci" data-netlify="true" netlify-honeypot="bot-field" id="book-form">
+          <form class="form" name="reservation" method="POST" action="/merci" data-netlify="true" netlify-honeypot="bot-field" id="book-form" data-ghl={ghl.sendLeads ? 'on' : 'off'}>
             <input type="hidden" name="form-name" value="reservation" />
             <p class="hidden"><label>Ne pas remplir <input name="bot-field" /></label></p>
             <div class="row">
@@ -317,7 +317,7 @@ const isVideoFile = about.videoUrl.endsWith('.mp4');
     document.getElementById('reserver')?.scrollIntoView({ behavior: 'smooth' });
   }
 
-  // Étape 1 : on enregistre la demande (Netlify Forms), puis étape 2 : Calendly déjà rempli
+  // Étape 1 : on enregistre la demande (Netlify Forms en copie + GoHighLevel), puis étape 2 : Calendly déjà rempli
   form?.addEventListener('submit', (e) => {
     e.preventDefault();
     const data = new FormData(form);
@@ -326,6 +326,14 @@ const isVideoFile = about.videoUrl.endsWith('.mp4');
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams(data as any).toString(),
     }).catch(() => {});
+    if (form.dataset.ghl === 'on') {
+      fetch('/.netlify/functions/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...Object.fromEntries(data), page: location.href }),
+        keepalive: true,
+      }).catch(() => {});
+    }
     const name = `${data.get('prenom') ?? ''} ${data.get('nom') ?? ''}`.trim();
     showCalendar({ name, email: String(data.get('courriel') ?? '') });
   });
