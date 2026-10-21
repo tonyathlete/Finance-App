@@ -1,12 +1,21 @@
-// Reçoit la demande du formulaire de réservation et l'envoie à GoHighLevel
-// (déclencheur « Inbound Webhook » d'un workflow GHL).
-// L'URL du webhook est gardée secrète dans Netlify : variable d'environnement GHL_WEBHOOK_URL.
+// Reçoit la demande du formulaire de réservation et crée (ou met à jour) le contact
+// dans GoHighLevel avec l'API officielle (clé « Private Integration », sans frais).
+// Variables d'environnement dans Netlify :
+//   GHL_TOKEN        clé Private Integration (Settings → Private Integrations)
+//   GHL_LOCATION_ID  identifiant du sous-compte (Settings → Business Profile)
+
+const API = 'https://services.leadconnectorhq.com';
+
+const slug = (s) =>
+  s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 export default async (req) => {
   if (req.method !== 'POST') return new Response('Method not allowed', { status: 405 });
 
-  const webhook = Netlify.env.get('GHL_WEBHOOK_URL');
-  if (!webhook) return new Response('GHL_WEBHOOK_URL manquant', { status: 500 });
+  const token = Netlify.env.get('GHL_TOKEN');
+  const locationId = Netlify.env.get('GHL_LOCATION_ID');
+  const api = Netlify.env.get('GHL_API_BASE') || API;
+  if (!token || !locationId) return new Response('GHL_TOKEN ou GHL_LOCATION_ID manquant', { status: 500 });
 
   let data;
   try {
@@ -22,22 +31,53 @@ export default async (req) => {
   const email = clean(data.courriel, 200);
   if (!email.includes('@')) return new Response('Courriel requis', { status: 400 });
 
-  const payload = {
-    first_name: clean(data.prenom, 100),
-    last_name: clean(data.nom, 100),
-    email,
-    phone: clean(data.telephone, 40),
-    besoin: clean(data.besoin, 200),
-    message: clean(data.message, 2000),
-    source: 'Site web anthonygoulet.ca',
-    page: clean(data.page, 300),
+  const besoin = clean(data.besoin, 200);
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    Version: '2021-07-28',
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
   };
 
-  const res = await fetch(webhook, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  });
+  // Les tags servent de déclencheurs gratuits pour tes workflows GHL (« Contact Tag »)
+  const tags = ['site-web'];
+  if (besoin) tags.push(`besoin-${slug(besoin)}`);
 
-  return new Response(null, { status: res.ok ? 204 : 502 });
+  const upsert = await fetch(`${api}/contacts/upsert`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      locationId,
+      firstName: clean(data.prenom, 100),
+      lastName: clean(data.nom, 100),
+      email,
+      phone: clean(data.telephone, 40) || undefined,
+      source: 'Site web anthonygoulet.ca',
+      tags,
+    }),
+  });
+  if (!upsert.ok) {
+    console.error('GHL upsert', upsert.status, await upsert.text());
+    return new Response(null, { status: 502 });
+  }
+
+  // Le besoin et le message vont dans une note sur la fiche du contact
+  const contactId = (await upsert.json())?.contact?.id;
+  const message = clean(data.message, 2000);
+  if (contactId) {
+    const lines = [
+      'Demande via le site web',
+      besoin && `Besoin : ${besoin}`,
+      message && `Message : ${message}`,
+      data.page && `Page : ${clean(data.page, 300)}`,
+    ].filter(Boolean);
+    const note = await fetch(`${api}/contacts/${contactId}/notes`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ body: lines.join('\n') }),
+    });
+    if (!note.ok) console.error('GHL note', note.status, await note.text());
+  }
+
+  return new Response(null, { status: 204 });
 };

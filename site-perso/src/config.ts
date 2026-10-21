@@ -23,8 +23,8 @@ export const contact = {
 };
 
 // GoHighLevel
-// - Les demandes du formulaire de réservation sont envoyées à GHL par la fonction netlify/functions/lead.mjs.
-//   L'URL du webhook se met dans Netlify (variable GHL_WEBHOOK_URL), pas ici.
+// - Les demandes du formulaire de réservation créent le contact dans GHL (netlify/functions/lead.mjs).
+//   La clé se met dans Netlify (variables GHL_TOKEN et GHL_LOCATION_ID), jamais ici.
 // - Chat : coller l'identifiant du widget (data-widget-id dans le code d'intégration GHL).
 export const ghl = {
   sendLeads: true,
