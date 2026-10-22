@@ -419,3 +419,17 @@ p { margin: 0 0 1em; }
 .write-me summary::-webkit-details-marker { display: none; }
 .write-me .form { margin-top: 20px; }
 .sent { margin-top: 18px; color: var(--gold); font-weight: 700; }
+
+/* Partenaires à cocher */
+.ref-form { margin-top: 8px; }
+.ref-form__title { font-weight: 700; margin-bottom: 14px; }
+.chip--check { cursor: pointer; display: inline-flex; align-items: center; gap: 10px; user-select: none; transition: border-color 0.15s, background 0.15s; }
+.chip--check input { position: absolute; opacity: 0; pointer-events: none; }
+.chip--check span::before { content: ''; display: inline-block; width: 14px; height: 14px; margin-right: 10px; vertical-align: -2px; border: 1px solid var(--gold); }
+.chip--check:has(input:checked) { background: rgba(196, 160, 82, 0.16); border-color: var(--gold); }
+.chip--check:has(input:checked) span::before { background: var(--gold); box-shadow: inset 0 0 0 2px var(--dark); }
+.chip--check:has(input:focus-visible) { outline: 2px solid var(--gold); outline-offset: 2px; }
+.ref-form__fields { margin-top: 24px; max-width: 720px; }
+.ref-form .consent { font-weight: 400; font-size: 0.82rem; color: var(--on-dark-muted); display: flex; gap: 10px; align-items: flex-start; letter-spacing: 0; }
+.ref-form .consent input { width: auto; margin-top: 4px; }
+.ref-form .btn { justify-self: start; }

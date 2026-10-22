@@ -142,10 +142,35 @@ const isVideoFile = about.videoUrl.endsWith('.mp4');
           <a href={partners.featured.url} class="btn btn--sm" target="_blank" rel="noopener sponsored">Découvrir</a>
         )}
       </div>
-      <div class="chips">
-        {partners.resources.map((r) => <span class="chip">{r}</span>)}
-      </div>
-      <p style="margin-top: 28px;">Besoin d'une référence? <a href="#reserver" style="color:var(--gold);font-weight:700;">Parle-m'en lors de ton appel découverte ›</a></p>
+      <form class="ref-form" id="ref-form" name="references" method="POST" action="/merci" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="references" />
+        <p class="hidden"><label>Ne pas remplir <input name="bot-field" /></label></p>
+        <p class="ref-form__title">Besoin d'une référence? Coche ce qui t'intéresse :</p>
+        <div class="chips">
+          {[`Cartes de crédit (${partners.featured.name})`, ...partners.resources].map((r, i) => (
+            <label class="chip chip--check">
+              <input type="checkbox" name="partenaires" value={r} id={`ref-${i}`} />
+              <span>{r}</span>
+            </label>
+          ))}
+        </div>
+        <div class="ref-form__fields form" id="ref-fields">
+          <div class="row">
+            <label>Prénom* <input id="rf-prenom" name="prenom" required autocomplete="given-name" /></label>
+            <label>Nom* <input id="rf-nom" name="nom" required autocomplete="family-name" /></label>
+          </div>
+          <div class="row">
+            <label>Courriel* <input id="rf-courriel" type="email" name="courriel" required autocomplete="email" /></label>
+            <label>Téléphone <input id="rf-tel" type="tel" name="telephone" autocomplete="tel" /></label>
+          </div>
+          <label class="consent">
+            <input id="rf-consent" type="checkbox" name="consentement" value="oui" required />
+            <span>J'accepte qu'Anthony Goulet transmette mes coordonnées aux partenaires choisis pour qu'ils me contactent.</span>
+          </label>
+          <button type="submit" class="btn btn--gold">Demander mes références</button>
+        </div>
+        <p class="sent hidden" id="ref-sent">Merci! Je te mets en contact avec les bonnes personnes très bientôt.</p>
+      </form>
       <p class="disclosure">{partners.disclosure}</p>
     </div>
   </section>
@@ -293,6 +318,36 @@ const isVideoFile = about.videoUrl.endsWith('.mp4');
       if (select) select.value = el.dataset.need ?? '';
     }),
   );
+
+  // Partenaires : les cases cochées deviennent des tags « partenaire-… » dans GoHighLevel
+  const refForm = document.getElementById('ref-form') as HTMLFormElement | null;
+  const refFields = document.getElementById('ref-fields');
+  const refBoxes = Array.from(refForm?.querySelectorAll<HTMLInputElement>('input[name="partenaires"]') ?? []);
+  const syncRef = () => refFields?.classList.toggle('hidden', !refBoxes.some((b) => b.checked));
+  refBoxes.forEach((b) => b.addEventListener('change', syncRef));
+  syncRef();
+
+  refForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(refForm);
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(data as any).toString(),
+    }).catch(() => {});
+    if (form?.dataset.ghl === 'on') {
+      fetch('/.netlify/functions/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...Object.fromEntries(data), partenaires: data.getAll('partenaires'), page: location.href }),
+        keepalive: true,
+      }).catch(() => {});
+    }
+    refForm.querySelector('.chips')?.classList.add('hidden');
+    refFields?.classList.add('hidden');
+    refForm.querySelector('.ref-form__title')?.classList.add('hidden');
+    document.getElementById('ref-sent')?.classList.remove('hidden');
+  });
 
   // Formulaire « m'écrire » : copie Netlify Forms + contact créé dans GoHighLevel
   form?.addEventListener('submit', (e) => {

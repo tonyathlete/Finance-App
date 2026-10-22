@@ -43,6 +43,16 @@ export default async (req) => {
   const tags = ['site-web'];
   if (besoin) tags.push(`besoin-${slug(besoin)}`);
 
+  // Demande de références : un tag par partenaire coché
+  const partenaires = (Array.isArray(data.partenaires) ? data.partenaires : [])
+    .slice(0, 15)
+    .map((p) => clean(p, 80))
+    .filter(Boolean);
+  if (partenaires.length) {
+    tags.push('demande-reference');
+    partenaires.forEach((p) => tags.push(`partenaire-${slug(p)}`));
+  }
+
   const upsert = await fetch(`${api}/contacts/upsert`, {
     method: 'POST',
     headers,
@@ -66,8 +76,10 @@ export default async (req) => {
   const message = clean(data.message, 2000);
   if (contactId) {
     const lines = [
-      'Demande via le site web',
+      partenaires.length ? 'Demande de référence via le site web' : 'Demande via le site web',
       besoin && `Besoin : ${besoin}`,
+      partenaires.length && `Références demandées : ${partenaires.join(', ')}`,
+      partenaires.length && `Consentement au partage avec ces partenaires : ${data.consentement === 'oui' ? 'oui' : 'non'}`,
       message && `Message : ${message}`,
       data.page && `Page : ${clean(data.page, 300)}`,
     ].filter(Boolean);

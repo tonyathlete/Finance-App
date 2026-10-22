@@ -28,6 +28,7 @@ Nouveau site Netlify relié à ce repo, avec **Base directory = `site-perso`**. 
 1. Dans GHL : *Settings → Private Integrations → Create new integration*. Permissions : **View/Edit Contacts** (contacts.readonly, contacts.write). Copier la clé (commence par `pit-`).
 2. Dans GHL : *Settings → Business Profile* : copier le **Location ID**.
 3. Dans Netlify : *Site configuration → Environment variables* : ajouter `GHL_TOKEN` (la clé) et `GHL_LOCATION_ID`, puis redéployer.
-4. Workflows gratuits : déclencheur **Contact Tag** (tag `site-web`, ou `besoin-proteger-mon-revenu-assurance`, etc.) → texto, courriel, opportunité dans le pipeline.
+4. Références partenaires : la section « Mon réseau » permet de cocher des partenaires. Tags créés : `demande-reference` + `partenaire-…` (ex. `partenaire-courtier-hypothecaire`, `partenaire-cartes-de-credit-milesopedia`). La liste vient de `partners` dans `src/config.ts`.
+5. Workflows gratuits : déclencheur **Contact Tag** (tag `site-web`, ou `besoin-proteger-mon-revenu-assurance`, etc.) → texto, courriel, opportunité dans le pipeline.
 
 **Chat.** Dans GHL : *Sites → Chat Widget*, copier la valeur `data-widget-id` du code d'intégration et la coller dans `ghl.chatWidgetId` (`src/config.ts`).
