@@ -264,7 +264,7 @@ const isVideoFile = about.videoUrl.endsWith('.mp4');
 
         <div class="booking-card calendly-step hidden" id="step-2">
           {contact.calendlyUrl ? (
-            <div id="calendly-embed" data-url={`${contact.calendlyUrl}?hide_gdpr_banner=1&primary_color=0b1a12`}>
+            <div id="calendly-embed" data-url={`${contact.calendlyUrl}?hide_gdpr_banner=1&hide_event_type_details=1&hide_landing_page_details=1&primary_color=0b1a12`}>
               <div class="calendly-missing">
                 <h3>Choisis ton moment</h3>
                 <p>Ouvre mon calendrier pour réserver ta rencontre.</p>
@@ -299,20 +299,22 @@ const isVideoFile = about.videoUrl.endsWith('.mp4');
     }),
   );
 
-  function showCalendar(prefill: Record<string, string> = {}) {
+  // Calendly lit ces paramètres d'URL pour pré-remplir son formulaire :
+  // name ou first_name/last_name (selon le réglage de l'événement), email, et a1 = 1re question.
+  function showCalendar(info: Record<string, string> = {}) {
     step1?.classList.add('hidden');
     step2?.classList.remove('hidden');
-    // Lien de secours (si le calendrier intégré ne charge pas) avec nom et courriel déjà remplis
+    if (!embed?.dataset.url) return;
+    const u = new URL(embed.dataset.url);
+    Object.entries(info).forEach(([k, v]) => v && u.searchParams.set(k, v));
+    const url = u.toString();
+    // Lien de secours si le calendrier intégré ne charge pas
     const link = document.getElementById('calendly-link') as HTMLAnchorElement | null;
-    if (link && embed?.dataset.url) {
-      const u = new URL(embed.dataset.url);
-      Object.entries(prefill).forEach(([k, v]) => v && u.searchParams.set(k, v));
-      link.href = u.toString();
-    }
+    if (link) link.href = url;
     const C = (window as any).Calendly;
-    if (embed && C) {
+    if (C) {
       embed.innerHTML = '';
-      C.initInlineWidget({ url: embed.dataset.url, parentElement: embed, prefill });
+      C.initInlineWidget({ url, parentElement: embed });
     }
     document.getElementById('reserver')?.scrollIntoView({ behavior: 'smooth' });
   }
@@ -334,8 +336,15 @@ const isVideoFile = about.videoUrl.endsWith('.mp4');
         keepalive: true,
       }).catch(() => {});
     }
-    const name = `${data.get('prenom') ?? ''} ${data.get('nom') ?? ''}`.trim();
-    showCalendar({ name, email: String(data.get('courriel') ?? '') });
+    const get = (k: string) => String(data.get(k) ?? '').trim();
+    const notes = [get('besoin'), get('message'), get('telephone') && `Tél. : ${get('telephone')}`].filter(Boolean).join(' · ');
+    showCalendar({
+      name: `${get('prenom')} ${get('nom')}`.trim(),
+      first_name: get('prenom'),
+      last_name: get('nom'),
+      email: get('courriel'),
+      a1: notes,
+    });
   });
 
   document.getElementById('skip')?.addEventListener('click', (e) => {
