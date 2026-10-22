@@ -217,25 +217,24 @@ const isVideoFile = about.videoUrl.endsWith('.mp4');
     </div>
   </section>
 
-  <!-- RÉSERVATION (foncé) : étape 1 formulaire, étape 2 Calendly -->
+  <!-- RÉSERVATION (foncé) : calendrier GoHighLevel + formulaire « m'écrire » -->
   <section class="section section--dark" id="reserver">
     <div class="container booking">
       <div>
         <span class="eyebrow">Prochaine étape</span>
         <h2>{booking.title}</h2>
         <p class="muted">{booking.text}</p>
+        <ul class="perks">{booking.perks.map((p) => <li>{p}</li>)}</ul>
         <ul class="contact-list">
           <li><a href={contact.phoneHref}><Icon name="phone" />{contact.phone}</a></li>
           <li><a href={`mailto:${contact.email}`}><Icon name="mail" />{contact.email}</a></li>
           {contact.instagram && <li><a href={contact.instagram} target="_blank" rel="noopener"><Icon name="instagram" />Instagram</a></li>}
         </ul>
-      </div>
 
-      <div>
-        <div class="booking-card" id="step-1">
-          <div class="booking-card__step">Étape 1 de 2 · Tes coordonnées</div>
-          <form class="form" name="reservation" method="POST" action="/merci" data-netlify="true" netlify-honeypot="bot-field" id="book-form" data-ghl={ghl.sendLeads ? 'on' : 'off'}>
-            <input type="hidden" name="form-name" value="reservation" />
+        <details class="write-me" id="write-me">
+          <summary>Tu préfères m'écrire? ›</summary>
+          <form class="form" name="contact" method="POST" action="/merci" data-netlify="true" netlify-honeypot="bot-field" id="book-form" data-ghl={ghl.sendLeads ? 'on' : 'off'}>
+            <input type="hidden" name="form-name" value="contact" />
             <p class="hidden"><label>Ne pas remplir <input name="bot-field" /></label></p>
             <div class="row">
               <label>Prénom* <input id="bf-prenom" name="prenom" required autocomplete="given-name" /></label>
@@ -245,81 +244,57 @@ const isVideoFile = about.videoUrl.endsWith('.mp4');
               <label>Courriel* <input id="bf-courriel" type="email" name="courriel" required autocomplete="email" /></label>
               <label>Téléphone <input id="bf-tel" type="tel" name="telephone" autocomplete="tel" /></label>
             </div>
-            <label>Ce qui t'amène*
-              <select id="bf-besoin" name="besoin" required>
-                <option value="" disabled selected>Choisis une option</option>
+            <label>Ce qui t'amène
+              <select id="bf-besoin" name="besoin">
+                <option value="">Choisis une option</option>
                 {booking.needs.map((n) => <option>{n}</option>)}
               </select>
             </label>
-            <label>Un mot sur ta situation (optionnel) <textarea id="bf-message" name="message"></textarea></label>
+            <label>Ton message* <textarea id="bf-message" name="message" required></textarea></label>
             <p class="fine">
-              En continuant, tu acceptes qu'Anthony Goulet utilise ces renseignements pour te recontacter.
+              En envoyant, tu acceptes qu'Anthony Goulet utilise ces renseignements pour te recontacter.
               <a href="/mentions-legales#confidentialite">Politique de confidentialité</a>
             </p>
-            <button type="submit" class="btn btn--gold btn--block">{booking.button} →</button>
+            <button type="submit" class="btn btn--block">Envoyer</button>
           </form>
-          <ul class="perks">{booking.perks.map((p) => <li>{p}</li>)}</ul>
-          {contact.calendlyUrl && <a href="#step-2" class="skip-link" id="skip">Passer directement au calendrier ›</a>}
-        </div>
+          <p class="sent hidden" id="sent">Merci! Ton message est envoyé. Je te reviens rapidement.</p>
+        </details>
+      </div>
 
-        <div class="booking-card calendly-step hidden" id="step-2">
-          {contact.calendlyUrl ? (
-            <div id="calendly-embed" data-url={`${contact.calendlyUrl}?hide_gdpr_banner=1&hide_event_type_details=1&hide_landing_page_details=1&primary_color=0b1a12`}>
-              <div class="calendly-missing">
-                <h3>Choisis ton moment</h3>
-                <p>Ouvre mon calendrier pour réserver ta rencontre.</p>
-                <a href={contact.calendlyUrl} id="calendly-link" class="btn" target="_blank" rel="noopener">Ouvrir le calendrier ↗</a>
-              </div>
-            </div>
-          ) : (
-            <div class="calendly-missing">
-              <h3>Merci! Ta demande est envoyée.</h3>
-              <p>Le calendrier en ligne arrive bientôt. Je te contacte rapidement, ou appelle-moi directement.</p>
-              <a href={contact.phoneHref} class="btn">Appeler {contact.phone}</a>
-            </div>
-          )}
-        </div>
+      <div class="booking-card calendar-card">
+        {ghl.calendarId ? (
+          <iframe
+            src={`https://api.leadconnectorhq.com/widget/booking/${ghl.calendarId}`}
+            id={`${ghl.calendarId}_booking`}
+            title="Réserver un appel découverte"
+            scrolling="no"
+            loading="lazy"
+          ></iframe>
+        ) : (
+          <div class="calendly-missing">
+            <h3>Calendrier bientôt disponible</h3>
+            <p>En attendant, appelle-moi ou écris-moi directement.</p>
+            <a href={contact.phoneHref} class="btn">Appeler {contact.phone}</a>
+          </div>
+        )}
       </div>
     </div>
   </section>
 </Base>
 
-{contact.calendlyUrl && <script is:inline src="https://assets.calendly.com/assets/external/widget.js" async></script>}
+{ghl.calendarId && <script is:inline src="https://link.msgsgo.com/js/form_embed.js" async></script>}
 <script>
   const form = document.getElementById('book-form') as HTMLFormElement | null;
   const select = document.getElementById('bf-besoin') as HTMLSelectElement | null;
-  const step1 = document.getElementById('step-1');
-  const step2 = document.getElementById('step-2');
-  const embed = document.getElementById('calendly-embed');
 
-  // Les boutons « chemins » choisissent le besoin d'avance
+  // Les boutons « chemins » choisissent le besoin d'avance (utile si la personne choisit de m'écrire)
   document.querySelectorAll<HTMLElement>('[data-need]').forEach((el) =>
     el.addEventListener('click', () => {
       if (select) select.value = el.dataset.need ?? '';
     }),
   );
 
-  // Calendly lit ces paramètres d'URL pour pré-remplir son formulaire :
-  // name ou first_name/last_name (selon le réglage de l'événement), email, et a1 = 1re question.
-  function showCalendar(info: Record<string, string> = {}) {
-    step1?.classList.add('hidden');
-    step2?.classList.remove('hidden');
-    if (!embed?.dataset.url) return;
-    const u = new URL(embed.dataset.url);
-    Object.entries(info).forEach(([k, v]) => v && u.searchParams.set(k, v));
-    const url = u.toString();
-    // Lien de secours si le calendrier intégré ne charge pas
-    const link = document.getElementById('calendly-link') as HTMLAnchorElement | null;
-    if (link) link.href = url;
-    const C = (window as any).Calendly;
-    if (C) {
-      embed.innerHTML = '';
-      C.initInlineWidget({ url, parentElement: embed });
-    }
-    document.getElementById('reserver')?.scrollIntoView({ behavior: 'smooth' });
-  }
-
-  // Étape 1 : on enregistre la demande (Netlify Forms en copie + GoHighLevel), puis étape 2 : Calendly déjà rempli
+  // Formulaire « m'écrire » : copie Netlify Forms + contact créé dans GoHighLevel
   form?.addEventListener('submit', (e) => {
     e.preventDefault();
     const data = new FormData(form);
@@ -336,20 +311,8 @@ const isVideoFile = about.videoUrl.endsWith('.mp4');
         keepalive: true,
       }).catch(() => {});
     }
-    const get = (k: string) => String(data.get(k) ?? '').trim();
-    const notes = [get('besoin'), get('message'), get('telephone') && `Tél. : ${get('telephone')}`].filter(Boolean).join(' · ');
-    showCalendar({
-      name: `${get('prenom')} ${get('nom')}`.trim(),
-      first_name: get('prenom'),
-      last_name: get('nom'),
-      email: get('courriel'),
-      a1: notes,
-    });
-  });
-
-  document.getElementById('skip')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    showCalendar();
+    form.classList.add('hidden');
+    document.getElementById('sent')?.classList.remove('hidden');
   });
 
   // Témoignages : défilement

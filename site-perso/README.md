@@ -1,6 +1,6 @@
 # anthonygoulet.ca
 
-Site personnel d'Anthony Goulet, conseiller en sécurité financière. Une page d'atterrissage pensée pour le lien en bio Instagram : chaque section mène à la prise de rendez-vous Calendly.
+Site personnel d'Anthony Goulet, conseiller en sécurité financière. Une page d'atterrissage pensée pour le lien en bio Instagram : chaque section mène à la prise de rendez-vous (calendrier GoHighLevel).
 
 ## Modifier le contenu
 

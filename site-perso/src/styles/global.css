@@ -408,3 +408,14 @@ p { margin: 0 0 1em; }
 
 /* Laisse la place à la bulle de chat GoHighLevel (en bas à droite) sur mobile */
 .has-chat .sticky-cta { padding-right: 92px; }
+
+/* Calendrier GoHighLevel */
+.calendar-card { background: #fff; padding: 0; overflow: hidden; }
+.calendar-card iframe { width: 100%; min-height: 820px; border: 0; overflow: hidden; display: block; }
+.calendar-card .calendly-missing { color: var(--ink); }
+.booking .perks { margin-top: 0; margin-bottom: 8px; }
+.write-me { margin-top: 32px; border-top: 1px solid var(--line-dark); padding-top: 20px; }
+.write-me summary { cursor: pointer; list-style: none; font-weight: 700; color: var(--gold); }
+.write-me summary::-webkit-details-marker { display: none; }
+.write-me .form { margin-top: 20px; }
+.sent { margin-top: 18px; color: var(--gold); font-weight: 700; }

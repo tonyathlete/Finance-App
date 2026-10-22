@@ -12,8 +12,6 @@ export const site = {
 };
 
 export const contact = {
-  // Lien Calendly de la rencontre découverte
-  calendlyUrl: 'https://calendly.com/anthonygoulet/rencontre-service-financier-60min',
   phone: '450-821-4395',
   phoneHref: 'tel:+14508214395',
   email: 'a.goulet@christinebourassa.com',
@@ -28,6 +26,8 @@ export const contact = {
 // - Chat : coller l'identifiant du widget (data-widget-id dans le code d'intégration GHL).
 export const ghl = {
   sendLeads: true,
+  // Calendrier de réservation (Calendars → Calendar Settings → Embed : la fin du lien /widget/booking/…)
+  calendarId: 'k6Pj89RUXQChdKbnCahp',
   chatWidgetId: '',
 };
 
@@ -189,10 +189,10 @@ export const faq = {
   ],
 };
 
-// RÉSERVATION : étape 1 = formulaire, étape 2 = calendrier Calendly déjà rempli
+// RÉSERVATION : calendrier GoHighLevel (ghl.calendarId) + formulaire « Tu préfères m'écrire? »
 export const booking = {
   title: 'Réserve ton appel découverte',
-  text: 'Gratuit et sans engagement. Dis-moi en deux secondes qui tu es, puis choisis le moment qui te convient.',
+  text: 'Choisis le moment qui te convient. On jase de ta situation et de tes objectifs, sans pression.',
   needs: [
     'Protéger mon revenu (assurance)',
     'Épargne, REER, CELI',
