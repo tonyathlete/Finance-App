@@ -50,25 +50,29 @@ export const ClientDetail: React.FC<{ clientId: string }> = ({ clientId }) => {
       </button>
 
       {/* En-tête */}
-      <Card className="p-6">
-        <div className="flex items-start justify-between gap-4 flex-wrap">
-          <div className="flex items-center gap-4">
-            <span className="w-14 h-14 rounded-full bg-forest-600 text-white flex items-center justify-center text-lg font-semibold">
+      <Card className="p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+          <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+            <span className="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-full bg-forest-600 text-white flex items-center justify-center text-lg font-semibold">
               {c.firstName[0]}{c.lastName[0]}
             </span>
-            <div>
-              <h1 className="font-display text-2xl font-semibold text-forest-900">{c.firstName} {c.lastName}</h1>
+            <div className="min-w-0">
+              <h1 className="font-display text-2xl font-semibold text-forest-900 leading-tight">{c.firstName} {c.lastName}</h1>
               <p className="text-forest-500 text-sm">{c.situation}</p>
               <div className="flex gap-2 mt-2 flex-wrap">
                 {c.isSelfEmployed && <Badge tone="gold">Autonome</Badge>}
                 {c.consentGivenAt ? <Badge tone="green">Consentement OK</Badge> : <Badge tone="amber">Consentement manquant</Badge>}
-                <Badge tone="gray"><i className="fas fa-envelope" /> {c.email || '—'}</Badge>
+                <Badge tone="gray" className="max-w-[60vw] sm:max-w-none overflow-hidden">
+                  <i className="fas fa-envelope" />
+                  <span className="truncate min-w-0">{c.email || '—'}</span>
+                </Badge>
               </div>
             </div>
           </div>
           <Button
             variant="outline"
             icon="fa-eye"
+            className="w-full sm:w-auto flex-shrink-0"
             onClick={() => { loginAsClient(c.id); navigate('/client'); }}
           >
             Voir comme le client
@@ -76,14 +80,14 @@ export const ClientDetail: React.FC<{ clientId: string }> = ({ clientId }) => {
         </div>
       </Card>
 
-      {/* Onglets */}
-      <div className="flex gap-1 overflow-x-auto pb-1">
+      {/* Onglets — défilement horizontal pleine largeur sur mobile */}
+      <div className="flex gap-1 overflow-x-auto pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         {TABS.map((t) => (
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition ${
-              tab === t.id ? 'bg-forest-600 text-white' : 'text-forest-600 hover:bg-forest-50'
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition flex-shrink-0 ${
+              tab === t.id ? 'bg-forest-600 text-white' : 'text-forest-600 hover:bg-forest-50 bg-paper-100/60'
             }`}
           >
             <i className={`fas ${t.icon}`} /> {t.label}

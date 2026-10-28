@@ -52,7 +52,7 @@ export const Insurance: React.FC = () => {
         <div className="grid md:grid-cols-2 gap-4">
           {c.insurance.map((p) => {
             const days = p.renewalDate ? daysUntil(p.renewalDate) : Infinity;
-            const soon = days <= 60;
+            const soon = days <= 30;
             return (
               <Card key={p.id} className="p-5">
                 <div className="flex items-start justify-between">

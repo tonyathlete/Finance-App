@@ -159,7 +159,7 @@ export const Stat: React.FC<{
           </span>
         )}
       </div>
-      <p className="mt-1 text-3xl font-bold text-forest-900 font-display tabular-nums">{value}</p>
+      <p className="mt-1 text-3xl font-bold text-forest-900 font-sans tabular-nums tracking-tight">{value}</p>
       {hint && <p className="mt-1 text-xs text-forest-400">{hint}</p>}
     </Card>
   );

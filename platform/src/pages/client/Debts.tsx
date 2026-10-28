@@ -166,12 +166,12 @@ export const Debts: React.FC = () => {
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="bg-white rounded-xl p-4">
                 <p className="text-xs uppercase tracking-wide text-forest-400">Paiements minimums seulement</p>
-                <p className="font-display text-xl font-bold text-forest-900 mt-1">{baseline.months} mois</p>
+                <p className="font-sans text-xl font-bold text-forest-900 mt-1 tabular-nums">{baseline.months} mois</p>
                 <p className="text-sm text-rose-600">{money(baseline.totalInterest)} d'intérêts</p>
               </div>
               <div className="bg-white rounded-xl p-4 ring-2 ring-forest-500">
                 <p className="text-xs uppercase tracking-wide text-forest-500">Votre plan ({strategy === 'avalanche' ? 'avalanche' : 'boule de neige'} + {money(extra)}/mois)</p>
-                <p className="font-display text-xl font-bold text-forest-900 mt-1">{plan.months} mois</p>
+                <p className="font-sans text-xl font-bold text-forest-900 mt-1 tabular-nums">{plan.months} mois</p>
                 <p className="text-sm text-emerald-600">{money(plan.totalInterest)} d'intérêts</p>
               </div>
             </div>

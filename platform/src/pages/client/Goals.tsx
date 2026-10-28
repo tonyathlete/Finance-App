@@ -141,7 +141,7 @@ const GoalCard: React.FC<{
 
       <div className="mt-4">
         <div className="flex justify-between items-end mb-1">
-          <span className="font-display text-2xl font-bold text-forest-900">{money(goal.currentAmount)}</span>
+          <span className="font-sans text-2xl font-bold text-forest-900 tabular-nums tracking-tight">{money(goal.currentAmount)}</span>
           <span className="text-sm text-forest-400">sur {money(goal.targetAmount)}</span>
         </div>
         <ProgressBar value={p} tone="gold" />

@@ -134,8 +134,8 @@ export const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
       )}
 
       {/* Contenu */}
-      <main className="flex-1 lg:ml-64 pt-14 lg:pt-0 flex flex-col">
-        <div key={path} className="max-w-5xl mx-auto w-full px-4 sm:px-6 py-6 lg:py-10 animate-fadeIn flex-1">
+      <main className="flex-1 min-w-0 lg:ml-64 pt-14 lg:pt-0 flex flex-col">
+        <div key={path} className="max-w-5xl mx-auto w-full min-w-0 px-4 sm:px-6 py-6 lg:py-10 animate-fadeIn flex-1">
           {children}
         </div>
         <footer className="max-w-5xl mx-auto w-full px-4 sm:px-6 py-6 mt-4 border-t border-paper-200 flex items-center justify-between text-xs text-forest-400 no-print">

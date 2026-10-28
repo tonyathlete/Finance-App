@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useApp } from '@/context/AppContext';
 import { useRouter } from '@/lib/router';
 import { Card, Stat, Button, ProgressBar, Badge, SectionTitle, EmptyState, PageHeader } from '@/components/ui';
 import { IncomeExpenseBar } from '@/components/Charts';
 import { AlertsPanel } from '@/components/Insights';
+import { ScanInvoice } from '@/components/ScanInvoice';
 import { AnimatedNumber } from '@/components/AnimatedNumber';
 import { AdvisorIdentity, Disclaimer } from '@/components/Compliance';
 import { goalTypeIcon, goalTypeLabel, moodEmoji } from '@/lib/labels';
-import { money, monthsUntil, formatDateShort, mondayOf } from '@/lib/utils';
+import { money, monthsUntil, formatDateShort, mondayOf, uid } from '@/lib/utils';
 import {
   totalIncome,
   totalExpenses,
@@ -17,8 +18,9 @@ import {
 } from '@/lib/finance';
 
 export const ClientDashboard: React.FC = () => {
-  const { currentClient } = useApp();
+  const { currentClient, updateClient } = useApp();
   const { navigate } = useRouter();
+  const [scanOpen, setScanOpen] = useState(false);
   if (!currentClient) return null;
   const c = currentClient;
 
@@ -37,15 +39,24 @@ export const ClientDashboard: React.FC = () => {
         subtitle="Voici votre portrait financier du mois."
         icon="fa-hand-holding-heart"
         action={
-          <div className="flex gap-2 no-print">
+          <div className="flex flex-wrap gap-2 no-print">
+            <Button variant="gold" icon="fa-camera" onClick={() => setScanOpen(true)}>
+              Numériser
+            </Button>
             <Button variant="outline" icon="fa-file-arrow-down" onClick={() => window.print()} className="!bg-white/10 !border-white/20 !text-paper-50 hover:!bg-white/20">
               PDF
             </Button>
-            <Button variant="gold" icon="fa-calendar-check" onClick={() => navigate('/client/checkin')}>
+            <Button variant="outline" icon="fa-calendar-check" onClick={() => navigate('/client/checkin')} className="!bg-white/10 !border-white/20 !text-paper-50 hover:!bg-white/20">
               Check-in
             </Button>
           </div>
         }
+      />
+
+      <ScanInvoice
+        open={scanOpen}
+        onClose={() => setScanOpen(false)}
+        onAdd={(b) => updateClient(c.id, (cl) => ({ ...cl, budget: [...cl.budget, b] }))}
       />
 
       {/* Rappel de check-in */}

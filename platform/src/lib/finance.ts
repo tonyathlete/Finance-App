@@ -1,6 +1,7 @@
 // Calculs budgétaires et d'objectifs
 import type { Client, Goal, IncomeItem, BudgetItem } from '@/types';
 import { monthsUntil, clamp, daysUntil } from './utils';
+import { insuranceTypeLabel } from './labels';
 
 export const totalIncome = (incomes: IncomeItem[]): number =>
   incomes.reduce((s, i) => s + (i.amount || 0), 0);
@@ -152,17 +153,17 @@ export const getAlerts = (client: Client): Alert[] => {
     });
   }
 
-  // Renouvellements d'assurance dans les 60 jours
+  // Renouvellements d'assurance : rappel 1 mois avant (≤ 30 jours)
   for (const p of client.insurance) {
     if (!p.renewalDate) continue;
     const d = daysUntil(p.renewalDate);
-    if (d >= 0 && d <= 60) {
+    if (d >= 0 && d <= 30) {
       alerts.push({
         id: `renew_${p.id}`,
         tone: 'amber',
         icon: 'fa-calendar-day',
         title: 'Renouvellement à venir',
-        detail: `Une protection (${p.insurer}) se renouvelle dans ${d} jour(s).`,
+        detail: `${insuranceTypeLabel[p.type]} (${p.insurer}) se renouvelle dans ${d} jour(s).`,
       });
     }
   }

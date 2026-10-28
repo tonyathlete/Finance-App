@@ -2,6 +2,8 @@ import type { AppState, Client } from '@/types';
 import { mondayOf } from '@/lib/utils';
 
 const iso = (y: number, m: number, d: number) => new Date(y, m - 1, d).toISOString();
+// Date relative à aujourd'hui (pour les renouvellements de démo)
+const inDays = (n: number) => new Date(Date.now() + n * 864e5).toISOString();
 
 // Deux semaines de check-in de démo
 const lastMonday = mondayOf();
@@ -96,8 +98,16 @@ const client1: Client = {
       type: 'auto',
       insurer: 'Assureur C',
       monthlyPremium: 110,
-      renewalDate: iso(2026, 10, 15),
-      note: '',
+      renewalDate: inDays(22),
+      note: 'Renouvellement bientôt — comparer les prix.',
+    },
+    {
+      id: 'as_6',
+      type: 'habitation',
+      insurer: 'Assureur C',
+      monthlyPremium: 38,
+      renewalDate: inDays(74),
+      note: 'Assurance locataire.',
     },
   ],
   checkIns: [
@@ -223,6 +233,22 @@ const client2: Client = {
       insurer: 'Assureur D',
       monthlyPremium: 35,
       note: 'À revoir : possiblement remplaçable par assurance vie individuelle.',
+    },
+    {
+      id: 'as_7',
+      type: 'auto',
+      insurer: 'Assureur E',
+      monthlyPremium: 185,
+      renewalDate: inDays(12),
+      note: 'Deux véhicules.',
+    },
+    {
+      id: 'as_8',
+      type: 'habitation',
+      insurer: 'Assureur D',
+      monthlyPremium: 72,
+      renewalDate: inDays(140),
+      note: 'Propriétaire-occupant.',
     },
   ],
   checkIns: [],

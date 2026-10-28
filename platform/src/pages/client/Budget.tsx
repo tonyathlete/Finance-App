@@ -16,6 +16,7 @@ import {
 } from '@/components/ui';
 import { DonutChart, ChartLegend } from '@/components/Charts';
 import { RulePanel } from '@/components/Insights';
+import { ScanInvoice } from '@/components/ScanInvoice';
 import { Disclaimer } from '@/components/Compliance';
 import { money, uid } from '@/lib/utils';
 import {
@@ -38,6 +39,7 @@ export const Budget: React.FC = () => {
   const [expenseModal, setExpenseModal] = useState(false);
   const [editIncome, setEditIncome] = useState<IncomeItem | null>(null);
   const [editExpense, setEditExpense] = useState<BudgetItem | null>(null);
+  const [scanOpen, setScanOpen] = useState(false);
 
   if (!currentClient) return null;
   const c = currentClient;
@@ -75,6 +77,11 @@ export const Budget: React.FC = () => {
         title="Mon budget"
         subtitle="Voyez où va votre argent chaque mois et ajustez au besoin."
         icon="fa-wallet"
+        action={
+          <Button variant="gold" icon="fa-camera" onClick={() => setScanOpen(true)}>
+            Numériser une facture
+          </Button>
+        }
       />
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 stagger">
@@ -175,6 +182,7 @@ export const Budget: React.FC = () => {
 
       <IncomeModal open={incomeModal} onClose={() => setIncomeModal(false)} initial={editIncome} onSave={saveIncome} />
       <ExpenseModal open={expenseModal} onClose={() => setExpenseModal(false)} initial={editExpense} onSave={saveExpense} categories={CATEGORIES} />
+      <ScanInvoice open={scanOpen} onClose={() => setScanOpen(false)} onAdd={saveExpense} />
     </div>
   );
 };

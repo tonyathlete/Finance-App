@@ -5,6 +5,7 @@
 @layer base {
   body {
     @apply bg-paper-50 text-forest-900 font-sans antialiased;
+    overflow-x: hidden;
   }
 }
 
