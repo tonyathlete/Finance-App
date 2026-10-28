@@ -39,7 +39,7 @@ export const PageHeader: React.FC<{
           {eyebrow && (
             <p className="text-xs font-semibold uppercase tracking-widest text-gold-300/90">{eyebrow}</p>
           )}
-          <h1 className="font-display text-2xl sm:text-3xl font-semibold leading-tight">{title}</h1>
+          <h1 className="font-display text-3xl sm:text-4xl font-semibold leading-tight">{title}</h1>
           {subtitle && <p className="text-forest-100/80 mt-1 max-w-xl">{subtitle}</p>}
         </div>
       </div>
@@ -62,7 +62,7 @@ export const SectionTitle: React.FC<{
         </span>
       )}
       <div>
-        <h2 className="font-display text-xl font-semibold text-forest-900">{title}</h2>
+        <h2 className="font-display text-2xl font-semibold text-forest-900">{title}</h2>
         {subtitle && <p className="text-sm text-forest-500">{subtitle}</p>}
       </div>
     </div>
@@ -159,7 +159,7 @@ export const Stat: React.FC<{
           </span>
         )}
       </div>
-      <p className="mt-2 text-2xl font-bold text-forest-900 font-display tabular-nums">{value}</p>
+      <p className="mt-1 text-3xl font-bold text-forest-900 font-display tabular-nums">{value}</p>
       {hint && <p className="mt-1 text-xs text-forest-400">{hint}</p>}
     </Card>
   );

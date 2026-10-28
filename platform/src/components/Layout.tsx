@@ -93,8 +93,8 @@ export const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
       {/* Mobile top bar */}
       <div className="lg:hidden fixed top-0 inset-x-0 z-30 bg-forest-800 text-white flex items-center justify-between px-4 h-14">
         <div className="flex items-center gap-2">
-          <BrandMark size={28} />
-          <span className="font-display font-semibold">Boussole<span className="text-gold-400">·</span></span>
+          <BrandMark size={26} />
+          <span className="font-display uppercase tracking-[0.16em] text-sm">Anthony Goulet</span>
         </div>
         <button onClick={() => setMobileOpen((o) => !o)} className="p-2">
           <i className={`fas ${mobileOpen ? 'fa-times' : 'fa-bars'}`} />
@@ -139,7 +139,7 @@ export const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
           {children}
         </div>
         <footer className="max-w-5xl mx-auto w-full px-4 sm:px-6 py-6 mt-4 border-t border-paper-200 flex items-center justify-between text-xs text-forest-400 no-print">
-          <span>© {new Date().getFullYear()} Boussole · Outil éducatif — ne constitue pas un conseil financier.</span>
+          <span>© {new Date().getFullYear()} Anthony Goulet · Outil éducatif — ne constitue pas un conseil financier.</span>
           <button onClick={() => navigate('/mentions')} className="underline hover:text-forest-700">Mentions légales</button>
         </footer>
       </main>
@@ -149,10 +149,11 @@ export const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
 
 const Brand: React.FC = () => (
   <div className="px-5 py-6 flex items-center gap-3">
-    <BrandMark size={40} />
-    <div>
-      <p className="font-display font-semibold text-white leading-tight">Boussole<span className="text-gold-400">·</span></p>
-      <p className="text-xs text-forest-100/60">Accompagnement financier</p>
+    <BrandMark size={34} />
+    <span className="h-7 w-px bg-gold-400/40" />
+    <div className="leading-tight">
+      <p className="font-display uppercase tracking-[0.16em] text-white text-sm">Anthony Goulet</p>
+      <p className="text-[11px] uppercase tracking-[0.14em] text-forest-100/55">Conseiller · Finances</p>
     </div>
   </div>
 );
