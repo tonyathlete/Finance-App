@@ -6,3 +6,30 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+# ---------------------------------------------------------------------------
+# En-têtes de sécurité (appliqués à toutes les réponses)
+# ---------------------------------------------------------------------------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Force HTTPS pendant 2 ans, sous-domaines inclus
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+    # Empêche l'intégration du site dans un iframe (clickjacking)
+    X-Frame-Options = "DENY"
+    # Empêche le navigateur de deviner le type de contenu
+    X-Content-Type-Options = "nosniff"
+    # Limite les informations de provenance envoyées
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    # Désactive les API sensibles du navigateur non utilisées
+    Permissions-Policy = "geolocation=(), microphone=(), camera=(), payment=(), usb=(), interest-cohort=()"
+    # Isolation entre origines
+    Cross-Origin-Opener-Policy = "same-origin"
+    # Politique de sécurité du contenu (limite d'où peut venir le code/les données)
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: blob:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
+
+# Ne jamais mettre en cache le HTML (toujours la dernière version déployée)
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache"
