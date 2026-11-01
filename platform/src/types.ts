@@ -165,6 +165,18 @@ export interface Client {
   debts: Debt[];
   assets: AssetItem[];
   retirement?: RetirementProfile;
+  referrals: Referral[];
+}
+
+// --- Concours de références -------------------------------------------------
+
+export interface Referral {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  createdAt: string;
 }
 
 // --- Identité du conseiller (obligations AMF : identification) ---------------

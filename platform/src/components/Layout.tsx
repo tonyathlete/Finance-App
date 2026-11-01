@@ -18,6 +18,7 @@ const clientNav: NavItem[] = [
   { label: 'Retraite', icon: 'fa-umbrella-beach', path: '/client/retraite' },
   { label: 'Check-in', icon: 'fa-calendar-check', path: '/client/checkin' },
   { label: 'Assurances', icon: 'fa-shield-halved', path: '/client/assurances' },
+  { label: 'Concours', icon: 'fa-gift', path: '/client/concours' },
   { label: 'Mon profil', icon: 'fa-user', path: '/client/profil' },
 ];
 

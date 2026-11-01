@@ -20,7 +20,7 @@ interface Workspace {
 }
 
 const normalizeClients = (clients: Client[] = []): Client[] =>
-  clients.map((c) => ({ ...c, debts: c.debts ?? [], assets: c.assets ?? [] }));
+  clients.map((c) => ({ ...c, debts: c.debts ?? [], assets: c.assets ?? [], referrals: c.referrals ?? [] }));
 
 function loadLocal(): AppState {
   try {

@@ -179,6 +179,11 @@ const client1: Client = {
     expectedReturn: 5,
     desiredMonthlyIncome: 3000,
   },
+  referrals: [
+    { id: 're_1', firstName: 'Julie', lastName: 'Lavoie', email: 'julie.lavoie@example.com', phone: '(514) 555-0110', createdAt: inDays(-20) },
+    { id: 're_2', firstName: 'Marc-André', lastName: 'Côté', email: 'ma.cote@example.com', phone: '(514) 555-0133', createdAt: inDays(-12) },
+    { id: 're_3', firstName: 'Patrick', lastName: 'Gagné', email: 'p.gagne@example.com', phone: '(450) 555-0177', createdAt: inDays(-3) },
+  ],
 };
 
 const client2: Client = {
@@ -280,6 +285,9 @@ const client2: Client = {
     expectedReturn: 5.5,
     desiredMonthlyIncome: 4500,
   },
+  referrals: [
+    { id: 're_4', firstName: 'Sophie', lastName: 'Bernard', email: 's.bernard@example.com', phone: '(418) 555-0144', createdAt: inDays(-8) },
+  ],
 };
 
 export const seedState: AppState = {

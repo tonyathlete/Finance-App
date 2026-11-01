@@ -17,6 +17,7 @@ import { NetWorth } from '@/pages/client/NetWorth';
 import { Retirement } from '@/pages/client/Retirement';
 import { CheckIn } from '@/pages/client/CheckIn';
 import { Insurance } from '@/pages/client/Insurance';
+import { Contest } from '@/pages/client/Contest';
 import { Profile } from '@/pages/client/Profile';
 
 // Conseiller
@@ -78,6 +79,7 @@ const App: React.FC = () => {
   else if (seg[1] === 'retraite') page = <Retirement />;
   else if (seg[1] === 'checkin') page = <CheckIn />;
   else if (seg[1] === 'assurances') page = <Insurance />;
+  else if (seg[1] === 'concours') page = <Contest />;
   else if (seg[1] === 'profil') page = <Profile />;
   else page = <ClientDashboard />;
   return <Layout>{page}</Layout>;
