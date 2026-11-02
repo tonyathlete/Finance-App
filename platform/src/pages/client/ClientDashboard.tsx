@@ -5,6 +5,7 @@ import { Card, Stat, Button, ProgressBar, Badge, SectionTitle, EmptyState, PageH
 import { IncomeExpenseBar } from '@/components/Charts';
 import { AlertsPanel } from '@/components/Insights';
 import { ScanInvoice } from '@/components/ScanInvoice';
+import { IncomeModal, ExpenseModal } from '@/components/BudgetModals';
 import { AnimatedNumber } from '@/components/AnimatedNumber';
 import { AdvisorIdentity, Disclaimer } from '@/components/Compliance';
 import { goalTypeIcon, goalTypeLabel, moodEmoji } from '@/lib/labels';
@@ -21,6 +22,8 @@ export const ClientDashboard: React.FC = () => {
   const { currentClient, updateClient } = useApp();
   const { navigate } = useRouter();
   const [scanOpen, setScanOpen] = useState(false);
+  const [incomeOpen, setIncomeOpen] = useState(false);
+  const [expenseOpen, setExpenseOpen] = useState(false);
   if (!currentClient) return null;
   const c = currentClient;
 
@@ -57,6 +60,18 @@ export const ClientDashboard: React.FC = () => {
         open={scanOpen}
         onClose={() => setScanOpen(false)}
         onAdd={(b) => updateClient(c.id, (cl) => ({ ...cl, budget: [...cl.budget, b] }))}
+      />
+      <IncomeModal
+        open={incomeOpen}
+        onClose={() => setIncomeOpen(false)}
+        initial={null}
+        onSave={(i) => updateClient(c.id, (cl) => ({ ...cl, incomes: [...cl.incomes, i] }))}
+      />
+      <ExpenseModal
+        open={expenseOpen}
+        onClose={() => setExpenseOpen(false)}
+        initial={null}
+        onSave={(b) => updateClient(c.id, (cl) => ({ ...cl, budget: [...cl.budget, b] }))}
       />
 
       {/* Rappel de check-in */}
@@ -102,9 +117,14 @@ export const ClientDashboard: React.FC = () => {
           <SectionTitle
             icon="fa-wallet"
             title="Flux mensuel"
-            action={<Button size="sm" variant="ghost" icon="fa-pen" onClick={() => navigate('/client/budget')}>Modifier</Button>}
+            action={<Button size="sm" variant="ghost" icon="fa-list" onClick={() => navigate('/client/budget')}>Détails</Button>}
           />
           <IncomeExpenseBar income={income} expense={expense} />
+          {/* Ajout rapide directement depuis l'accueil */}
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            <Button variant="outline" icon="fa-plus" onClick={() => setIncomeOpen(true)}>Revenu</Button>
+            <Button variant="gold" icon="fa-plus" onClick={() => setExpenseOpen(true)}>Dépense</Button>
+          </div>
           <div className="mt-4 pt-4 border-t border-paper-100 flex items-center justify-between text-sm">
             <span className="text-forest-500">Ce qu'il vous reste chaque mois</span>
             <span className={`font-bold text-lg ${balance >= 0 ? 'text-forest-700' : 'text-rose-600'}`}>
