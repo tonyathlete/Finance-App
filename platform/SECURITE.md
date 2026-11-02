@@ -34,6 +34,9 @@ avec ce qui est **déjà en place** (✅) et ce qui **reste à activer** (⬜).
 - ⬜ **Durée de session / expiration du jeton** raisonnable.
 - ⬜ Désactiver l'**inscription publique** si seuls des comptes invités doivent
   exister (sinon n'importe qui peut créer un compte).
+- ✅ **Accès conseiller réservé** : variable Netlify `VITE_ADVISOR_EMAILS`
+  (courriels autorisés, séparés par des virgules). Un compte hors liste voit
+  « Accès réservé ». Combiner avec la désactivation de l'inscription publique.
 
 ## 3. Données (Supabase / base de données)
 - ✅ **RLS (Row Level Security)** activée : chaque compte ne lit/écrit que ses

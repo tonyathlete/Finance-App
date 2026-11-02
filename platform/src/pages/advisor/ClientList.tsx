@@ -7,21 +7,28 @@ import { money, uid, nowISO } from '@/lib/utils';
 import { monthlyBalance, savingsRate } from '@/lib/finance';
 
 export const ClientList: React.FC = () => {
-  const { state, addClient } = useApp();
+  const { state, addClient, updateClient, removeClient } = useApp();
   const { navigate } = useRouter();
   const [q, setQ] = useState('');
   const [modal, setModal] = useState(false);
+  const [showArchived, setShowArchived] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState<Client | null>(null);
 
-  const filtered = state.clients.filter((c) =>
-    `${c.firstName} ${c.lastName} ${c.situation} ${c.email}`.toLowerCase().includes(q.toLowerCase())
-  );
+  const matches = (c: Client) =>
+    `${c.firstName} ${c.lastName} ${c.situation} ${c.email}`.toLowerCase().includes(q.toLowerCase());
+
+  const active = state.clients.filter((c) => !c.archived && matches(c));
+  const archived = state.clients.filter((c) => c.archived && matches(c));
+
+  const archive = (c: Client) => updateClient(c.id, (cl) => ({ ...cl, archived: true }));
+  const reactivate = (c: Client) => updateClient(c.id, (cl) => ({ ...cl, archived: false }));
 
   return (
     <div className="space-y-6">
       <PageHeader
         eyebrow="Espace conseiller"
         title="Clients"
-        subtitle={`${state.clients.length} client(s) au total.`}
+        subtitle={`${active.length} client(s) actif(s)${archived.length ? ` · ${archived.length} archivé(s)` : ''}.`}
         icon="fa-users"
         action={<Button variant="gold" icon="fa-user-plus" onClick={() => setModal(true)}>Nouveau client</Button>}
       />
@@ -31,25 +38,30 @@ export const ClientList: React.FC = () => {
         <Input className="pl-9" placeholder="Rechercher un client…" value={q} onChange={(e) => setQ(e.target.value)} />
       </div>
 
-      {filtered.length ? (
+      {active.length ? (
         <div className="grid sm:grid-cols-2 gap-4 stagger">
-          {filtered.map((c) => {
+          {active.map((c) => {
             const bal = monthlyBalance(c);
             const pending = c.followUps.filter((f) => f.status !== 'complete').length;
             return (
-              <Card key={c.id} className="p-5 card-hover hover:shadow-lift">
+              <Card key={c.id} className="p-5 card-hover hover:shadow-lift relative">
+                <button
+                  onClick={(e) => { e.stopPropagation(); archive(c); }}
+                  title="Archiver (client inactif)"
+                  className="absolute top-3 right-3 z-10 w-8 h-8 rounded-lg text-forest-300 hover:text-forest-700 hover:bg-paper-100 flex items-center justify-center"
+                >
+                  <i className="fas fa-box-archive" />
+                </button>
                 <button className="w-full text-left" onClick={() => navigate(`/conseiller/client/${c.id}`)}>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <span className="w-11 h-11 rounded-full bg-forest-600 text-white flex items-center justify-center font-semibold">
-                        {c.firstName[0]}{c.lastName[0]}
-                      </span>
-                      <div>
-                        <p className="font-medium text-forest-900">{c.firstName} {c.lastName}</p>
-                        <p className="text-xs text-forest-400">{c.situation}</p>
-                      </div>
+                  <div className="flex items-center gap-3 pr-8">
+                    <span className="w-11 h-11 rounded-full bg-forest-600 text-white flex items-center justify-center font-semibold flex-shrink-0">
+                      {c.firstName[0]}{c.lastName[0]}
+                    </span>
+                    <div className="min-w-0">
+                      <p className="font-medium text-forest-900">{c.firstName} {c.lastName}</p>
+                      <p className="text-xs text-forest-400 truncate">{c.situation}</p>
                     </div>
-                    {c.isSelfEmployed && <Badge tone="gold">Autonome</Badge>}
+                    {c.isSelfEmployed && <Badge tone="gold" className="ml-auto flex-shrink-0">Autonome</Badge>}
                   </div>
                   <div className="grid grid-cols-3 gap-2 mt-4 text-sm">
                     <Metric label="Solde" value={money(bal)} tone={bal >= 0 ? 'text-forest-700' : 'text-rose-600'} />
@@ -67,7 +79,41 @@ export const ClientList: React.FC = () => {
           })}
         </div>
       ) : (
-        <Card className="p-6"><EmptyState icon="fa-users" title="Aucun client trouvé" /></Card>
+        <Card className="p-6"><EmptyState icon="fa-users" title={q ? 'Aucun client trouvé' : 'Aucun client actif'} /></Card>
+      )}
+
+      {/* Clients archivés */}
+      {archived.length > 0 && (
+        <div>
+          <button
+            onClick={() => setShowArchived((v) => !v)}
+            className="flex items-center gap-2 text-sm font-medium text-forest-500 hover:text-forest-700"
+          >
+            <i className={`fas fa-chevron-${showArchived ? 'down' : 'right'}`} />
+            Clients archivés ({archived.length})
+          </button>
+          {showArchived && (
+            <div className="mt-3 space-y-2">
+              {archived.map((c) => (
+                <Card key={c.id} className="p-4 flex items-center justify-between gap-3 bg-paper-50">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span className="w-9 h-9 rounded-full bg-forest-200 text-forest-700 flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                      {c.firstName[0]}{c.lastName[0]}
+                    </span>
+                    <div className="min-w-0">
+                      <p className="font-medium text-forest-700 truncate">{c.firstName} {c.lastName}</p>
+                      <p className="text-xs text-forest-400 truncate">{c.situation}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <Button size="sm" variant="outline" icon="fa-rotate-left" onClick={() => reactivate(c)}>Réactiver</Button>
+                    <Button size="sm" variant="danger" icon="fa-trash-can" onClick={() => setConfirmDelete(c)}>Supprimer</Button>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
       )}
 
       <AddClientModal
@@ -75,6 +121,27 @@ export const ClientList: React.FC = () => {
         onClose={() => setModal(false)}
         onAdd={(c) => { addClient(c); navigate(`/conseiller/client/${c.id}`); }}
       />
+
+      {/* Confirmation de suppression définitive */}
+      <Modal
+        open={!!confirmDelete}
+        onClose={() => setConfirmDelete(null)}
+        title="Supprimer définitivement ?"
+        footer={
+          <>
+            <Button variant="outline" onClick={() => setConfirmDelete(null)}>Annuler</Button>
+            <Button variant="danger" icon="fa-trash-can" onClick={() => { if (confirmDelete) removeClient(confirmDelete.id); setConfirmDelete(null); }}>
+              Supprimer
+            </Button>
+          </>
+        }
+      >
+        <p className="text-sm text-forest-600">
+          Toutes les données de <strong>{confirmDelete?.firstName} {confirmDelete?.lastName}</strong>
+          {' '}(budget, objectifs, références, etc.) seront <strong>supprimées définitivement</strong>.
+          Cette action est irréversible.
+        </p>
+      </Modal>
     </div>
   );
 };

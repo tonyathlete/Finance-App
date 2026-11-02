@@ -11,7 +11,7 @@ import type { FollowUp, Client } from '@/types';
 export const AdvisorDashboard: React.FC = () => {
   const { state } = useApp();
   const { navigate } = useRouter();
-  const clients = state.clients;
+  const clients = state.clients.filter((c) => !c.archived);
 
   // Agrégats
   const totalClients = clients.length;

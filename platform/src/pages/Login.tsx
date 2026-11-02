@@ -80,7 +80,7 @@ export const Login: React.FC = () => {
           <div>
             <p className="text-xs font-semibold uppercase tracking-wide text-forest-400 mb-2">Espace client (démo)</p>
             <div className="space-y-2">
-              {state.clients.map((c) => (
+              {state.clients.filter((c) => !c.archived).map((c) => (
                 <button
                   key={c.id}
                   onClick={() => enterClient(c.id)}

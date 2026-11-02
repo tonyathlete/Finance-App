@@ -14,6 +14,7 @@ export const FollowUps: React.FC = () => {
   const [filter, setFilter] = useState<Filter>('actifs');
 
   const all: Array<FollowUp & { client: Client }> = state.clients
+    .filter((c) => !c.archived)
     .flatMap((c) => c.followUps.map((f) => ({ ...f, client: c })))
     .sort((a, b) => a.dueDate.localeCompare(b.dueDate));
 

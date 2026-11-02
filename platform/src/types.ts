@@ -154,6 +154,7 @@ export interface Client {
   isSelfEmployed: boolean;
   consentGivenAt?: string;   // consentement Loi 25 (collecte/usage)
   createdAt: string;
+  archived?: boolean;        // client retiré (plus actif) — masqué par défaut
 
   incomes: IncomeItem[];
   budget: BudgetItem[];

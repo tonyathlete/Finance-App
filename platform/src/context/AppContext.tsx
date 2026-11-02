@@ -42,6 +42,7 @@ interface AppContextValue {
   mode: 'demo' | 'supabase';
   ready: boolean;
   authEmail: string | null;
+  advisorAllowed: boolean;   // l'utilisateur connecté a-t-il le droit d'accès conseiller
   // session
   loginAsAdvisor: () => void;
   loginAsClient: (clientId: string) => void;
@@ -55,9 +56,22 @@ interface AppContextValue {
   // mutations
   updateClient: (id: string, updater: (c: Client) => Client) => void;
   addClient: (c: Client) => void;
+  removeClient: (id: string) => void;
   updateAdvisor: (updater: (a: AdvisorProfile) => AdvisorProfile) => void;
   resetDemo: () => void;
 }
+
+// Liste blanche des courriels autorisés à accéder au volet conseiller.
+// Définie via VITE_ADVISOR_EMAILS (séparés par des virgules). Vide = tout le monde.
+const ADVISOR_ALLOWLIST = (import.meta.env.VITE_ADVISOR_EMAILS || '')
+  .split(',')
+  .map((e) => e.trim().toLowerCase())
+  .filter(Boolean);
+
+const isAllowedAdvisor = (email: string | null): boolean => {
+  if (ADVISOR_ALLOWLIST.length === 0) return true;
+  return !!email && ADVISOR_ALLOWLIST.includes(email.toLowerCase());
+};
 
 const AppContext = createContext<AppContextValue | null>(null);
 
@@ -91,6 +105,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       setAuthEmail(email);
       if (!userId) {
         if (active) { setReady(true); }
+        return;
+      }
+      // Accès conseiller réservé : si une liste blanche est définie et que le
+      // courriel n'y est pas, on ne charge rien et on bloque (voir App.tsx).
+      if (!isAllowedAdvisor(email)) {
+        if (active) { setState(emptyState); setReady(true); }
         return;
       }
       const { data } = await supabase!
@@ -145,6 +165,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       mode: demo ? 'demo' : 'supabase',
       ready,
       authEmail,
+      advisorAllowed: demo ? true : isAllowedAdvisor(authEmail),
       loginAsAdvisor: () => setState((s) => ({ ...s, role: 'advisor', currentUserId: null })),
       loginAsClient: (clientId) => setState((s) => ({ ...s, role: 'client', currentUserId: clientId })),
       logout: () => {
@@ -170,6 +191,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       updateClient: (id, updater) =>
         setState((s) => ({ ...s, clients: s.clients.map((c) => (c.id === id ? updater(c) : c)) })),
       addClient: (c) => setState((s) => ({ ...s, clients: [...s.clients, c] })),
+      removeClient: (id) =>
+        setState((s) => ({
+          ...s,
+          clients: s.clients.filter((c) => c.id !== id),
+          currentUserId: s.currentUserId === id ? null : s.currentUserId,
+        })),
       updateAdvisor: (updater) => setState((s) => ({ ...s, advisor: updater(s.advisor) })),
       resetDemo: () => {
         localStorage.removeItem(STORAGE_KEY);

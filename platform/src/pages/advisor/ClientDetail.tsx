@@ -69,6 +69,7 @@ export const ClientDetail: React.FC<{ clientId: string }> = ({ clientId }) => {
               </div>
             </div>
           </div>
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto flex-shrink-0">
           <Button
             variant="outline"
             icon="fa-eye"
@@ -77,6 +78,20 @@ export const ClientDetail: React.FC<{ clientId: string }> = ({ clientId }) => {
           >
             Voir comme le client
           </Button>
+          <Button
+            variant="outline"
+            icon="fa-box-archive"
+            className="w-full sm:w-auto flex-shrink-0"
+            onClick={() => {
+              if (confirm(`Archiver ${c.firstName} ${c.lastName} ? (client inactif, masqué de la liste; réversible)`)) {
+                updateClient(c.id, (cl) => ({ ...cl, archived: true }));
+                navigate('/conseiller/clients');
+              }
+            }}
+          >
+            Archiver
+          </Button>
+          </div>
         </div>
       </Card>
 

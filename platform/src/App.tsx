@@ -28,7 +28,7 @@ import { FollowUps } from '@/pages/advisor/FollowUps';
 import { Cabinet } from '@/pages/advisor/Cabinet';
 
 const App: React.FC = () => {
-  const { state, currentClient, mode, ready, authEmail } = useApp();
+  const { state, currentClient, mode, ready, authEmail, advisorAllowed, logout } = useApp();
   const { path } = useRouter();
   const seg = segments(path);
 
@@ -42,6 +42,11 @@ const App: React.FC = () => {
 
   // Mode Supabase : authentification requise
   if (mode === 'supabase' && !authEmail) return <AuthLogin />;
+
+  // Accès conseiller réservé : courriel non autorisé
+  if (mode === 'supabase' && authEmail && !advisorAllowed) {
+    return <NotAuthorized email={authEmail} onLogout={logout} />;
+  }
 
   // Mode démo : sélection de l'espace
   if (!state.role) return <Login />;
@@ -89,6 +94,20 @@ const LoadingScreen: React.FC = () => (
   <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-paper-50">
     <BrandMark size={48} />
     <p className="text-forest-500 text-sm animate-pulse">Chargement de votre espace…</p>
+  </div>
+);
+
+const NotAuthorized: React.FC<{ email: string; onLogout: () => void }> = ({ email, onLogout }) => (
+  <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-paper-50 px-6 text-center">
+    <BrandMark size={48} />
+    <h1 className="font-display text-2xl font-semibold text-forest-900">Accès réservé</h1>
+    <p className="text-forest-500 max-w-md">
+      Le compte <strong>{email}</strong> n'est pas autorisé à accéder à l'espace conseiller.
+      Cet espace est réservé au conseiller du cabinet.
+    </p>
+    <button onClick={onLogout} className="mt-2 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-forest-600 text-white font-semibold hover:bg-forest-700">
+      <i className="fas fa-arrow-right-from-bracket" /> Se déconnecter
+    </button>
   </div>
 );
 
