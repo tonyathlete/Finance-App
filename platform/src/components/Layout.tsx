@@ -92,18 +92,28 @@ export const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
       </aside>
 
       {/* Mobile top bar */}
-      <div className="lg:hidden fixed top-0 inset-x-0 z-30 bg-forest-800 text-white flex items-center justify-between px-4 h-14">
+      <div className="lg:hidden fixed top-0 inset-x-0 z-30 bg-forest-800 text-white flex items-center justify-between px-4 h-16 border-b border-gold-400/30 shadow-lg">
         <div className="flex items-center gap-2">
           <BrandMark size={26} />
           <span className="font-display uppercase tracking-[0.16em] text-sm">Anthony Goulet</span>
         </div>
-        <button onClick={() => setMobileOpen((o) => !o)} className="p-2">
-          <i className={`fas ${mobileOpen ? 'fa-times' : 'fa-bars'}`} />
+        <button
+          onClick={() => setMobileOpen((o) => !o)}
+          aria-label={mobileOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+          aria-expanded={mobileOpen}
+          className={`flex items-center gap-2 h-11 px-3.5 rounded-xl font-semibold text-sm transition active:scale-95 ${
+            mobileOpen
+              ? 'bg-white/15 text-white'
+              : 'bg-gold-400 text-forest-900 shadow-md'
+          }`}
+        >
+          <i className={`fas ${mobileOpen ? 'fa-times' : 'fa-bars'} text-lg`} />
+          <span>{mobileOpen ? 'Fermer' : 'Menu'}</span>
         </button>
       </div>
 
       {mobileOpen && (
-        <div className="lg:hidden fixed inset-0 z-20 pt-14 bg-forest-800 text-paper-100">
+        <div className="lg:hidden fixed inset-0 z-20 pt-16 bg-forest-800 text-paper-100">
           <nav className="px-4 py-4 space-y-1">
             {nav.map((n) => (
               <button
@@ -135,7 +145,7 @@ export const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
       )}
 
       {/* Contenu */}
-      <main className="flex-1 min-w-0 lg:ml-64 pt-14 lg:pt-0 flex flex-col">
+      <main className="flex-1 min-w-0 lg:ml-64 pt-16 lg:pt-0 flex flex-col">
         <div key={path} className="max-w-5xl mx-auto w-full min-w-0 px-4 sm:px-6 py-6 lg:py-10 animate-fadeIn flex-1">
           {children}
         </div>
