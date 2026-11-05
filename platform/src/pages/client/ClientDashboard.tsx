@@ -93,14 +93,15 @@ export const ClientDashboard: React.FC = () => {
 
       {/* Stats clés */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 stagger">
-        <Stat label="Revenus / mois" value={<AnimatedNumber value={income} format={money} />} icon="fa-arrow-down" tone="emerald" />
-        <Stat label="Dépenses / mois" value={<AnimatedNumber value={expense} format={money} />} icon="fa-arrow-up" tone="gold" />
+        <Stat label="Revenus / mois" value={<AnimatedNumber value={income} format={money} />} icon="fa-arrow-down" tone="emerald" onClick={() => navigate('/client/budget')} />
+        <Stat label="Dépenses / mois" value={<AnimatedNumber value={expense} format={money} />} icon="fa-arrow-up" tone="gold" onClick={() => navigate('/client/budget')} />
         <Stat
           label="Solde mensuel"
           value={<AnimatedNumber value={balance} format={money} />}
           icon={balance >= 0 ? 'fa-piggy-bank' : 'fa-triangle-exclamation'}
           tone={balance >= 0 ? 'forest' : 'rose'}
           hint={balance >= 0 ? 'Disponible pour vos objectifs' : 'Dépenses supérieures aux revenus'}
+          onClick={() => navigate('/client/budget')}
         />
         <Stat
           label="Taux d'épargne"
@@ -108,6 +109,7 @@ export const ClientDashboard: React.FC = () => {
           icon="fa-seedling"
           tone={rate >= 10 ? 'forest' : 'rose'}
           hint="Cible générale : 10 % et +"
+          onClick={() => navigate('/client/objectifs')}
         />
       </div>
 

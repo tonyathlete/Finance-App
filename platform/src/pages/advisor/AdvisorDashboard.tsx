@@ -41,10 +41,10 @@ export const AdvisorDashboard: React.FC = () => {
       />
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 stagger">
-        <Stat label="Clients actifs" value={<AnimatedNumber value={totalClients} />} icon="fa-users" />
-        <Stat label="Objectifs en cours" value={<AnimatedNumber value={totalGoals} />} icon="fa-bullseye" tone="gold" />
-        <Stat label="Relances à faire" value={<AnimatedNumber value={upcoming.length} />} icon="fa-bell" tone="gold" />
-        <Stat label="Budgets déficitaires" value={<AnimatedNumber value={atRisk} />} icon="fa-triangle-exclamation" tone={atRisk ? 'rose' : 'forest'} />
+        <Stat label="Clients actifs" value={<AnimatedNumber value={totalClients} />} icon="fa-users" onClick={() => navigate('/conseiller/clients')} />
+        <Stat label="Objectifs en cours" value={<AnimatedNumber value={totalGoals} />} icon="fa-bullseye" tone="gold" onClick={() => navigate('/conseiller/clients')} />
+        <Stat label="Relances à faire" value={<AnimatedNumber value={upcoming.length} />} icon="fa-bell" tone="gold" onClick={() => navigate('/conseiller/suivis')} />
+        <Stat label="Budgets déficitaires" value={<AnimatedNumber value={atRisk} />} icon="fa-triangle-exclamation" tone={atRisk ? 'rose' : 'forest'} onClick={() => navigate('/conseiller/clients')} />
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">

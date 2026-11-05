@@ -5,13 +5,16 @@ import { clamp } from '@/lib/utils';
 // Bibliothèque de composants UI — thème forêt / or / papier
 // ============================================================================
 
-export const Card: React.FC<{
-  children: ReactNode;
-  className?: string;
-  as?: keyof React.JSX.IntrinsicElements;
-}> = ({ children, className = '', as: Tag = 'div' }) => (
+export const Card: React.FC<
+  {
+    children: ReactNode;
+    className?: string;
+    as?: React.ElementType;
+  } & React.HTMLAttributes<HTMLElement>
+> = ({ children, className = '', as: Tag = 'div', ...rest }) => (
   <Tag
     className={`bg-white rounded-2xl border border-paper-200 shadow-card ${className}`}
+    {...(rest as Record<string, unknown>)}
   >
     {children}
   </Tag>
@@ -142,25 +145,42 @@ export const Stat: React.FC<{
   icon?: string;
   tone?: 'forest' | 'gold' | 'rose' | 'emerald';
   hint?: string;
-}> = ({ label, value, icon, tone = 'forest', hint }) => {
+  onClick?: () => void;
+}> = ({ label, value, icon, tone = 'forest', hint, onClick }) => {
   const tones = {
     forest: 'text-forest-600 bg-forest-50',
     gold: 'text-gold-600 bg-gold-100',
     rose: 'text-rose-600 bg-rose-50',
     emerald: 'text-emerald-600 bg-emerald-50',
   } as const;
+  const clickable = !!onClick;
   return (
-    <Card className="p-5 card-hover">
+    <Card
+      className={`group relative p-5 card-hover ${clickable ? 'cursor-pointer active:scale-[0.98] hover:border-forest-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-400' : ''}`}
+      {...(clickable
+        ? {
+            role: 'button',
+            tabIndex: 0,
+            onClick,
+            onKeyDown: (e: React.KeyboardEvent) => {
+              if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick!(); }
+            },
+          }
+        : {})}
+    >
       <div className="flex items-center justify-between">
         <p className="text-xs font-semibold uppercase tracking-wide text-forest-400">{label}</p>
         {icon && (
-          <span className={`w-8 h-8 rounded-lg flex items-center justify-center ${tones[tone]}`}>
+          <span className={`w-8 h-8 rounded-lg flex items-center justify-center transition-transform group-hover:scale-110 ${tones[tone]}`}>
             <i className={`fas ${icon} text-sm`} />
           </span>
         )}
       </div>
       <p className="mt-1 text-3xl font-bold text-forest-900 font-sans tabular-nums tracking-tight">{value}</p>
       {hint && <p className="mt-1 text-xs text-forest-400">{hint}</p>}
+      {clickable && (
+        <i className="fas fa-arrow-right absolute bottom-4 right-4 text-forest-300 text-xs opacity-0 -translate-x-1 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
+      )}
     </Card>
   );
 };
