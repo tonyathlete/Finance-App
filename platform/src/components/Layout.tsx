@@ -16,6 +16,7 @@ const clientNav: NavItem[] = [
   { label: 'Dettes', icon: 'fa-hand-holding-dollar', path: '/client/dettes' },
   { label: 'Valeur nette', icon: 'fa-scale-balanced', path: '/client/valeur-nette' },
   { label: 'Retraite', icon: 'fa-umbrella-beach', path: '/client/retraite' },
+  { label: 'Impôts', icon: 'fa-file-invoice-dollar', path: '/client/impots' },
   { label: 'Check-in', icon: 'fa-calendar-check', path: '/client/checkin' },
   { label: 'Assurances', icon: 'fa-shield-halved', path: '/client/assurances' },
   { label: 'Concours', icon: 'fa-gift', path: '/client/concours' },

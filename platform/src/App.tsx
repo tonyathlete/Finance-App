@@ -15,6 +15,7 @@ import { Goals } from '@/pages/client/Goals';
 import { Debts } from '@/pages/client/Debts';
 import { NetWorth } from '@/pages/client/NetWorth';
 import { Retirement } from '@/pages/client/Retirement';
+import { Tax } from '@/pages/client/Tax';
 import { CheckIn } from '@/pages/client/CheckIn';
 import { Insurance } from '@/pages/client/Insurance';
 import { Contest } from '@/pages/client/Contest';
@@ -82,6 +83,7 @@ const App: React.FC = () => {
   else if (seg[1] === 'dettes') page = <Debts />;
   else if (seg[1] === 'valeur-nette') page = <NetWorth />;
   else if (seg[1] === 'retraite') page = <Retirement />;
+  else if (seg[1] === 'impots') page = <Tax />;
   else if (seg[1] === 'checkin') page = <CheckIn />;
   else if (seg[1] === 'assurances') page = <Insurance />;
   else if (seg[1] === 'concours') page = <Contest />;
