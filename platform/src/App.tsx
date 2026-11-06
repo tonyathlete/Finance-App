@@ -44,8 +44,8 @@ const App: React.FC = () => {
   // Mode Supabase : authentification requise
   if (mode === 'supabase' && !authEmail) return <AuthLogin />;
 
-  // Accès conseiller réservé : courriel non autorisé
-  if (mode === 'supabase' && authEmail && !advisorAllowed) {
+  // Connecté mais aucun rôle (ni conseiller autorisé, ni client relié) → bloqué
+  if (mode === 'supabase' && authEmail && !state.role) {
     return <NotAuthorized email={authEmail} onLogout={logout} />;
   }
 
@@ -102,10 +102,11 @@ const LoadingScreen: React.FC = () => (
 const NotAuthorized: React.FC<{ email: string; onLogout: () => void }> = ({ email, onLogout }) => (
   <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-paper-50 px-6 text-center">
     <BrandMark size={48} />
-    <h1 className="font-display text-2xl font-semibold text-forest-900">Accès réservé</h1>
+    <h1 className="font-display text-2xl font-semibold text-forest-900">Compte en attente d'accès</h1>
     <p className="text-forest-500 max-w-md">
-      Le compte <strong>{email}</strong> n'est pas autorisé à accéder à l'espace conseiller.
-      Cet espace est réservé au conseiller du cabinet.
+      Le compte <strong>{email}</strong> n'est pas encore relié à un dossier. L'accès se fait
+      <strong> sur invitation</strong> de votre conseiller. Si vous venez d'être invité, essayez de
+      vous reconnecter; sinon, communiquez avec votre conseiller.
     </p>
     <button onClick={onLogout} className="mt-2 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-forest-600 text-white font-semibold hover:bg-forest-700">
       <i className="fas fa-arrow-right-from-bracket" /> Se déconnecter

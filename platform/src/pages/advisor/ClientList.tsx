@@ -164,7 +164,7 @@ const AddClientModal: React.FC<{ open: boolean; onClose: () => void; onAdd: (c: 
   const submit = () => {
     if (!firstName.trim() || !lastName.trim()) return;
     onAdd({
-      id: uid('cl'),
+      id: (crypto.randomUUID?.() ?? uid('cl')),
       firstName: firstName.trim(),
       lastName: lastName.trim(),
       email: email.trim(),

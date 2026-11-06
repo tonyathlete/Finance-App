@@ -7,17 +7,15 @@ import React, {
   useState,
   type ReactNode,
 } from 'react';
-import type { AppState, Client, Role, AdvisorProfile } from '@/types';
+import type { AppState, Client, AdvisorProfile } from '@/types';
 import { seedState } from '@/data/seed';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import {
+  fetchAdvisorClients, fetchMyClientRow, claimByEmail,
+  insertClient, updateClientRow, deleteClientRow,
+} from '@/lib/clientsRepo';
 
 const STORAGE_KEY = 'csf_platform_state_v1';
-
-// Portion persistée dans Supabase (le rôle et le client courant restent locaux)
-interface Workspace {
-  advisor: AdvisorProfile;
-  clients: Client[];
-}
 
 const normalizeClients = (clients: Client[] = []): Client[] =>
   clients.map((c) => ({ ...c, debts: c.debts ?? [], assets: c.assets ?? [], referrals: c.referrals ?? [] }));
@@ -42,7 +40,7 @@ interface AppContextValue {
   mode: 'demo' | 'supabase';
   ready: boolean;
   authEmail: string | null;
-  advisorAllowed: boolean;   // l'utilisateur connecté a-t-il le droit d'accès conseiller
+  advisorAllowed: boolean;
   // session
   loginAsAdvisor: () => void;
   loginAsClient: (clientId: string) => void;
@@ -61,15 +59,14 @@ interface AppContextValue {
   resetDemo: () => void;
 }
 
-// Liste blanche des courriels autorisés à accéder au volet conseiller.
-// Définie via VITE_ADVISOR_EMAILS (séparés par des virgules). Vide = tout le monde.
+// Liste blanche des courriels conseiller (VITE_ADVISOR_EMAILS, séparés par virgules).
 const ADVISOR_ALLOWLIST = (import.meta.env.VITE_ADVISOR_EMAILS || '')
   .split(',')
   .map((e) => e.trim().toLowerCase())
   .filter(Boolean);
 
 const isAllowedAdvisor = (email: string | null): boolean => {
-  if (ADVISOR_ALLOWLIST.length === 0) return true;
+  if (ADVISOR_ALLOWLIST.length === 0) return true; // aucun filtre défini : compte unique = conseiller
   return !!email && ADVISOR_ALLOWLIST.includes(email.toLowerCase());
 };
 
@@ -82,17 +79,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [state, setState] = useState<AppState>(() => (demo ? loadLocal() : emptyState));
   const [ready, setReady] = useState<boolean>(demo);
   const [authEmail, setAuthEmail] = useState<string | null>(null);
-  const ownerId = useRef<string | null>(null);
-  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const ownerId = useRef<string | null>(null);     // uid connecté
+  const supaRole = useRef<'advisor' | 'client' | null>(null);
+  const advisorSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // --- Mode démo : persistance locale --------------------------------------
   useEffect(() => {
     if (!demo) return;
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    } catch {
-      /* quota / navigation privée */
-    }
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch { /* ignore */ }
   }, [state, demo]);
 
   // --- Mode Supabase : session + chargement --------------------------------
@@ -103,63 +97,61 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const handleSession = async (userId: string | null, email: string | null) => {
       ownerId.current = userId;
       setAuthEmail(email);
-      if (!userId) {
-        if (active) { setReady(true); }
-        return;
-      }
-      // Accès conseiller réservé : si une liste blanche est définie et que le
-      // courriel n'y est pas, on ne charge rien et on bloque (voir App.tsx).
-      if (!isAllowedAdvisor(email)) {
-        if (active) { setState(emptyState); setReady(true); }
-        return;
-      }
-      const { data } = await supabase!
-        .from('workspaces')
-        .select('data')
-        .eq('owner_id', userId)
-        .maybeSingle();
+      if (!userId) { if (active) setReady(true); return; }
 
-      let ws = data?.data as Workspace | undefined;
-      if (!ws) {
-        ws = { advisor: { ...seedState.advisor, email: email ?? '' }, clients: [] };
-        await supabase!.from('workspaces').upsert({ owner_id: userId, data: ws });
+      if (isAllowedAdvisor(email)) {
+        // --- Conseiller : profil (workspaces) + clients (table relationnelle)
+        supaRole.current = 'advisor';
+        const { data: ws } = await supabase!
+          .from('workspaces').select('data').eq('owner_id', userId).maybeSingle();
+        const advisor = { ...seedState.advisor, email: email ?? '', ...(ws?.data?.advisor ?? {}) };
+        if (!ws) {
+          await supabase!.from('workspaces').upsert({ owner_id: userId, data: { advisor } });
+        }
+        const clients = await fetchAdvisorClients(userId);
+        if (!active) return;
+        setState({ advisor, clients: normalizeClients(clients), role: 'advisor', currentUserId: null });
+        setReady(true);
+        return;
       }
+
+      // --- Client : relier et charger uniquement sa fiche
+      supaRole.current = 'client';
+      let mine = await fetchMyClientRow(userId);
+      if (!mine) mine = await claimByEmail(); // 1re connexion : liaison par courriel
       if (!active) return;
-      setState({
-        advisor: { ...seedState.advisor, ...ws.advisor },
-        clients: normalizeClients(ws.clients),
-        role: 'advisor',
-        currentUserId: null,
-      });
+      if (mine) {
+        setState({ advisor: seedState.advisor, clients: normalizeClients([mine]), role: 'client', currentUserId: mine.id });
+      } else {
+        // Compte non relié (pas invité) : aucun accès
+        supaRole.current = null;
+        setState(emptyState);
+      }
       setReady(true);
     };
 
-    supabase.auth.getSession().then(({ data }) => {
-      handleSession(data.session?.user?.id ?? null, data.session?.user?.email ?? null);
-    });
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
-      handleSession(session?.user?.id ?? null, session?.user?.email ?? null);
-    });
-    return () => {
-      active = false;
-      sub.subscription.unsubscribe();
-    };
+    supabase.auth.getSession().then(({ data }) =>
+      handleSession(data.session?.user?.id ?? null, data.session?.user?.email ?? null));
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) =>
+      handleSession(session?.user?.id ?? null, session?.user?.email ?? null));
+    return () => { active = false; sub.subscription.unsubscribe(); };
   }, [demo]);
 
-  // --- Mode Supabase : sauvegarde (anti-rebond) ----------------------------
+  // --- Mode Supabase : sauvegarde du profil conseiller (anti-rebond) --------
   useEffect(() => {
-    if (demo || !supabase || !ownerId.current || !ready) return;
-    if (saveTimer.current) clearTimeout(saveTimer.current);
-    saveTimer.current = setTimeout(() => {
-      supabase!
-        .from('workspaces')
-        .upsert({ owner_id: ownerId.current, data: { advisor: state.advisor, clients: state.clients } })
-        .then(({ error }) => { if (error) console.error('Sauvegarde Supabase :', error.message); });
+    if (demo || !supabase || !ownerId.current || !ready || supaRole.current !== 'advisor') return;
+    if (advisorSaveTimer.current) clearTimeout(advisorSaveTimer.current);
+    advisorSaveTimer.current = setTimeout(() => {
+      supabase!.from('workspaces')
+        .upsert({ owner_id: ownerId.current, data: { advisor: state.advisor } })
+        .then(({ error }) => { if (error) console.error('Sauvegarde profil :', error.message); });
     }, 800);
-  }, [state.advisor, state.clients, demo, ready]);
+  }, [state.advisor, demo, ready]);
 
   const value = useMemo<AppContextValue>(() => {
     const getClient = (id: string) => state.clients.find((c) => c.id === id);
+    const supa = !demo && !!supabase;
+
     return {
       state,
       mode: demo ? 'demo' : 'supabase',
@@ -169,12 +161,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       loginAsAdvisor: () => setState((s) => ({ ...s, role: 'advisor', currentUserId: null })),
       loginAsClient: (clientId) => setState((s) => ({ ...s, role: 'client', currentUserId: clientId })),
       logout: () => {
-        if (demo) {
-          setState((s) => ({ ...s, role: null, currentUserId: null }));
-        } else {
-          supabase?.auth.signOut();
-          setState(emptyState);
-        }
+        if (demo) setState((s) => ({ ...s, role: null, currentUserId: null }));
+        else { supabase?.auth.signOut(); supaRole.current = null; setState(emptyState); }
       },
       signIn: async (email, password) => {
         if (!supabase) return { error: 'Backend non configuré.' };
@@ -188,20 +176,26 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       },
       currentClient: state.currentUserId ? getClient(state.currentUserId) || null : null,
       getClient,
-      updateClient: (id, updater) =>
-        setState((s) => ({ ...s, clients: s.clients.map((c) => (c.id === id ? updater(c) : c)) })),
-      addClient: (c) => setState((s) => ({ ...s, clients: [...s.clients, c] })),
-      removeClient: (id) =>
+      updateClient: (id, updater) => {
+        const current = state.clients.find((c) => c.id === id);
+        const next = current ? updater(current) : null;
+        setState((s) => ({ ...s, clients: s.clients.map((c) => (c.id === id ? updater(c) : c)) }));
+        if (supa && next) updateClientRow(next);
+      },
+      addClient: (c) => {
+        setState((s) => ({ ...s, clients: [...s.clients, c] }));
+        if (supa && ownerId.current) insertClient(ownerId.current, c);
+      },
+      removeClient: (id) => {
         setState((s) => ({
           ...s,
           clients: s.clients.filter((c) => c.id !== id),
           currentUserId: s.currentUserId === id ? null : s.currentUserId,
-        })),
-      updateAdvisor: (updater) => setState((s) => ({ ...s, advisor: updater(s.advisor) })),
-      resetDemo: () => {
-        localStorage.removeItem(STORAGE_KEY);
-        setState({ ...seedState });
+        }));
+        if (supa) deleteClientRow(id);
       },
+      updateAdvisor: (updater) => setState((s) => ({ ...s, advisor: updater(s.advisor) })),
+      resetDemo: () => { localStorage.removeItem(STORAGE_KEY); setState({ ...seedState }); },
     };
   }, [state, demo, ready, authEmail]);
 

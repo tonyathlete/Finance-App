@@ -124,10 +124,22 @@ export const ClientDetail: React.FC<{ clientId: string }> = ({ clientId }) => {
 // --- Onglets ---------------------------------------------------------------
 
 const Overview: React.FC<{ client: Client }> = ({ client: c }) => {
+  const { mode } = useApp();
   const bal = monthlyBalance(c);
   const pending = c.followUps.filter((f) => f.status !== 'complete');
   return (
     <div className="space-y-6">
+      {mode === 'supabase' && (
+        <Card className="p-4 bg-forest-50 border-forest-100">
+          <p className="text-sm text-forest-700 leading-relaxed">
+            <i className="fas fa-user-lock text-forest-500 mr-1" />
+            <strong>Accès client :</strong> pour donner un accès privé à {c.firstName}, invite son
+            courriel <strong>{c.email || '(aucun courriel au dossier)'}</strong> dans Supabase
+            (Authentication → Users → « Invite user »). À sa 1re connexion, son dossier se relie
+            automatiquement et il ne verra <strong>que ses propres données</strong>.
+          </p>
+        </Card>
+      )}
       <AlertsPanel client={c} title="Points d'attention" />
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Stat label="Revenus" value={money(totalIncome(c.incomes))} icon="fa-arrow-down" tone="emerald" />

@@ -4,6 +4,28 @@ Sans configuration, l'app tourne en **mode démo** (données dans le navigateur)
 Pour avoir de vrais comptes conseiller et une sauvegarde infonuagique, suivez ces
 étapes (~10 minutes, gratuit).
 
+---
+
+## ⭐ Phase 2 — comptes clients privés sur invitation (résumé)
+1. **SQL Editor** → exécuter dans l'ordre : `schema.sql`, puis `schema-v2.sql`,
+   puis `schema-v3.sql`.
+2. **Authentication → Sign In / Providers → Email** : DÉSACTIVER « Allow new
+   users to sign up » (personne ne s'inscrit sans invitation). Garder « Confirm
+   email ».
+3. **Netlify → Environment variables** : `VITE_ADVISOR_EMAILS` = ton courriel
+   (toi = conseiller; tous les autres comptes = clients). Redéployer.
+4. **Donner accès à un client** :
+   - Crée sa fiche dans l'app (avec SON courriel).
+   - Supabase → **Authentication → Users → « Invite user »** → même courriel.
+     Il reçoit un courriel pour choisir son mot de passe.
+   - À sa 1re connexion, son dossier se relie tout seul (il ne voit que ses données).
+
+> Important : avec la phase 2, les clients du conseiller sont stockés dans la
+> table relationnelle `clients` (et non plus dans un bloc unique). Si tu avais
+> créé des données de test avant, elles ne réapparaîtront pas — tu repars propre.
+
+---
+
 ## 1. Créer un projet Supabase
 1. Aller sur https://supabase.com → **New project** (choisir une région, ex. *Canada Central* si disponible pour garder les données au Canada).
 2. Noter le mot de passe de la base (pour votre référence).
